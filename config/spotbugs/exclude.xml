@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP" />
+    </Match>
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
+    <Match>
+        <Bug pattern="MS_EXPOSE_REP" />
+    </Match>
+    <Match>
+        <Class name="com.groupesan.project.java.scrumsimulator.mainpackage.impl.ScrumMaster">
+            <Method name="getInstance" params="()"/>
+            <Bug pattern="EI_EXPOSE_REP" />
+        </Class>
+    </Match>
+    <Match>
+        <Class name="com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.UserStoryWidget">
+            <Bug pattern="SE_BAD_FIELD_STORE" />
+        </Class>
+    </Match>
+</FindBugsFilter>

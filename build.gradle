@@ -1,0 +1,109 @@
+/*
+Adapted (and modified) from SER316 project
+ */
+
+import java.text.SimpleDateFormat
+
+plugins {
+    id "com.github.spotbugs" version "4.8.0"
+    id "checkstyle"
+}
+
+apply plugin: 'application'
+apply plugin: 'jacoco'
+apply plugin: "com.github.spotbugs"
+
+sourceCompatibility = '21'
+targetCompatibility = '21'
+
+mainClassName = 'com.groupesan.project.java.scrumsimulator.mainpackage.StartSimulator' //TODO: this is a bit much, we should probably simplify it at some point
+
+compileJava.options.encoding = 'UTF-8'
+
+// Repositories and dependencies for code go here
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.json:json:20230618' // org.json in maven repo
+    spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.12.0'
+    spotbugs 'com.github.spotbugs:spotbugs:4.8.0'
+    implementation 'com.formdev:flatlaf:3.2.5'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5' // potential spotbugs issue
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation 'org.apache.commons:commons-lang3:3.13.0'
+}
+
+version = "0.1"
+
+//create a version properties file that can be shown in loading/about screens to show what version we are running.
+task createProperties(dependsOn: processResources) {
+    doLast {
+        new File("$buildDir/resources/main/version.properties").withWriter { w ->
+            Properties p = new Properties()
+            SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss")
+            format.setTimeZone(TimeZone.getTimeZone("UTC"))
+
+            p['version'] = project.version.toString()
+            p['build'] = format.format(new Date())
+
+            p.store w, null
+        }
+    }
+}
+
+classes {
+    dependsOn createProperties
+}
+
+///////////////////////////////////////////////////////////////////////
+// Configure Checkstyle
+/////////////////////////////////////////////////////////////////////
+apply plugin: 'checkstyle'
+checkstyle {
+    // Keep checkstyle a little quieter
+    //ignoreFailures = true
+    //showViolations = false
+}
+
+//tasks.withType(Checkstyle) {
+//
+//    reports {
+//        html.enabled = true
+//        xml.enabled = false
+//    }
+//    include '**/*.java'
+//    //include '**/ui/App.java'
+//}
+
+checkstyle {
+    toolVersion = "8.8"
+}
+
+
+///////////////////////////////////////////////////////////////////////
+// Configure SpotBugs
+///////////////////////////////////////////////////////////////////////
+// To generate an HTML report instead of XML
+spotbugsMain{
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+spotbugs {
+    toolVersion = '4.8.0'
+    ignoreFailures = false
+    showProgress = true
+    effort = 'max'
+    excludeFilter = file('config/spotbugs/exclude.xml')
+}
+
+// junit testing
+test {
+    useJUnitPlatform()
+    systemProperty 'java.awt.headless', 'true' // headless for gui
+}
