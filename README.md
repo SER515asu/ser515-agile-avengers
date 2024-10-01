@@ -29,3 +29,5 @@ To clean the project (remove all build artifacts), run the following gradle comm
 
 ### Mac/Linux/Git Bash/WSL:
 `./gradlew clean`
+
+adding a test commit for slackbot-check
