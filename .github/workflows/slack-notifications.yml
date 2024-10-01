@@ -2,6 +2,8 @@ name: Notify Slack
 
 on:
   push:
+    branches:
+      - '**'
   pull_request:
     types: [opened, closed, reopened, synchronize]
 
@@ -16,12 +18,12 @@ jobs:
         if: github.event_name == 'push'
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{
-            "text": ":rocket: New commit pushed to `${{ github.repository }}`\n*Branch:* `${{ github.ref }}\n*Commit:* `${{ github.sha }}`\n*Author:* `${{ github.actor }}`\n*Message:* `${{ github.event.head_commit.message }}`
+            "text": ":rocket: New commit pushed to `${{ github.repository }}`\n*Branch:* `${{ github.ref }}\n*Commit:* `${{ github.sha }}`\n*Author:* `${{ github.actor }}`\n*Message:* `${{ github.event.head_commit.message }}`"
           }' https://hooks.slack.com/services/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
 
       - name: Send Slack notification using curl for PR
         if: github.event_name == 'pull_request'
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{
-            "text": ":rocket: Pull Request `${{ github.event.pull_request.title }}` by `${{ github.actor }}`\n*Action:* `${{ github.event.action }}`\n*PR URL:* `${{ github.event.pull_request.html_url }}`
+            "text": ":rocket: Pull Request `${{ github.event.pull_request.title }}` by `${{ github.actor }}`\n*Action:* `${{ github.event.action }}`\n*PR URL:* `${{ github.event.pull_request.html_url }}`"
           }' https://hooks.slack.com/services/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
