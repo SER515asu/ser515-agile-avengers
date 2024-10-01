@@ -1,0 +1,37 @@
+name: Notify Slack
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, closed, reopened, synchronize]
+
+jobs:
+  slackNotification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Send Slack notification on push
+        if: github.event_name == 'push'
+        uses: rtCamp/action-slack-notify@v2.0.0
+        env:
+          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+          SLACK_MESSAGE: |
+            :rocket: New commit pushed to `${{ github.repository }}`
+            - *Branch:* `${{ github.ref }}`
+            - *Commit:* `${{ github.sha }}`
+            - *Author:* `${{ github.actor }}`
+            - *Message:* `${{ github.event.head_commit.message }}`
+          
+      - name: Send Slack notification on PR
+        if: github.event_name == 'pull_request'
+        uses: rtCamp/action-slack-notify@v2.0.0
+        env:
+          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+          SLACK_MESSAGE: |
+            :rocket: Pull Request `${{ github.event.pull_request.title }}` by `${{ github.actor }}`
+            - *Action:* `${{ github.event.action }}`
+            - *PR URL:* `${{ github.event.pull_request.html_url }}`
