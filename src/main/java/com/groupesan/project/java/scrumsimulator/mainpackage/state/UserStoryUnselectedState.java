@@ -10,7 +10,7 @@ public class UserStoryUnselectedState extends UserStoryState {
 
     @Override
     public String onSelect() {
-        userStory.changeState(new UserStorySelectedState(userStory));
+        userStory.setUserStoryState(new UserStorySelectedState(userStory));
         return "Selected";
     }
 
@@ -21,7 +21,7 @@ public class UserStoryUnselectedState extends UserStoryState {
 
     @Override
     public String onDelete() {
-        userStory.changeState(new UserStoryDeletedState(userStory));
+        userStory.setUserStoryState(new UserStoryDeletedState(userStory));
         return "Deleted";
     }
 }

@@ -134,7 +134,7 @@ public class SprintUIPane extends JFrame implements BaseComponent {
                         for (UserStory userStory : UserStoryStore.getInstance().getUserStories()) {
                             if (userStory.toString().equals(selectComboBox.getSelectedItem())) {
                                 userStory.setOwner(currentPlayer);
-                                userStory.changeState(new UserStorySelectedState(userStory));
+                                userStory.setUserStoryState(new UserStorySelectedState(userStory));
                             }
                         }
                         selectComboBox.removeAllItems();

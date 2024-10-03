@@ -1,12 +1,11 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.core;
 
+import lombok.Getter;
+
+@Getter
 public abstract class ScrumObject {
 
     private boolean registered = false;
-
-    public boolean isRegistered() {
-        return registered;
-    }
 
     protected abstract void register();
 

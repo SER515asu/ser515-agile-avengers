@@ -10,19 +10,19 @@ public class UserStorySelectedState extends UserStoryState {
 
     @Override
     public String onSelect() {
-        userStory.changeState(new UserStoryUnselectedState(userStory));
+        userStory.setUserStoryState(new UserStoryUnselectedState(userStory));
         return "Unselected";
     }
 
     @Override
     public String onComplete() {
-        userStory.changeState(new UserStoryCompletedState(userStory));
+        userStory.setUserStoryState(new UserStoryCompletedState(userStory));
         return "Completed";
     }
 
     @Override
     public String onDelete() {
-        userStory.changeState(new UserStoryDeletedState(userStory));
+        userStory.setUserStoryState(new UserStoryDeletedState(userStory));
         return "Deleted";
     }
 }
