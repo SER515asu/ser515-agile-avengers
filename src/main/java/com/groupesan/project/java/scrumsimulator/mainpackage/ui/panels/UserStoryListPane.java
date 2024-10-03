@@ -1,5 +1,6 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
@@ -17,8 +18,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+
 public class UserStoryListPane extends JFrame implements BaseComponent {
-    public UserStoryListPane() {
+    private Player player;
+    
+    public UserStoryListPane(Player player) {
+        this.player = player;
         this.init();
     }
 
@@ -67,6 +72,10 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
                         0, 0, GridBagConstraints.WEST, 1.0, 0.8, GridBagConstraints.HORIZONTAL));
 
         JButton newSprintButton = new JButton("New User Story");
+        if (player.getRole().getName() == "Scrum Master") {
+            newSprintButton.setEnabled(false); 
+        }
+
         newSprintButton.addActionListener(
                 new ActionListener() {
                     @Override

@@ -1,5 +1,8 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumRole;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.ScrumMaster;
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryStateManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,9 +14,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class UpdateUserStoryPanel extends JFrame {
 
-    public UpdateUserStoryPanel() {
+public class UpdateUserStoryPanel extends JFrame {
+    private Player player;
+
+    public UpdateUserStoryPanel(Player player) {
+        this.player = player;
         init();
     }
 
@@ -54,6 +60,9 @@ public class UpdateUserStoryPanel extends JFrame {
         updateButton.setBounds(150, 80, 150, 25);
         panel.add(updateButton);
 
+        if (player.getRole().getName() == "Scrum Master") {
+            updateButton.setEnabled(false); 
+        }
         updateButton.addActionListener(
                 new ActionListener() {
                     @Override

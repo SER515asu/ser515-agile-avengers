@@ -2,6 +2,7 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumRole;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.ScrumMaster;
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationManager;
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationStateManager;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
@@ -16,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class DemoPane extends JFrame implements BaseComponent {
-    private Player player = new Player("bob", new ScrumRole("demo"));
+    private Player player = new Player("bob", new ScrumRole("Scrum Master"));
 
     public DemoPane() {
         this.init();
@@ -38,6 +39,7 @@ public class DemoPane extends JFrame implements BaseComponent {
         myJpanel.setLayout(myGridbagLayout);
 
         JButton sprintsButton = new JButton("Sprints");
+
         sprintsButton.addActionListener(
                 new ActionListener() {
                     @Override
@@ -64,7 +66,7 @@ public class DemoPane extends JFrame implements BaseComponent {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        UserStoryListPane form = new UserStoryListPane();
+                        UserStoryListPane form = new UserStoryListPane(player);
                         form.setVisible(true);
                     }
                 });
@@ -75,11 +77,15 @@ public class DemoPane extends JFrame implements BaseComponent {
                         1, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         JButton updateStoryStatusButton = new JButton("Update User Story Status");
+        // if (player.getRole() instanceof ScrumMaster)
+        // {
+
+        // }
         updateStoryStatusButton.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        UpdateUserStoryPanel form = new UpdateUserStoryPanel();
+                        UpdateUserStoryPanel form = new UpdateUserStoryPanel(player);
                         form.setVisible(true);
                     }
                 });
@@ -91,6 +97,9 @@ public class DemoPane extends JFrame implements BaseComponent {
 
         // Simulation button for Demo
         JButton simulationButton = new JButton("Add User");
+        if (player.getRole().getName() == "Scrum Master") {
+            simulationButton.setEnabled(false); 
+        }
         simulationButton.addActionListener(
                 new ActionListener() {
                     @Override
@@ -188,6 +197,9 @@ public class DemoPane extends JFrame implements BaseComponent {
                         3, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         JButton SprintUIButton = new JButton("US Selection UI");
+        if (player.getRole().getName() == "Scrum Master") {
+            SprintUIButton.setEnabled(false); 
+        }
         SprintUIButton.addActionListener(
                 new ActionListener() {
                     @Override
