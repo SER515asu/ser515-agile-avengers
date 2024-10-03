@@ -21,7 +21,7 @@ public class UserStory extends ScrumObject {
 
     private double pointValue;
 
-    private UserStoryState state;
+    private UserStoryState userStoryState;
 
     private Player owner;
 
@@ -39,7 +39,7 @@ public class UserStory extends ScrumObject {
         this.name = name;
         this.description = "";
         this.pointValue = pointValue;
-        this.state = new UserStoryUnselectedState(this);
+        this.userStoryState = new UserStoryUnselectedState(this);
     }
 
     /**
@@ -54,7 +54,7 @@ public class UserStory extends ScrumObject {
         this.name = name;
         this.description = description;
         this.pointValue = pointValue;
-        this.state = new UserStoryUnselectedState(this);
+        this.userStoryState = new UserStoryUnselectedState(this);
     }
 
     protected void register() {
@@ -98,23 +98,6 @@ public class UserStory extends ScrumObject {
     }
 
     // State Management, need Player class to implement final selection logic
-    /**
-     * Change the state of this UserStory. Usually called when a Player picks up the task or
-     * finishes it.
-     *
-     * @param state the new UserStoryState for this UserStory
-     */
-    public void changeState(UserStoryState state) {
-        this.state = state;
-    }
 
-    /**
-     * Get the UserStoryState of this UserStory. Unselected, completed, etc.
-     *
-     * @return a UserStoryState object containing the state for this UserStory
-     */
-    public UserStoryState getUserStoryState() {
-        return state;
-    }
 
 }

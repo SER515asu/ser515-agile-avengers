@@ -1,19 +1,15 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.core;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Player extends User {
 
     private Simulation simulation;
 
     public Player(String username, ScrumRole scrumRole) {
         super(username, scrumRole);
-    }
-
-    public Simulation getSimulation() {
-        return simulation;
-    }
-
-    public void setSimulation(Simulation simulation) {
-        this.simulation = simulation;
     }
 
     public String toString() {
