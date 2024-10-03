@@ -2,7 +2,11 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.core;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.ScrumIdentifierStoreSingleton;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserIdentifier;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class User extends ScrumObject {
     private String name;
     private ScrumRole scrumRole;
@@ -20,14 +24,6 @@ public class User extends ScrumObject {
     public void register() {
         this.id = new UserIdentifier(ScrumIdentifierStoreSingleton.get().getNextId());
         this.scrumRole.doRegister();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public ScrumRole getRole() {

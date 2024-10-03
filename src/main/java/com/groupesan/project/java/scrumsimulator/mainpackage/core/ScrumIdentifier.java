@@ -1,7 +1,11 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.core;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.ScrumIdentifierStoreSingleton;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public abstract class ScrumIdentifier {
     protected int id;
 
@@ -14,14 +18,6 @@ public abstract class ScrumIdentifier {
 
     public int getValue() {
         return id;
-    }
-
-    public void setThisObject(ScrumObject object) {
-        thisObject = object;
-    }
-
-    public ScrumObject getThisObject() {
-        return thisObject;
     }
 
     public abstract String toString();
