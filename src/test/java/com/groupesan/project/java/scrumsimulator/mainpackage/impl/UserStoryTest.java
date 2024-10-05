@@ -15,7 +15,7 @@ public class UserStoryTest {
     public void setup() {
         myUserStory =
                 UserStoryFactory.getInstance()
-                        .createNewUserStory("predefinedUS1", "description1", 1.0);
+                        .createNewUserStory("predefinedUS1", "description1", 1.0, 1.0);
     }
 
     @Test
