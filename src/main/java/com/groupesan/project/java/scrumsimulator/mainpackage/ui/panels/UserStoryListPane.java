@@ -83,6 +83,8 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
                                                         1.0,
                                                         0.1,
                                                         GridBagConstraints.HORIZONTAL));
+                                        revalidate();
+                                        repaint();
                                     }
                                 });
                     }
