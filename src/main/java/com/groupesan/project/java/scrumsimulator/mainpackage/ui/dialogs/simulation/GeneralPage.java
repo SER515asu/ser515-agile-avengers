@@ -9,13 +9,15 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.Wizard;
 import java.awt.*;
 import javax.swing.*;
 
-class GeneralPage extends Wizard.WizardPage {
+public class GeneralPage extends Wizard.WizardPage {
     private final DataModel<String> simulationModel;
     private final DataModel<Object> sprintModel;
+    private final DataModel<Object> sprintDurationModel;
 
-    public GeneralPage(DataModel<String> simulationModel, DataModel<Object> sprintModel) {
+    public GeneralPage(DataModel<String> simulationModel, DataModel<Object> sprintModel, DataModel<Object> sprintDurationModel) {
         this.simulationModel = simulationModel;
         this.sprintModel = sprintModel;
+        this.sprintDurationModel = sprintDurationModel;
     }
 
     @Override
@@ -38,6 +40,11 @@ class GeneralPage extends Wizard.WizardPage {
                         "Sprints: ",
                         new JSpinner(new SpinnerNumberModel(1, 1, 20, 1)),
                         sprintModel);
+        SpinnerInput sprintDurationInput =
+                new SpinnerInput(
+                        "SprintDuration (weeks): ",
+                        new JSpinner(new SpinnerNumberModel(1, 1, 4, 1)),
+                        sprintDurationModel);
 
         inputs.add(
                 resuableHeader,
@@ -59,6 +66,13 @@ class GeneralPage extends Wizard.WizardPage {
                 new GridBagConstraintsBuilder()
                         .setGridX(0)
                         .setGridY(2)
+                        .setWeightX(1)
+                        .setFill(GridBagConstraints.HORIZONTAL));
+        inputs.add(
+                sprintDurationInput,
+                new GridBagConstraintsBuilder()
+                        .setGridX(0)
+                        .setGridY(3)
                         .setWeightX(1)
                         .setFill(GridBagConstraints.HORIZONTAL));
 

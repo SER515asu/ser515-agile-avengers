@@ -26,6 +26,7 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
     private SimulationManager simulationManager;
     private JTextField simulationNameField;
     private JTextField numberOfSprintsField;
+    private JTextField lengthOfSprintField;
     private JTextArea simulationIdDisplay;
 
     public ModifySimulationPane(SimulationManager manager) {
@@ -48,9 +49,11 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
 
         simulationNameField = new JTextField(20);
         numberOfSprintsField = new JTextField(20);
+        lengthOfSprintField = new JTextField(4);
 
         JLabel nameLabel = new JLabel("Simulation Name:");
         JLabel sprintsLabel = new JLabel("Number of Sprints:");
+        JLabel sprintDurationLabel = new JLabel("SprintDuration (weeks):");
 
         panel.add(
                 nameLabel,
@@ -69,6 +72,14 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                 numberOfSprintsField,
                 new CustomConstraints(
                         1, 1, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+        panel.add(
+                sprintDurationLabel,
+                new CustomConstraints(
+                        0, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+        panel.add(
+                lengthOfSprintField,
+                new CustomConstraints(
+                        1, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         JButton submitButton = new JButton("Create Simulation");
         submitButton.addActionListener(
@@ -78,7 +89,8 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                         String simId = UUID.randomUUID().toString();
                         String simName = simulationNameField.getText();
                         String numberOfSprints = numberOfSprintsField.getText();
-                        simulationManager.createSimulation(simId, simName, numberOfSprints);
+                        String lengthOfSprint = lengthOfSprintField.getText();
+                        simulationManager.createSimulation(simId, simName, numberOfSprints, lengthOfSprint);
 
                         // Prepare a JTextField to display the Simulation ID
                         JTextField simIdField = new JTextField(simId);
@@ -97,6 +109,7 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                         // Reset fields and simulation ID display to blank
                         simulationNameField.setText("");
                         numberOfSprintsField.setText("");
+                        lengthOfSprintField.setText("");
                         simulationIdDisplay.setText("");
                     }
                 });
@@ -104,11 +117,11 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
         panel.add(
                 submitButton,
                 new CustomConstraints(
-                        0, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+                        0, 3, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
         panel.add(
                 simulationIdDisplay,
                 new CustomConstraints(
-                        1, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+                        1, 3, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         add(panel);
     }
