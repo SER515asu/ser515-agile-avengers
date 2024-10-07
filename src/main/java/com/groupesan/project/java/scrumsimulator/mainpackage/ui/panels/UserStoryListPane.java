@@ -1,22 +1,25 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
-import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
-import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
-import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.UserStoryWidget;
-import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.UserStoryWidget;
+import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 
 
 public class UserStoryListPane extends JFrame implements BaseComponent {
@@ -72,7 +75,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
                         0, 0, GridBagConstraints.WEST, 1.0, 0.8, GridBagConstraints.HORIZONTAL));
 
         JButton newSprintButton = new JButton("New User Story");
-        if (player.getRole().getName() == "Scrum Master") {
+        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
             newSprintButton.setEnabled(false); 
         }
 
@@ -81,6 +84,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         NewUserStoryForm form = new NewUserStoryForm();
+                        
                         form.setVisible(true);
 
                         form.addWindowListener(
