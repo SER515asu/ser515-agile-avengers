@@ -47,13 +47,14 @@ public abstract class Wizard<T> extends JFrame implements BaseComponent {
     private JPanel buildFooter(CardLayout bodyLayout, JPanel bodyLayoutContainer) {
         JPanel footer = new JPanel(new BorderLayout());
         footer.setBorder(new EmptyBorder(5, 10, 5, 5));
-        JLabel steps = new JLabel();
-        this.updateStepsLabel(steps);
+       //  JLabel steps = new JLabel();
+       // this.updateStepsLabel(steps);
         JPanel navigation = new JPanel();
 
         JButton cancel = new JButton("Cancel");
-        JButton previous = new JButton("Previous");
-        previous.setEnabled(this.pageNum > 0);
+       // JButton previous = new JButton("Previous");
+       // previous.setEnabled(this.pageNum > 0);
+
 
         JButton next = new JButton("Next");
         JButton finish = new JButton("Finish");
@@ -70,30 +71,30 @@ public abstract class Wizard<T> extends JFrame implements BaseComponent {
                     dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
                 });
 
-        previous.addActionListener(
-                l -> {
-                    this.pageNum--;
-                    previous.setEnabled(this.pageNum != 0);
-
-                    boolean finished = this.getDisplayPageNum() < pages.size();
-                    next.setVisible(finished);
-                    finish.setVisible(!finished);
-
-                    bodyLayout.show(bodyLayoutContainer, getCurrentPage().getId());
-                    this.updateStepsLabel(steps);
-                });
+//        previous.addActionListener(
+//                l -> {
+//                    this.pageNum--;
+//                    previous.setEnabled(this.pageNum != 0);
+//
+//                    boolean finished = this.getDisplayPageNum() < pages.size();
+//                    next.setVisible(finished);
+//                    finish.setVisible(!finished);
+//
+//                    bodyLayout.show(bodyLayoutContainer, getCurrentPage().getId());
+//                    this.updateStepsLabel(steps);
+//                });
 
         next.addActionListener(
                 l -> {
                     this.pageNum++;
-                    previous.setEnabled(this.pageNum > 0);
+                    //previous.setEnabled(this.pageNum > 0);
 
                     boolean finished = this.getDisplayPageNum() == pages.size();
                     next.setVisible(!finished);
                     finish.setVisible(finished);
 
                     bodyLayout.show(bodyLayoutContainer, getCurrentPage().getId());
-                    this.updateStepsLabel(steps);
+                   // this.updateStepsLabel(steps);
                 });
 
         finish.addActionListener(
@@ -103,11 +104,11 @@ public abstract class Wizard<T> extends JFrame implements BaseComponent {
                 });
 
         navigation.add(cancel);
-        navigation.add(previous);
+        //navigation.add(previous);
         navigation.add(next);
         navigation.add(finish);
 
-        footer.add(steps, BorderLayout.WEST);
+        // footer.add(steps, BorderLayout.WEST);
         footer.add(navigation, BorderLayout.EAST);
         return footer;
     }
