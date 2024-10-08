@@ -54,6 +54,7 @@ public class UserStory extends ScrumObject {
         this.name = name;
         this.description = description;
         this.pointValue = pointValue;
+        this.businessValue = businessValue;
         this.userStoryState = new UserStoryUnselectedState(this);
     }
 
