@@ -27,6 +27,8 @@ public class UserStory extends ScrumObject {
 
     private double businessValue;
 
+    private String sprint;
+
     // private ArrayList<Task> tasks;  TODO: implement tasks
 
     /**
@@ -95,6 +97,14 @@ public class UserStory extends ScrumObject {
             return this.getId().toString() + " - " + name;
         }
         return "(unregistered) - " + getName();
+    }
+    //getter and setter for sprint ys
+    public String getSprint() {
+        return sprint;
+    }
+
+    public void setSprint(String sprint) {
+        this.sprint = sprint;
     }
 
     // State Management, need Player class to implement final selection logic
