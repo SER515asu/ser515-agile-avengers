@@ -23,7 +23,7 @@ public abstract class Wizard<T> extends JFrame implements BaseComponent {
 
     @Override
     public void init() {
-        setSize(800, 600);
+        setSize(500, 500);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);

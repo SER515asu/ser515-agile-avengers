@@ -13,7 +13,7 @@ public class App {
 
     public void start() {
         this.loadTheme();
-        WizardManager.get().showSimulationWizard();
+        //WizardManager.get().showSimulationWizard();
         SwingUtilities.invokeLater(
                 new Runnable() {
                     @Override
