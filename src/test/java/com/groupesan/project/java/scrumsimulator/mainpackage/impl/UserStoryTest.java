@@ -53,4 +53,11 @@ public class UserStoryTest {
 
         assertNotNull(id);
     }
+
+    @Test
+    public void testUserStoryBusinessValue() {
+        double bv = myUserStory.getBusinessValue();
+
+        assertEquals(1.0, bv);
+    }
 }
