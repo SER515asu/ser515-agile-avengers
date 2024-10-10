@@ -1,7 +1,7 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
-import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.EditUserStoryForm;
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.StoryForm;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,6 +15,7 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
 
     JLabel id;
     JLabel points;
+    JLabel bv;
     JLabel name;
     JLabel desc;
 
@@ -28,7 +29,7 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
             new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    EditUserStoryForm form = new EditUserStoryForm(userStory);
+                    StoryForm form = new StoryForm(userStory);
                     form.setVisible(true);
 
                     form.addWindowListener(
@@ -53,6 +54,8 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
         id.addMouseListener(openEditDialog);
         points = new JLabel(Double.toString(userStory.getPointValue()));
         points.addMouseListener(openEditDialog);
+        bv = new JLabel(Double.toString(userStory.getBusinessValue()));
+        bv.addMouseListener(openEditDialog);
         name = new JLabel(userStory.getName());
         name.addMouseListener(openEditDialog);
         desc = new JLabel(userStory.getDescription());
@@ -71,13 +74,17 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
                 new CustomConstraints(
                         1, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(
+                bv,
+                new CustomConstraints(
+                        2, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(
                 name,
                 new CustomConstraints(
-                        2, 0, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+                        3, 0, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
         add(
                 desc,
                 new CustomConstraints(
-                        3, 0, GridBagConstraints.WEST, 0.7, 0.0, GridBagConstraints.HORIZONTAL));
+                        4, 0, GridBagConstraints.WEST, 0.7, 0.0, GridBagConstraints.HORIZONTAL));
 
         revalidate();
         repaint();        
