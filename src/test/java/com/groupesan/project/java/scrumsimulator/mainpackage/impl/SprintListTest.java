@@ -34,7 +34,7 @@ public class SprintListTest {
 
     @Test
     public void testRemoveSprint() {
-        SprintStore.getInstance().getSprints().remove(mySprint);
+        SprintStore.getInstance().removeSprint(mySprint);
         assertFalse(SprintStore.getInstance().getSprints().contains(mySprint), "Sprint should be removed.");
     }
 
@@ -49,7 +49,7 @@ public class SprintListTest {
         mySprint.addUserStory(myUserStory);
         assertTrue(mySprint.getUserStories().contains(myUserStory), "User story should be initially added to the sprint.");
 
-        mySprint.getUserStories().remove(myUserStory);
+        mySprint.removeUserStory(myUserStory);
         assertFalse(mySprint.getUserStories().contains(myUserStory), "User story should be removed from the sprint.");
     }
 
