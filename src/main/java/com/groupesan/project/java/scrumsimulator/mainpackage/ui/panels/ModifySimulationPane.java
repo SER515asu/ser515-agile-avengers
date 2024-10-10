@@ -120,8 +120,7 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                                 JOptionPane.INFORMATION_MESSAGE);
 
                         // Reset fields and simulation ID display to blank
-                        simulationNameField.setSelectedItem("");
-                        numberOfSprintsField.setText("");
+                        numberOfSprintsField.setText(selectedSimulation.getString("NumberOfSprints"));
                         simulationIdDisplay.setText("");
                     }
                 });
