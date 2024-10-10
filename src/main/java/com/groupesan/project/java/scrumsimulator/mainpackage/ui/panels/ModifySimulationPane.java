@@ -37,7 +37,7 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
     @Override
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setTitle("Create Simulation");
+        setTitle("Modify Simulation");
         setSize(400, 300);
 
         JPanel panel = new JPanel(new GridBagLayout());
@@ -70,7 +70,7 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                 new CustomConstraints(
                         1, 1, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
-        JButton submitButton = new JButton("Create Simulation");
+        JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(
                 new ActionListener() {
                     @Override
@@ -101,14 +101,27 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                     }
                 });
 
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                    }
+                });
+
+        panel.add(
+                cancelButton,
+                new CustomConstraints(0, 2, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
+
         panel.add(
                 submitButton,
                 new CustomConstraints(
-                        0, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+                        1, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
         panel.add(
                 simulationIdDisplay,
                 new CustomConstraints(
-                        1, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+                        2, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         add(panel);
     }
