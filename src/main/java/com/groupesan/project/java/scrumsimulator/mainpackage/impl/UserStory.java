@@ -98,7 +98,7 @@ public class UserStory extends ScrumObject {
         }
         return "(unregistered) - " + getName();
     }
-    //getter and setter for sprint ys
+    //getter and setter
     public String getSprint() {
         return sprint;
     }

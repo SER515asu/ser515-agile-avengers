@@ -1,7 +1,5 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Sprint;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.SprintStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
@@ -34,9 +32,6 @@ public class EditUserStoryForm extends JFrame implements BaseComponent {
     private JTextField nameField = new JTextField();
     private JTextArea descArea = new JTextArea();
     private JComboBox<Double> pointsCombo = new JComboBox<>(pointsList);
-    // Add Sprint selection dropdown ys
-    private JComboBox<String> sprintDropdown = new JComboBox<>(); 
-
 
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -47,13 +42,6 @@ public class EditUserStoryForm extends JFrame implements BaseComponent {
         descArea = new JTextArea(userStory.getDescription());
         pointsCombo = new JComboBox<>(pointsList);
         pointsCombo.setSelectedItem(userStory.getPointValue());
-
-        // Populate sprint dropdown with available sprints ys
-        for (Sprint sprint : SprintStore.getInstance().getSprints()) {
-            sprintDropdown.addItem(sprint.getName());
-        }
-
-        sprintDropdown.setSelectedItem(userStory.getSprint()); // Set current sprint for the user story ys
 
         GridBagLayout myGridbagLayout = new GridBagLayout();
         JPanel myJpanel = new JPanel();
@@ -94,17 +82,6 @@ public class EditUserStoryForm extends JFrame implements BaseComponent {
                 new CustomConstraints(
                         1, 2, GridBagConstraints.EAST, 1.0, 0.0, GridBagConstraints.HORIZONTAL));
 
-        // Added sprint label and dropdown to the form ys
-        JLabel sprintLabel = new JLabel("Sprint:");
-        myJpanel.add(
-                sprintLabel,
-                new CustomConstraints(
-                        0, 3, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
-        myJpanel.add(
-                sprintDropdown,
-                new CustomConstraints(
-                        1, 3, GridBagConstraints.EAST, 1.0, 0.0, GridBagConstraints.HORIZONTAL));
-
         JButton cancelButton = new JButton("Cancel");
 
         cancelButton.addActionListener(
@@ -124,22 +101,20 @@ public class EditUserStoryForm extends JFrame implements BaseComponent {
                         String name = nameField.getText();
                         String description = descArea.getText();
                         Double points = (Double) pointsCombo.getSelectedItem();
-                        String selectedSprint = (String) sprintDropdown.getSelectedItem(); // Get selected sprint ys
 
                         userStory.setName(name);
                         userStory.setDescription(description);
                         userStory.setPointValue(points);
-                        userStory.setSprint(selectedSprint); // Set the selected sprint ys
                         dispose();
                     }
                 });
 
         myJpanel.add(
                 cancelButton,
-                new CustomConstraints(0, 4, GridBagConstraints.EAST, GridBagConstraints.NONE));
+                new CustomConstraints(0, 3, GridBagConstraints.EAST, GridBagConstraints.NONE));
         myJpanel.add(
                 submitButton,
-                new CustomConstraints(1, 4, GridBagConstraints.WEST, GridBagConstraints.NONE));
+                new CustomConstraints(1, 3, GridBagConstraints.WEST, GridBagConstraints.NONE));
 
         add(myJpanel);
     }

@@ -15,6 +15,7 @@ public class UserStoryFactory {
 
     public UserStory createNewUserStory(String name, String description, double pointValue) {
         UserStory newUS = new UserStory(name, description, pointValue);
+        //newUS.setSprint(sprint); // Set the sprint ys
         return newUS;
     }
 }
