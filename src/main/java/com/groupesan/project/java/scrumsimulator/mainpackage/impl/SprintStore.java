@@ -20,10 +20,17 @@ public class SprintStore {
     }
 
     public void addSprint(Sprint sprint) {
-        sprints.add(sprint);
+        if (!sprints.contains(sprint)) {
+            sprints.add(sprint);
+        }
     }
 
     public List<Sprint> getSprints() {
         return new ArrayList<>(sprints);
+    }
+
+    // Method to remove a sprint
+    public void removeSprint(Sprint sprint) {
+        sprints.remove(sprint);
     }
 }

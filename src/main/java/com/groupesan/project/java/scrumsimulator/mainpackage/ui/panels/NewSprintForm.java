@@ -30,7 +30,7 @@ import javax.swing.border.EmptyBorder;
 public class NewSprintForm extends JFrame implements BaseComponent {
     JTextField nameField = new JTextField();
     JTextArea descArea = new JTextArea();
-    SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(5, 1, 999999, 1);
+    SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(2, 1, 4, 1);
     JSpinner sprintDays = new JSpinner(spinnerNumberModel);
 
     DefaultListModel<String> listModel;
@@ -73,7 +73,7 @@ public class NewSprintForm extends JFrame implements BaseComponent {
                 new CustomConstraints(
                         1, 1, GridBagConstraints.EAST, 1.0, 0.3, GridBagConstraints.BOTH));
 
-        JLabel pointsLabel = new JLabel("Length (Days):");
+        JLabel pointsLabel = new JLabel("Length (Weeks):");
         myJpanel.add(
                 pointsLabel,
                 new CustomConstraints(
