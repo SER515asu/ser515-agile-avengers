@@ -3,8 +3,7 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.core;
 public enum Roles {
     SCRUM_MASTER("Scrum Master"),
     PRODUCT_OWNER("Product Owner"),
-    DEVELOPER("Developer"),
-    TESTER("Tester");
+    DEVELOPER("Developer");
     
     private final String displayName;
     Roles(String displayName) {

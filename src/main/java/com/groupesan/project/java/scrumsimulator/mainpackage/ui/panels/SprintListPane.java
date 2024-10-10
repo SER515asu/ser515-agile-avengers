@@ -1,5 +1,7 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Sprint;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.SprintFactory;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.SprintStore;
@@ -19,7 +21,9 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 public class SprintListPane extends JFrame implements BaseComponent {
-    public SprintListPane() {
+    private Player player;
+    public SprintListPane(Player player) {
+        this.player = player;
         this.init();
     }
 
@@ -65,6 +69,10 @@ public class SprintListPane extends JFrame implements BaseComponent {
                         0, 0, GridBagConstraints.WEST, 1.0, 0.8, GridBagConstraints.HORIZONTAL));
 
         JButton newSprintButton = new JButton("New Sprint");
+        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName()) || player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) 
+        {
+            newSprintButton.setEnabled(false); 
+        }
         newSprintButton.addActionListener(
                 new ActionListener() {
                     @Override

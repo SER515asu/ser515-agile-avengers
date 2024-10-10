@@ -34,7 +34,7 @@ public class SimulationPane extends JFrame {
     private JComboBox<String> roleComboBox;
 
     private static final List<String> allowedRoleNames =
-            Arrays.asList("pig", "chicken", "product owner", "scrum master");
+            Arrays.asList("developer", "product owner", "scrum master");
 
     /** The simulation Pane for adding new users. */
     public SimulationPane() {
