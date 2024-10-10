@@ -8,7 +8,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.UUID;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -61,6 +60,9 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
         for (int i = 0; i < simulations.length(); i++) {
                 JSONObject simulation = simulations.getJSONObject(i);
                 simulationNameField.addItem(simulation.getString("Name") + " - " + simulation.getString("ID"));
+                if(i == 0){
+                        numberOfSprintsField.setText(simulation.getString("NumberOfSprints"));
+                }
         }
 
         simulationNameField.addActionListener(
@@ -102,23 +104,19 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        String simId = UUID.randomUUID().toString();
-                        String simName = simulationNameField.getSelectedItem().toString();
                         String numberOfSprints = numberOfSprintsField.getText();
-                        simulationManager.createSimulation(simId, simName, numberOfSprints);
+                        selectedSimulation.put("NumberOfSprints", numberOfSprints);
+                        simulationManager.modifySimulation(selectedSimulation);
 
-                        // Prepare a JTextField to display the Simulation ID
-                        JTextField simIdField = new JTextField(simId);
-                        simIdField.setEditable(false);
                         Object[] message = {
-                            "A new simulation has been generated.\nSimulation ID:", simIdField
+                            "Simulation modified successfully - ", selectedSimulation.getString("Name") + " - " + selectedSimulation.getString("ID")
                         };
 
                         // Show a dialog with the JTextField containing the Simulation ID
                         JOptionPane.showMessageDialog(
                                 ModifySimulationPane.this,
                                 message,
-                                "Simulation Created",
+                                "Simulation Modified",
                                 JOptionPane.INFORMATION_MESSAGE);
 
                         // Reset fields and simulation ID display to blank

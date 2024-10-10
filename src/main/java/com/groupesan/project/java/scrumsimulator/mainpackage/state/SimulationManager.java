@@ -1,5 +1,7 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.state;
 
+import org.json.JSONObject;
+
 /**
  * SimulationManager acts as an intermediary between the UI and SimulationStateManager. It handles
  * the creation and updating of simulations.
@@ -19,5 +21,9 @@ public class SimulationManager {
      */
     public void createSimulation(String simId, String simName, String numberOfSprints) {
         SimulationStateManager.saveNewSimulationDetails(simId, simName, numberOfSprints);
+    }
+
+    public void modifySimulation(JSONObject updatedSimulation){
+        SimulationStateManager.modifySimulationDetails(updatedSimulation);
     }
 }
