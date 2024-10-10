@@ -1,6 +1,7 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationManager;
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.utils.SimulationHelper;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 import java.awt.GridBagConstraints;
@@ -17,6 +18,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import javax.swing.JComboBox;
+
 /**
  * ModifySimulationPane is a UI component used by teachers to create or modify simulations. It
  * allows the generation of a new simulation ID and displays it on the UI.
@@ -24,7 +30,7 @@ import javax.swing.border.EmptyBorder;
 public class ModifySimulationPane extends JFrame implements BaseComponent {
 
     private SimulationManager simulationManager;
-    private JTextField simulationNameField;
+    private JComboBox<String> simulationNameField;
     private JTextField numberOfSprintsField;
     private JTextArea simulationIdDisplay;
 
@@ -46,8 +52,15 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
         simulationIdDisplay = new JTextArea(2, 20);
         simulationIdDisplay.setEditable(false);
 
-        simulationNameField = new JTextField(20);
+        simulationNameField = new JComboBox<>();
         numberOfSprintsField = new JTextField(20);
+
+        JSONArray simulations = SimulationHelper.getSimulations();
+
+        for (int i = 0; i < simulations.length(); i++) {
+                JSONObject simulation = simulations.getJSONObject(i);
+                simulationNameField.addItem(simulation.getString("Name") + " - " + simulation.getString("ID"));
+        }
 
         JLabel nameLabel = new JLabel("Simulation Name:");
         JLabel sprintsLabel = new JLabel("Number of Sprints:");
@@ -76,7 +89,7 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         String simId = UUID.randomUUID().toString();
-                        String simName = simulationNameField.getText();
+                        String simName = simulationNameField.getSelectedItem().toString();
                         String numberOfSprints = numberOfSprintsField.getText();
                         simulationManager.createSimulation(simId, simName, numberOfSprints);
 
@@ -95,7 +108,7 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                                 JOptionPane.INFORMATION_MESSAGE);
 
                         // Reset fields and simulation ID display to blank
-                        simulationNameField.setText("");
+                        simulationNameField.setSelectedItem("");
                         numberOfSprintsField.setText("");
                         simulationIdDisplay.setText("");
                     }
