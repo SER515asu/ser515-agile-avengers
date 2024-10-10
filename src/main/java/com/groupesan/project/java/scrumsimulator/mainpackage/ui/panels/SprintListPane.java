@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
+//import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +31,16 @@ public class SprintListPane extends JFrame implements BaseComponent {
         JPanel myJpanel = new JPanel();
         myJpanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         myJpanel.setLayout(myGridbagLayout);
+
+        // Add predefined sprints to the store if they don't exist already
+        if (SprintStore.getInstance().getSprints().isEmpty()) {
+            Sprint sprint1 = new Sprint("Sprint 1", "Initial sprint with basic tasks", 2,1);
+            Sprint sprint2 = new Sprint("Sprint 2", "Sprint for refining features", 3,2);
+            Sprint sprint3 = new Sprint("Sprint 3", "Bug fixing and testing", 1,3);
+            SprintStore.getInstance().addSprint(sprint1);
+            SprintStore.getInstance().addSprint(sprint2);
+            SprintStore.getInstance().addSprint(sprint3);
+        }
 
         // Load existing sprints from the store
         sprints.addAll(SprintStore.getInstance().getSprints());
