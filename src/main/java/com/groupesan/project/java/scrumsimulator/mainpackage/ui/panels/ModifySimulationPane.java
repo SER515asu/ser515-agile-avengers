@@ -1,13 +1,13 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationManager;
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.utils.SimulationHelper;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.UUID;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,6 +17,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import javax.swing.JComboBox;
+
 /**
  * ModifySimulationPane is a UI component used by teachers to create or modify simulations. It
  * allows the generation of a new simulation ID and displays it on the UI.
@@ -24,9 +29,10 @@ import javax.swing.border.EmptyBorder;
 public class ModifySimulationPane extends JFrame implements BaseComponent {
 
     private SimulationManager simulationManager;
-    private JTextField simulationNameField;
+    private JComboBox<String> simulationNameField;
     private JTextField numberOfSprintsField;
     private JTextArea simulationIdDisplay;
+    private JSONObject selectedSimulation;
 
     public ModifySimulationPane(SimulationManager manager) {
         this.simulationManager = manager;
@@ -37,7 +43,7 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
     @Override
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setTitle("Create Simulation");
+        setTitle("Modify Simulation");
         setSize(400, 300);
 
         JPanel panel = new JPanel(new GridBagLayout());
@@ -46,8 +52,31 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
         simulationIdDisplay = new JTextArea(2, 20);
         simulationIdDisplay.setEditable(false);
 
-        simulationNameField = new JTextField(20);
+        simulationNameField = new JComboBox<>();
         numberOfSprintsField = new JTextField(20);
+
+        JSONArray simulations = SimulationHelper.getSimulations();
+
+        for (int i = 0; i < simulations.length(); i++) {
+                JSONObject simulation = simulations.getJSONObject(i);
+                simulationNameField.addItem(simulation.getString("Name") + " - " + simulation.getString("ID"));
+                if(i == 0){
+                        numberOfSprintsField.setText(simulation.getString("NumberOfSprints"));
+                }
+        }
+
+        simulationNameField.addActionListener(
+                new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e){
+                                String selectedSimulationName = (String) simulationNameField.getSelectedItem().toString();
+                                selectedSimulation = SimulationHelper.getSprintParamsFromSimulation(simulations, selectedSimulationName);
+                                if(selectedSimulation != null){
+                                        numberOfSprintsField.setText(selectedSimulation.getString("NumberOfSprints"));
+                                }
+                        }
+                }
+        );
 
         JLabel nameLabel = new JLabel("Simulation Name:");
         JLabel sprintsLabel = new JLabel("Number of Sprints:");
@@ -70,45 +99,53 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                 new CustomConstraints(
                         1, 1, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
-        JButton submitButton = new JButton("Create Simulation");
+        JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        String simId = UUID.randomUUID().toString();
-                        String simName = simulationNameField.getText();
                         String numberOfSprints = numberOfSprintsField.getText();
-                        simulationManager.createSimulation(simId, simName, numberOfSprints);
+                        selectedSimulation.put("NumberOfSprints", numberOfSprints);
+                        simulationManager.modifySimulation(selectedSimulation);
 
-                        // Prepare a JTextField to display the Simulation ID
-                        JTextField simIdField = new JTextField(simId);
-                        simIdField.setEditable(false);
                         Object[] message = {
-                            "A new simulation has been generated.\nSimulation ID:", simIdField
+                            "Simulation modified successfully - ", selectedSimulation.getString("Name") + " - " + selectedSimulation.getString("ID")
                         };
 
                         // Show a dialog with the JTextField containing the Simulation ID
                         JOptionPane.showMessageDialog(
                                 ModifySimulationPane.this,
                                 message,
-                                "Simulation Created",
+                                "Simulation Modified",
                                 JOptionPane.INFORMATION_MESSAGE);
 
                         // Reset fields and simulation ID display to blank
-                        simulationNameField.setText("");
-                        numberOfSprintsField.setText("");
+                        numberOfSprintsField.setText(selectedSimulation.getString("NumberOfSprints"));
                         simulationIdDisplay.setText("");
                     }
                 });
 
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                    }
+                });
+
+        panel.add(
+                cancelButton,
+                new CustomConstraints(0, 2, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
+
         panel.add(
                 submitButton,
                 new CustomConstraints(
-                        0, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+                        1, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
         panel.add(
                 simulationIdDisplay,
                 new CustomConstraints(
-                        1, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+                        2, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         add(panel);
     }
