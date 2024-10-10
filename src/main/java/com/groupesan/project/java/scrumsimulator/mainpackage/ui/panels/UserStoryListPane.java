@@ -18,40 +18,25 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 public class UserStoryListPane extends JFrame implements BaseComponent {
+    private List<UserStoryWidget> widgets = new ArrayList<>();
+    private JPanel subPanel = new JPanel();
+
     public UserStoryListPane() {
         this.init();
     }
 
-    private List<UserStoryWidget> widgets = new ArrayList<>();
-
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("User Story list");
-        setSize(400, 300);
+        setSize(500, 300);
 
         GridBagLayout myGridbagLayout = new GridBagLayout();
         JPanel myJpanel = new JPanel();
         myJpanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         myJpanel.setLayout(myGridbagLayout);
 
-        for (UserStory userStory : UserStoryStore.getInstance().getUserStories()) {
-            widgets.add(new UserStoryWidget(userStory));
-        }
-
-        JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridBagLayout());
-        int i = 0;
-        for (UserStoryWidget widget : widgets) {
-            subPanel.add(
-                    widget,
-                    new CustomConstraints(
-                            0,
-                            i++,
-                            GridBagConstraints.WEST,
-                            1.0,
-                            0.1,
-                            GridBagConstraints.HORIZONTAL));
-        }
+        refreshUserStories();
 
         myJpanel.add(
                 new JScrollPane(subPanel),
@@ -72,19 +57,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
                                             java.awt.event.WindowEvent windowEvent) {
                                         UserStory userStory = form.getUserStoryObject();
                                         UserStoryStore.getInstance().addUserStory(userStory);
-                                        widgets.add(new UserStoryWidget(userStory));
-                                        int idx = widgets.size() - 1;
-                                        subPanel.add(
-                                                widgets.get(idx),
-                                                new CustomConstraints(
-                                                        0,
-                                                        idx,
-                                                        GridBagConstraints.WEST,
-                                                        1.0,
-                                                        0.1,
-                                                        GridBagConstraints.HORIZONTAL));
-                                        revalidate();
-                                        repaint();
+                                        addUserStoryWidget(new UserStoryWidget(userStory, UserStoryListPane.this));
                                     }
                                 });
                     }
@@ -97,4 +70,36 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
         add(myJpanel);
     }
 
+    private void refreshUserStories() {
+        subPanel.removeAll();
+        widgets.clear();
+
+        int i = 0;
+        for (UserStory userStory : UserStoryStore.getInstance().getUserStories()) {
+            UserStoryWidget widget = new UserStoryWidget(userStory, this);
+            widgets.add(widget);
+            subPanel.add(
+                    widget,
+                    new CustomConstraints(
+                            0,
+                            i++,
+                            GridBagConstraints.WEST,
+                            1.0,
+                            0.1,
+                            GridBagConstraints.HORIZONTAL));
+        }
+
+        subPanel.revalidate();
+        subPanel.repaint();
+    }
+
+    public void removeUserStoryWidget(UserStoryWidget widget) {
+        widgets.remove(widget);
+        refreshUserStories();
+    }
+
+    public void addUserStoryWidget(UserStoryWidget widget) {
+        widgets.add(widget);
+        refreshUserStories();
+    }
 }

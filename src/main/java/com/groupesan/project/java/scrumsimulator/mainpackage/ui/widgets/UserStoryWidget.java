@@ -1,8 +1,12 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.StoryForm;
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.UserStoryListPane;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
+import lombok.Getter;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
@@ -22,9 +26,11 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
 
     // TODO: This is a non transient field and this class is supposed to be serializable. this needs
     // to be dealt with before this object can be serialized
+    @Getter
     private UserStory userStory;
 
     ActionListener actionListener = e -> {};
+    private UserStoryListPane parentPane;
 
     MouseAdapter openEditDialog =
             new MouseAdapter() {
@@ -44,7 +50,12 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
 
     public UserStoryWidget(UserStory userStory) {
         this.userStory = userStory;
+        this.init();
+    }
 
+    public UserStoryWidget(UserStory userStory, UserStoryListPane parentPane) {
+        this.userStory = userStory;
+        this.parentPane = parentPane;
         this.init();
     }
 
@@ -110,7 +121,9 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
                 JOptionPane.YES_NO_OPTION);
 
         if (confirmation == JOptionPane.YES_OPTION) {
+            UserStoryStore.getInstance().removeUserStory(userStory);
 
+            parentPane.removeUserStoryWidget(this);
         }
     }
 
