@@ -8,8 +8,8 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 public class UserStoryWidget extends JPanel implements BaseComponent {
 
@@ -18,6 +18,7 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
     JLabel bv;
     JLabel name;
     JLabel desc;
+    JButton deleteButton;
 
     // TODO: This is a non transient field and this class is supposed to be serializable. this needs
     // to be dealt with before this object can be serialized
@@ -60,6 +61,13 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
         name.addMouseListener(openEditDialog);
         desc = new JLabel(userStory.getDescription());
         desc.addMouseListener(openEditDialog);
+        deleteButton = new JButton("Delete");
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteUserStory();
+            }
+        });
 
         GridBagLayout myGridBagLayout = new GridBagLayout();
 
@@ -84,9 +92,26 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
         add(
                 desc,
                 new CustomConstraints(
-                        4, 0, GridBagConstraints.WEST, 0.7, 0.0, GridBagConstraints.HORIZONTAL));
+                        4, 0, GridBagConstraints.WEST, 0.4, 0.0, GridBagConstraints.HORIZONTAL));
+        add(
+                deleteButton,
+                new CustomConstraints(
+                        5, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
 
         revalidate();
-        repaint();        
+        repaint();
     }
+
+    private void deleteUserStory() {
+        int confirmation = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to delete this user story?",
+                "Delete Confirmation",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmation == JOptionPane.YES_OPTION) {
+
+        }
+    }
+
 }
