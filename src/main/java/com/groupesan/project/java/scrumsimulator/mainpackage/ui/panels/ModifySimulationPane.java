@@ -33,6 +33,7 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
     private JComboBox<String> simulationNameField;
     private JTextField numberOfSprintsField;
     private JTextArea simulationIdDisplay;
+    private JSONObject selectedSimulation;
 
     public ModifySimulationPane(SimulationManager manager) {
         this.simulationManager = manager;
@@ -61,6 +62,19 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                 JSONObject simulation = simulations.getJSONObject(i);
                 simulationNameField.addItem(simulation.getString("Name") + " - " + simulation.getString("ID"));
         }
+
+        simulationNameField.addActionListener(
+                new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e){
+                                String selectedSimulationName = (String) simulationNameField.getSelectedItem().toString();
+                                selectedSimulation = SimulationHelper.getSprintParamsFromSimulation(simulations, selectedSimulationName);
+                                if(selectedSimulation != null){
+                                        numberOfSprintsField.setText(selectedSimulation.getString("NumberOfSprints"));
+                                }
+                        }
+                }
+        );
 
         JLabel nameLabel = new JLabel("Simulation Name:");
         JLabel sprintsLabel = new JLabel("Number of Sprints:");

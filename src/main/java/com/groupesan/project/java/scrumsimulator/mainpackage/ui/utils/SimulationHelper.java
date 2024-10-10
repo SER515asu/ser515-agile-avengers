@@ -17,4 +17,15 @@ public class SimulationHelper {
             return null;
         }
     }
+
+    public static JSONObject getSprintParamsFromSimulation(JSONArray simulations, String selectedSimulation){
+        String simulationId = selectedSimulation.split(" - ", 2)[1];
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                return simulation;
+            }
+        }
+        return null;
+    }
 }
