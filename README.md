@@ -1,3 +1,6 @@
+# Scrum Simulator
+![image](https://github.com/user-attachments/assets/9ebc3991-67f2-4fa6-afae-738e492f8464)
+
 ## How to Build and Run
 
 This project uses gradle as its build tool. Specifically, we use Gradle 8.10.1 and Java SDK 21
