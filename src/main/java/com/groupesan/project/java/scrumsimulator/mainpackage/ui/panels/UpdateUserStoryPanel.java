@@ -1,9 +1,9 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
+import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryStateManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -11,16 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
-import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
-import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryStateManager;
-
-
 public class UpdateUserStoryPanel extends JFrame {
-    private Player player;
 
-    public UpdateUserStoryPanel(Player player) {
-        this.player = player;
+    public UpdateUserStoryPanel() {
         init();
     }
 
@@ -61,9 +54,6 @@ public class UpdateUserStoryPanel extends JFrame {
         updateButton.setBounds(150, 80, 150, 25);
         panel.add(updateButton);
 
-        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName()) || player.getRole().getName().equals(Roles.SCRUM_MASTER.getDisplayName())) {
-            updateButton.setEnabled(false); 
-        }
         updateButton.addActionListener(
                 new ActionListener() {
                     @Override

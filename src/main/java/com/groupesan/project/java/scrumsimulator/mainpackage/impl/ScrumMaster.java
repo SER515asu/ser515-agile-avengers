@@ -1,6 +1,5 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
 
-import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumRole;
 
 public class ScrumMaster extends ScrumRole {
@@ -12,7 +11,7 @@ public class ScrumMaster extends ScrumRole {
      * @param sprint
      */
     public ScrumMaster() {
-        super(Roles.SCRUM_MASTER.getDisplayName());
+        super("Scrum Master");
     }
 
     @Override
