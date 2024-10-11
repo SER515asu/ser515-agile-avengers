@@ -20,7 +20,7 @@ public class SprintListTest {
         SprintStore.getInstance().addSprint(mySprint);
 
         // Create a user story for testing
-        myUserStory = UserStoryFactory.getInstance().createNewUserStory("Test User Story", "Testing description", 5.0);
+        myUserStory = UserStoryFactory.getInstance().createNewUserStory("Test User Story", "Testing description", 5.0, 4);
         myUserStory.doRegister();  // Register to assign an ID
     }
 
