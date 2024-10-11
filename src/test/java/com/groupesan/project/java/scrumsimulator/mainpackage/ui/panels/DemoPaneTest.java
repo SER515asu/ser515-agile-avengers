@@ -17,4 +17,11 @@ public class DemoPaneTest {
             assertTrue(false, "DemoPane class does not exist");
         }
     }
+
+    public void testProductOwnerDisablesSprintButton() {
+        // Set the player's role to Product Owner
+        demoPane.switchRole("Product Owner");
+
+        // Verify that the Sprints button is disabled
+        window.button("Sprints").requireDisabled();
 }

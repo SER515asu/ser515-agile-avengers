@@ -1,29 +1,35 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
-import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
-import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.UserStoryWidget;
-import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.UserStoryWidget;
+import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
+
+
 public class UserStoryListPane extends JFrame implements BaseComponent {
+    private Player player;
+    
+    public UserStoryListPane(Player player) {
+        this.player = player;
+        this.init();
     private List<UserStoryWidget> widgets = new ArrayList<>();
     private JPanel subPanel = new JPanel();
-
-    public UserStoryListPane() {
-        this.init();
-    }
 
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -44,13 +50,17 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
                         0, 0, GridBagConstraints.WEST, 1.0, 0.8, GridBagConstraints.HORIZONTAL));
 
         JButton newSprintButton = new JButton("New User Story");
+        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
+            newSprintButton.setEnabled(false); 
+        }
+
         newSprintButton.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        NewUserStoryForm form = new NewUserStoryForm();
                         StoryForm form = new StoryForm();
                         form.setVisible(true);
-
                         form.addWindowListener(
                                 new java.awt.event.WindowAdapter() {
                                     public void windowClosed(
