@@ -39,7 +39,7 @@ public class DemoPane extends JFrame implements BaseComponent {
      */
     public void init() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Demo");
+        setTitle("Scrum Simulator");
         setSize(1200, 300);
 
         GridBagLayout myGridbagLayout = new GridBagLayout();
@@ -73,7 +73,7 @@ public class DemoPane extends JFrame implements BaseComponent {
                 new CustomConstraints(
                         0, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
-        JButton userStoriesButton = new JButton("User Stories");
+        JButton userStoriesButton = new JButton("Product Backlog");
         userStoriesButton.addActionListener(
                 new ActionListener() {
                     @Override
@@ -233,6 +233,7 @@ public class DemoPane extends JFrame implements BaseComponent {
                         3, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         JButton SprintUIButton = new JButton("US Selection UI");
+        SprintUIButton.setEnabled(false);
         if (player.getRole().getName().equals(Roles.SCRUM_MASTER.getDisplayName())) {
             SprintUIButton.setEnabled(false); 
         }
