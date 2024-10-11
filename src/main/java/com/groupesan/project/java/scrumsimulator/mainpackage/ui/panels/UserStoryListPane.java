@@ -28,46 +28,21 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
     public UserStoryListPane(Player player) {
         this.player = player;
         this.init();
-    }
-
     private List<UserStoryWidget> widgets = new ArrayList<>();
+    private JPanel subPanel = new JPanel();
 
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("User Story list");
-        setSize(400, 300);
+        setSize(500, 300);
 
         GridBagLayout myGridbagLayout = new GridBagLayout();
         JPanel myJpanel = new JPanel();
         myJpanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         myJpanel.setLayout(myGridbagLayout);
 
-        // demo/testing widgets
-        //        UserStory aUserStory = UserStoryFactory.getInstance().createNewUserStory("foo",
-        // "bar", 2);
-        //        UserStory aUserStory2 =
-        //                UserStoryFactory.getInstance().createNewUserStory("foo2", "bar2", 4);
-        //        widgets.add(new UserStoryWidget(aUserStory));
-        //        widgets.add(new UserStoryWidget(aUserStory2));
-
-        for (UserStory userStory : UserStoryStore.getInstance().getUserStories()) {
-            widgets.add(new UserStoryWidget(userStory));
-        }
-
-        JPanel subPanel = new JPanel();
         subPanel.setLayout(new GridBagLayout());
-        int i = 0;
-        for (UserStoryWidget widget : widgets) {
-            subPanel.add(
-                    widget,
-                    new CustomConstraints(
-                            0,
-                            i++,
-                            GridBagConstraints.WEST,
-                            1.0,
-                            0.1,
-                            GridBagConstraints.HORIZONTAL));
-        }
+        refreshUserStories();
 
         myJpanel.add(
                 new JScrollPane(subPanel),
@@ -84,26 +59,15 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         NewUserStoryForm form = new NewUserStoryForm();
-                        
+                        StoryForm form = new StoryForm();
                         form.setVisible(true);
-
                         form.addWindowListener(
                                 new java.awt.event.WindowAdapter() {
                                     public void windowClosed(
                                             java.awt.event.WindowEvent windowEvent) {
                                         UserStory userStory = form.getUserStoryObject();
                                         UserStoryStore.getInstance().addUserStory(userStory);
-                                        widgets.add(new UserStoryWidget(userStory));
-                                        int idx = widgets.size() - 1;
-                                        subPanel.add(
-                                                widgets.get(idx),
-                                                new CustomConstraints(
-                                                        0,
-                                                        idx,
-                                                        GridBagConstraints.WEST,
-                                                        1.0,
-                                                        0.1,
-                                                        GridBagConstraints.HORIZONTAL));
+                                        addUserStoryWidget(new UserStoryWidget(userStory, UserStoryListPane.this));
                                     }
                                 });
                     }
@@ -114,5 +78,38 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
                         0, 1, GridBagConstraints.WEST, 1.0, 0.2, GridBagConstraints.HORIZONTAL));
 
         add(myJpanel);
+    }
+
+    private void refreshUserStories() {
+        subPanel.removeAll();
+        widgets.clear();
+
+        int i = 0;
+        for (UserStory userStory : UserStoryStore.getInstance().getUserStories()) {
+            UserStoryWidget widget = new UserStoryWidget(userStory, this);
+            widgets.add(widget);
+            subPanel.add(
+                    widget,
+                    new CustomConstraints(
+                            0,
+                            i++,
+                            GridBagConstraints.WEST,
+                            1.0,
+                            0.1,
+                            GridBagConstraints.HORIZONTAL));
+        }
+
+        subPanel.revalidate();
+        subPanel.repaint();
+    }
+
+    public void removeUserStoryWidget(UserStoryWidget widget) {
+        widgets.remove(widget);
+        refreshUserStories();
+    }
+
+    public void addUserStoryWidget(UserStoryWidget widget) {
+        widgets.add(widget);
+        refreshUserStories();
     }
 }

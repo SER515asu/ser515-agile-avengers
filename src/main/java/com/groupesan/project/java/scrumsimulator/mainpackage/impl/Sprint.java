@@ -27,6 +27,10 @@ public class Sprint {
         userStories.add(us);
     }
 
+    public void removeUserStory(UserStory us) {
+        userStories.remove(us);
+    }
+
     public List<UserStory> getUserStories() {
         return new ArrayList<>(userStories);
     }

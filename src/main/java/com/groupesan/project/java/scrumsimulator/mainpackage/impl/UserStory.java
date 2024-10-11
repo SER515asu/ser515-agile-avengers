@@ -7,7 +7,11 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryStat
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryUnselectedState;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class UserStory extends ScrumObject {
     private UserStoryIdentifier id;
 
@@ -17,9 +21,13 @@ public class UserStory extends ScrumObject {
 
     private double pointValue;
 
-    private UserStoryState state;
+    private UserStoryState userStoryState;
 
     private Player owner;
+
+    private double businessValue;
+
+    private String sprint;
 
     // private ArrayList<Task> tasks;  TODO: implement tasks
 
@@ -33,7 +41,7 @@ public class UserStory extends ScrumObject {
         this.name = name;
         this.description = "";
         this.pointValue = pointValue;
-        this.state = new UserStoryUnselectedState(this);
+        this.userStoryState = new UserStoryUnselectedState(this);
     }
 
     /**
@@ -44,11 +52,12 @@ public class UserStory extends ScrumObject {
      *     requirements.
      * @param pointValue the point value for the story as a way of estimating required effort.
      */
-    public UserStory(String name, String description, double pointValue) {
+    public UserStory(String name, String description, double pointValue, double businessValue) {
         this.name = name;
         this.description = description;
         this.pointValue = pointValue;
-        this.state = new UserStoryUnselectedState(this);
+        this.businessValue = businessValue;
+        this.userStoryState = new UserStoryUnselectedState(this);
     }
 
     protected void register() {
@@ -67,60 +76,6 @@ public class UserStory extends ScrumObject {
                     "This UserStory has not been registered and does not have an ID yet!");
         }
         return id;
-    }
-
-    /**
-     * Get the name for this UserStory
-     *
-     * @return the name of this UserStory as a string
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Sets the name of the User Story to the specified string
-     *
-     * @param name the string to set the name to
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Get the description text of this UserStory
-     *
-     * @return the description of this UserStory as a string.
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Sets the Description of the User Story to the specified string
-     *
-     * @param description the string to set the description to
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * Get the point value of this UserStory
-     *
-     * @return the point value of this UserStory as a double
-     */
-    public double getPointValue() {
-        return pointValue;
-    }
-
-    /**
-     * Set the point value of the User Story to the specified value
-     *
-     * @param pointValue the point value as a double. Usually an element of the fibonacci sequence.
-     */
-    public void setPointValue(double pointValue) {
-        this.pointValue = pointValue;
     }
 
     /**
@@ -144,43 +99,16 @@ public class UserStory extends ScrumObject {
         }
         return "(unregistered) - " + getName();
     }
+    //getter and setter
+    public String getSprint() {
+        return sprint;
+    }
+
+    public void setSprint(String sprint) {
+        this.sprint = sprint;
+    }
 
     // State Management, need Player class to implement final selection logic
-    /**
-     * Change the state of this UserStory. Usually called when a Player picks up the task or
-     * finishes it.
-     *
-     * @param state the new UserStoryState for this UserStory
-     */
-    public void changeState(UserStoryState state) {
-        this.state = state;
-    }
 
-    /**
-     * Get the UserStoryState of this UserStory. Unselected, completed, etc.
-     *
-     * @return a UserStoryState object containing the state for this UserStory
-     */
-    public UserStoryState getUserStoryState() {
-        return state;
-    }
 
-    /**
-     * Sets the owner of this UserStory to the specified player. This should be called whenever a
-     * Player picks up this task and assigns themselves to it.
-     *
-     * @param player the Player object who is assigned to this UserStory
-     */
-    public void setOwner(Player player) {
-        this.owner = player;
-    }
-
-    /**
-     * Get the owner of this UserStory
-     *
-     * @return a Player object representing the owner of this UserStory
-     */
-    public Player getOwner() {
-        return this.owner;
-    }
 }

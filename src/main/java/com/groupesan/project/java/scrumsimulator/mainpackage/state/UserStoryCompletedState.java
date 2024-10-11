@@ -20,7 +20,7 @@ public class UserStoryCompletedState extends UserStoryState {
 
     @Override
     public String onDelete() {
-        userStory.changeState(new UserStoryDeletedState(userStory));
+        userStory.setUserStoryState(new UserStoryDeletedState(userStory));
         return "Deleted";
     }
 }
