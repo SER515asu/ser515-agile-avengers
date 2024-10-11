@@ -30,7 +30,7 @@ public class GeneralPage extends Wizard.WizardPage {
     }
 
     @Override
-    protected JPanel render() {
+    public JPanel render() {
         JPanel container = new JPanel(new BorderLayout());
         ResuableHeader resuableHeader =
                 new ResuableHeader("General", "General simulation settings");
