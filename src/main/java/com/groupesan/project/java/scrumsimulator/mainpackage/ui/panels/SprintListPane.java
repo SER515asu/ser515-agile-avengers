@@ -21,6 +21,7 @@ public class SprintListPane extends JFrame implements BaseComponent {
     public SprintListPane(Player player) {
         this.player = player;
         this.init();
+    }
     private List<Sprint> sprints = new ArrayList<>();
     private JPanel subPanel;
 
@@ -166,7 +167,8 @@ public class SprintListPane extends JFrame implements BaseComponent {
         myJpanel.add(
                 newSprintButton,
         // Show details of each user story in the sprint
-        int row = 1;
+        int row;
+        row = 1;
         for (UserStory userStory : sprint.getUserStories()) {
             JLabel userStoryLabel = new JLabel("ID: " + userStory.getId() +
                     " | Name: " + userStory.getName() +
