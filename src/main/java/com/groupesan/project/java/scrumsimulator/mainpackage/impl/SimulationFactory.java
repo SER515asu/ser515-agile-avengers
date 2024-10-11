@@ -17,7 +17,7 @@ public class SimulationFactory {
     private SimulationFactory() {}
 
     public Simulation createNewSimulation(String name, Teacher teacher) {
-        Simulation newSimulation = new Simulation(name, teacher, 0);
+        Simulation newSimulation = new Simulation(name, teacher, 0, 0);
         return newSimulation;
     }
 }
