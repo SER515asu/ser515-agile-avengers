@@ -27,6 +27,8 @@ public class UserStory extends ScrumObject {
 
     private double businessValue;
 
+    private String sprint;
+
     // private ArrayList<Task> tasks;  TODO: implement tasks
 
     /**
@@ -50,10 +52,11 @@ public class UserStory extends ScrumObject {
      *     requirements.
      * @param pointValue the point value for the story as a way of estimating required effort.
      */
-    public UserStory(String name, String description, double pointValue) {
+    public UserStory(String name, String description, double pointValue, double businessValue) {
         this.name = name;
         this.description = description;
         this.pointValue = pointValue;
+        this.businessValue = businessValue;
         this.userStoryState = new UserStoryUnselectedState(this);
     }
 
@@ -95,6 +98,14 @@ public class UserStory extends ScrumObject {
             return this.getId().toString() + " - " + name;
         }
         return "(unregistered) - " + getName();
+    }
+    //getter and setter
+    public String getSprint() {
+        return sprint;
+    }
+
+    public void setSprint(String sprint) {
+        this.sprint = sprint;
     }
 
     // State Management, need Player class to implement final selection logic

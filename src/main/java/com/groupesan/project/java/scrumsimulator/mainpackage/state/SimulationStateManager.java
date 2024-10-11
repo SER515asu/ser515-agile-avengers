@@ -83,6 +83,24 @@ public class SimulationStateManager {
         updateSimulationData(simulationData);
     }
 
+    public static void modifySimulationDetails(JSONObject updatedSimulationDetails){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(updatedSimulationDetails.getString("ID").equals(simulation.getString("ID"))){
+                simulations.put(i, updatedSimulationDetails);
+            }
+        }
+
+        updateSimulationData(simulationData);
+    }
+
     private static JSONObject getSimulationData() {
         try (FileInputStream fis = new FileInputStream(JSON_FILE_PATH)) {
             JSONTokener tokener = new JSONTokener(fis);

@@ -2,60 +2,67 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Sprint;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
+import javax.swing.*;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Color;
 
-public class SprintWidget extends JPanel implements BaseComponent {
+public class SprintWidget extends JPanel {
 
-    JLabel id;
-    JLabel name;
-    JLabel desc;
-    JLabel len;
-    JLabel remaining;
-
-    JLabel numUserStories;
+    private Sprint sprint;
+    private boolean isSelected = false;
+    private JLabel nameLabel;
+    private JLabel descriptionLabel;
+    private JLabel lengthLabel;
 
     public SprintWidget(Sprint sprint) {
-        id = new JLabel(Integer.toString(sprint.getId()));
-        name = new JLabel(sprint.getName());
-        desc = new JLabel(sprint.getDescription());
-        len = new JLabel(Integer.toString(sprint.getLength()));
-        remaining = new JLabel(Integer.toString(sprint.getDaysRemaining()));
-        numUserStories = new JLabel(Integer.toString(sprint.getUserStories().size()));
+        this.sprint = sprint;
         this.init();
     }
 
-    public void init() {
+    private void init() {
+        setLayout(new GridBagLayout());
+        nameLabel = new JLabel(sprint.getName());
+        descriptionLabel = new JLabel(sprint.getDescription());
+        lengthLabel = new JLabel("Length: " + sprint.getLength());
 
-        GridBagLayout myGridBagLayout = new GridBagLayout();
+        add(
+                nameLabel,
+                new CustomConstraints(
+                        0, 0, GridBagConstraints.WEST, 1.0, 0.0, GridBagConstraints.HORIZONTAL));
+        add(
+                descriptionLabel,
+                new CustomConstraints(
+                        1, 0, GridBagConstraints.WEST, 1.0, 0.0, GridBagConstraints.HORIZONTAL));
+        add(
+                lengthLabel,
+                new CustomConstraints(
+                        2, 0, GridBagConstraints.WEST, 0.5, 0.0, GridBagConstraints.HORIZONTAL));
 
-        setLayout(myGridBagLayout);
+        setBackground(isSelected ? Color.LIGHT_GRAY : Color.WHITE);
+        setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-        add(
-                id,
-                new CustomConstraints(
-                        0, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                name,
-                new CustomConstraints(
-                        1, 0, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                desc,
-                new CustomConstraints(
-                        2, 0, GridBagConstraints.WEST, 0.7, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                len,
-                new CustomConstraints(
-                        3, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                remaining,
-                new CustomConstraints(
-                        4, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                numUserStories,
-                new CustomConstraints(
-                        5, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                toggleSelection();
+            }
+        });
+    }
+
+    private void toggleSelection() {
+        isSelected = !isSelected;
+        setBackground(isSelected ? Color.LIGHT_GRAY : Color.WHITE);
+        repaint();
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public Sprint getSprint() {
+        return sprint;
     }
 }
