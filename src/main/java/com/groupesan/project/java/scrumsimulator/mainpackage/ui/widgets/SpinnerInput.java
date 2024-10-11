@@ -14,7 +14,6 @@ public class SpinnerInput extends ScrumLabeledComponent<JSpinner, DataModel<Obje
         component.addChangeListener(
                 event -> {
                     model.setData(component.getValue());
-                    System.out.println(model.getData());
                 });
     }
 }

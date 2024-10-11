@@ -1,5 +1,12 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumRole;
+import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationManager;
+import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationStateManager;
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.dialogs.simulation.SimulationWizard;
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
+import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -141,6 +148,26 @@ public class DemoPane extends JFrame implements BaseComponent {
                 modifySimulationButton,
                 new CustomConstraints(
                         5, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+
+        // Create Simulation button
+        JButton newSimulationButton = new JButton("New Simulation");
+        newSimulationButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        SimulationWizard wizard = new SimulationWizard(result->{
+                            System.out.println(result.toString());
+                        });
+                        wizard.setVisible(true);
+                    }
+                });
+
+        //Add the button to the panel
+        myJpanel.add(
+                newSimulationButton,
+                new CustomConstraints(
+                        2, 1, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+
 
         // *** Role Selection now through SimulationUI ***
         // JButton roleSelectionButton = new JButton("Role Selection");
