@@ -54,9 +54,10 @@ public class SimulationStateManager {
      * @param simId The ID of the simulation.
      * @param simName The name of the simulation.
      * @param numberOfSprints The number of sprints in the simulation.
+     * @param lengthOfSprint  The length of each sprint
      */
     public static void saveNewSimulationDetails(
-            String simId, String simName, String numberOfSprints) {
+            String simId, String simName, String numberOfSprints, String lengthOfSprint) {
         JSONObject simulationData = getSimulationData();
         if (simulationData == null) {
             simulationData = new JSONObject();
@@ -67,6 +68,7 @@ public class SimulationStateManager {
         newSimulation.put("Name", simName);
         newSimulation.put("Status", "New");
         newSimulation.put("NumberOfSprints", numberOfSprints);
+        newSimulation.put("LengthOfSprint", lengthOfSprint);
         newSimulation.put("Sprints", new JSONArray());
         newSimulation.put("Events", new JSONArray());
         newSimulation.put("Users", new JSONArray());
@@ -77,6 +79,24 @@ public class SimulationStateManager {
             simulationData.put("Simulations", simulations);
         }
         simulations.put(newSimulation);
+
+        updateSimulationData(simulationData);
+    }
+
+    public static void modifySimulationDetails(JSONObject updatedSimulationDetails){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(updatedSimulationDetails.getString("ID").equals(simulation.getString("ID"))){
+                simulations.put(i, updatedSimulationDetails);
+            }
+        }
 
         updateSimulationData(simulationData);
     }

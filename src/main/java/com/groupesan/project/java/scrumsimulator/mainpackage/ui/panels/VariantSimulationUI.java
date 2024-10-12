@@ -1,9 +1,16 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
-import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
-import javax.swing.*;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 
 public class VariantSimulationUI extends JFrame implements BaseComponent {
     private JPanel mainPanel;
@@ -27,14 +34,12 @@ public class VariantSimulationUI extends JFrame implements BaseComponent {
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(createRoleButton("Product Owner"));
         buttonPanel.add(createRoleButton("Scrum Master"));
-        buttonPanel.add(createRoleButton("Chicken"));
-        buttonPanel.add(createRoleButton("Pig"));
+        buttonPanel.add(createRoleButton("Developer"));
 
         // Adding role-specific panels
         mainPanel.add(createRolePanel("Product Owner"), "Product Owner");
         mainPanel.add(createRolePanel("Scrum Master"), "Scrum Master");
-        mainPanel.add(createRolePanel("Chicken"), "Chicken");
-        mainPanel.add(createRolePanel("Pig"), "Pig");
+        mainPanel.add(createRolePanel("Developer"), "Developer");
 
         // Default view
         mainPanel.add(new JLabel("Select a role to view its UI"), "Default");
