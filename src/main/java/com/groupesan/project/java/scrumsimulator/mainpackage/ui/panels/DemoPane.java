@@ -26,7 +26,7 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComp
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 
 public class DemoPane extends JFrame implements BaseComponent {
-    private Player player = new Player("bob", new ScrumRole("Developer"));
+    private Player player = new Player("bob", new ScrumRole("Scrum Master"));
 
     public DemoPane() {
         this.init();
@@ -128,7 +128,7 @@ public class DemoPane extends JFrame implements BaseComponent {
 
         // Modify Simulation button
         JButton modifySimulationButton = new JButton("Modify Simulation");
-        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName()) || player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
+        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName()) || player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
             modifySimulationButton.setEnabled(false); 
         }
 
