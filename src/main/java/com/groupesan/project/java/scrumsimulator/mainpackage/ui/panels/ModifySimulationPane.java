@@ -156,12 +156,12 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
 
         panel.add(
                 cancelButton,
-                new CustomConstraints(0, 2, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
+                new CustomConstraints(0, 3, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
 
         panel.add(
                 submitButton,
                 new CustomConstraints(
-                        1, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+                        1, 3, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         panel.add(
                 simulationIdDisplay,

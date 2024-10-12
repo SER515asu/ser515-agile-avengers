@@ -59,10 +59,10 @@ public class SprintListPane extends JFrame implements BaseComponent {
 
         JButton newSprintButton = new JButton("New Sprint");
         // Will enable functionality next sprint
-//        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName()) || player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName()))
-//        {
-//            newSprintButton.setEnabled(false);
-//        }
+        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName()) || player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName()))
+        {
+            newSprintButton.setEnabled(false);
+        }
         newSprintButton.addActionListener(e -> {
             NewSprintForm form = new NewSprintForm();
             form.setVisible(true);

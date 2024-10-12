@@ -2,6 +2,8 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumRole;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.SprintListPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,7 +58,7 @@ public class SprintListTest {
     @Test
     public void testSprintListPaneUI() {
         SwingUtilities.invokeLater(() -> {
-            SprintListPane sprintListPane = new SprintListPane();
+            SprintListPane sprintListPane = new SprintListPane(new Player("test", new ScrumRole("Developer")));
             sprintListPane.setVisible(true);
 
             // Simulate closing the window after adding a sprint
@@ -71,7 +73,7 @@ public class SprintListTest {
     @Test
     public void testAddUserStoryToSprintUI() {
         SwingUtilities.invokeLater(() -> {
-            SprintListPane sprintListPane = new SprintListPane();
+            SprintListPane sprintListPane = new SprintListPane(new Player("test", new ScrumRole("Developer")));
             sprintListPane.setVisible(true);
 
             // Simulate adding a user story to the sprint
@@ -89,7 +91,7 @@ public class SprintListTest {
     @Test
     public void testRemoveUserStoryFromSprintUI() {
         SwingUtilities.invokeLater(() -> {
-            SprintListPane sprintListPane = new SprintListPane();
+            SprintListPane sprintListPane = new SprintListPane(new Player("test", new ScrumRole("Developer")));
             sprintListPane.setVisible(true);
 
             // Add and then remove a user story from the sprint
