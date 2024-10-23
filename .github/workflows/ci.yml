@@ -34,3 +34,17 @@ jobs:
 
       - name: Run tests
         run: ./gradlew test
+
+      - name: Send Slack notification on success
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{
+            "text": ":white_check_mark: Build succeeded for `${{ github.repository }}`\n*Branch:* `${{ github.ref }}`\n*Commit:* `${{ github.sha }}`\n*Author:* `${{ github.actor }}`"
+          }' https://hooks.slack.com/services/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
+
+      - name: Send Slack notification on failure
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{
+            "text": ":x: Build failed for `${{ github.repository }}`\n*Branch:* `${{ github.ref }}`\n*Commit:* `${{ github.sha }}`\n*Author:* `${{ github.actor }}`"
+          }' https://hooks.slack.com/services/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
