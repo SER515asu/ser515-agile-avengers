@@ -46,7 +46,7 @@ public class UserTest {
     public void testUserUnregistered2() {
         String string = myUser.toString();
 
-        assertEquals("bug_bob " + dev.toString() + " (unregistered)", string);
+        assertEquals("bob " + dev.toString() + " (unregistered)", string);
     }
 
     @Test
