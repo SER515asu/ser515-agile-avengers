@@ -28,17 +28,3 @@ jobs:
           curl -X POST -H 'Content-type: application/json' --data '{
             "text": ":rocket: Pull Request `${{ github.event.pull_request.title }}` by `${{ github.actor }}`\n*Action:* `${{ github.event.action }}`\n*PR URL:* `${{ github.event.pull_request.html_url }}`"
           }' https://hooks.slack.com/services/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
-
-      - name: Send Slack notification on job success
-        if: success()
-        run: |
-          curl -X POST -H 'Content-type: application/json' --data '{
-            "text": ":white_check_mark: Job succeeded for `${{ github.repository }}`\n*Branch:* `${{ github.ref }}`\n*Commit:* `${{ github.sha }}`\n*Author:* `${{ github.actor }}`"
-          }' https://hooks.slack.com/services/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
-
-      - name: Send Slack notification on job failure
-        if: failure()
-        run: |
-          curl -X POST -H 'Content-type: application/json' --data '{
-            "text": ":x: Job failed for `${{ github.repository }}`\n*Branch:* `${{ github.ref }}`\n*Commit:* `${{ github.sha }}`\n*Author:* `${{ github.actor }}`"
-          }' https://hooks.slack.com/services/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
