@@ -13,8 +13,9 @@ import javax.swing.JPanel;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryStateManager;
-
 
 public class UpdateUserStoryPanel extends JFrame {
     private Player player;
@@ -43,8 +44,15 @@ public class UpdateUserStoryPanel extends JFrame {
         userStoryLabel.setBounds(10, 20, 120, 25);
         panel.add(userStoryLabel);
 
-        List<String> userStories = UserStoryStateManager.getUserStories();
-        JComboBox<String> userStoryComboBox = new JComboBox<>(userStories.toArray(new String[0]));
+        // Fetch user stories from UserStoryStore instead of UserStoryStateManager
+        List<UserStory> userStories = UserStoryStore.getInstance().getUserStories();
+        JComboBox<String> userStoryComboBox = new JComboBox<>();
+
+        // Populate the combo box with user stories' names
+        for (UserStory userStory : userStories) {
+            userStoryComboBox.addItem(userStory.getName()); // Now showing User Story Name instead of Description
+        }
+
         userStoryComboBox.setBounds(150, 20, 200, 25);
         panel.add(userStoryComboBox);
 
@@ -61,9 +69,10 @@ public class UpdateUserStoryPanel extends JFrame {
         updateButton.setBounds(150, 80, 150, 25);
         panel.add(updateButton);
 
-        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName()) || player.getRole().getName().equals(Roles.SCRUM_MASTER.getDisplayName())) {
-            updateButton.setEnabled(false); 
-        }
+        // if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName()) || player.getRole().getName().equals(Roles.SCRUM_MASTER.getDisplayName())) {
+        //     updateButton.setEnabled(false); 
+        // }
+        
         updateButton.addActionListener(
                 new ActionListener() {
                     @Override
@@ -72,6 +81,7 @@ public class UpdateUserStoryPanel extends JFrame {
                         String selectedStatus = (String) statusComboBox.getSelectedItem();
 
                         if (selectedUserStory != null && selectedStatus != null) {
+                            // Call UserStoryStateManager to update the user story status
                             UserStoryStateManager.updateUserStoryStatus(
                                     selectedUserStory, selectedStatus);
                             JOptionPane.showMessageDialog(null, "Status updated successfully!");
