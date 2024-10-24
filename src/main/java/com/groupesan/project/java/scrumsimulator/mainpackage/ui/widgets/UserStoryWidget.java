@@ -24,8 +24,9 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
     JLabel desc;
     JButton deleteButton;
 
-    // TODO: This is a non transient field and this class is supposed to be serializable. this needs
-    // to be dealt with before this object can be serialized
+    // Flag to ensure the headers are only added once
+    private static boolean headersAdded = false;
+
     @Getter
     private UserStory userStory;
 
@@ -62,6 +63,17 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
     public void init() {
         removeAll();
 
+        // Reset headers if no widgets exist in the parentPane
+        if (parentPane.getWidgets().isEmpty()) {
+            resetHeadersAddedFlag();
+        }
+
+        // Add headers only once (when the first user story widget is created)
+        if (!headersAdded) {
+            addHeaders();
+            headersAdded = true;
+        }
+
         id = new JLabel(userStory.getId().toString());
         id.addMouseListener(openEditDialog);
         points = new JLabel(Double.toString(userStory.getPointValue()));
@@ -81,36 +93,52 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
         });
 
         GridBagLayout myGridBagLayout = new GridBagLayout();
-
         setLayout(myGridBagLayout);
 
+        // Add user story details below the header
         add(
                 id,
                 new CustomConstraints(
-                        0, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+                        0, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(
                 points,
                 new CustomConstraints(
-                        1, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+                        1, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(
                 bv,
                 new CustomConstraints(
-                        2, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+                        2, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(
                 name,
                 new CustomConstraints(
-                        3, 0, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+                        3, 1, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
         add(
                 desc,
                 new CustomConstraints(
-                        4, 0, GridBagConstraints.WEST, 0.4, 0.0, GridBagConstraints.HORIZONTAL));
+                        4, 1, GridBagConstraints.WEST, 0.4, 0.0, GridBagConstraints.HORIZONTAL));
         add(
                 deleteButton,
                 new CustomConstraints(
-                        5, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+                        5, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
 
         revalidate();
         repaint();
+    }
+
+    private void addHeaders() {
+        JLabel idHeader = new JLabel("ID");
+        JLabel pointsHeader = new JLabel("Points");
+        JLabel bvHeader = new JLabel("Business Value");
+        JLabel nameHeader = new JLabel("Name");
+        JLabel descHeader = new JLabel("Description");
+        JLabel actionHeader = new JLabel("Action");
+
+        add(idHeader, new CustomConstraints(0, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(pointsHeader, new CustomConstraints(1, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(bvHeader, new CustomConstraints(2, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(nameHeader, new CustomConstraints(3, 0, GridBagConstraints.CENTER, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+        add(descHeader, new CustomConstraints(4, 0, GridBagConstraints.CENTER, 0.4, 0.0, GridBagConstraints.HORIZONTAL));
+        add(actionHeader, new CustomConstraints(5, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
     }
 
     private void deleteUserStory() {
@@ -122,9 +150,12 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
 
         if (confirmation == JOptionPane.YES_OPTION) {
             UserStoryStore.getInstance().removeUserStory(userStory);
-
             parentPane.removeUserStoryWidget(this);
         }
     }
 
+    // Reset the static flag if needed (e.g., when refreshing the UI)
+    public static void resetHeadersAddedFlag() {
+        headersAdded = false;
+    }
 }
