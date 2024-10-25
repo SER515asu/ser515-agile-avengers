@@ -106,9 +106,9 @@ public class NewSprintForm extends JFrame implements BaseComponent {
                 });
 
         listModel = new DefaultListModel<>();
-        for (UserStory userStory : UserStoryStore.getInstance(simulationID).getUserStories()) {
-            listModel.addElement(userStory.toString());
-        }
+//        for (UserStory userStory : UserStoryStore.getInstance(simulationID).getUserStories()) {
+//            listModel.addElement(userStory.toString());
+//        }
 
         usList = new JList<>(listModel);
         usList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -148,7 +148,7 @@ public class NewSprintForm extends JFrame implements BaseComponent {
 
         for (int idx : selectedIdx) {
             String stringIdentifier = listModel.getElementAt(idx);
-            for (UserStory userStory : UserStoryStore.getInstance(simulationID).getUserStories()) {
+            for (UserStory userStory : UserStoryStore.getInstance().getUserStories()) {
                 if (stringIdentifier.equals(userStory.toString())) {
                     mySprint.addUserStory(userStory);
                     break;

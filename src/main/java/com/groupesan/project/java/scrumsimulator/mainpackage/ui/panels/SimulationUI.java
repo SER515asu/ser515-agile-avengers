@@ -128,7 +128,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
 
         // Add buttons to the button panel
         addButton(buttonPanel, "Sprints", buttonSize, e -> new SprintListPane(player,selectedSimulationId).setVisible(true));
-        addButton(buttonPanel, "Product Backlog", buttonSize, e -> new UserStoryListPane(player,selectedSimulationId).setVisible(true));
+        addButton(buttonPanel, "Product Backlog", buttonSize, e -> new UserStoryListPane(player).setVisible(true));
         addButton(buttonPanel, "Update User Story Status", buttonSize, e -> new UpdateUserStoryPanel(player).setVisible(true));
         addButton(buttonPanel, "Switch Role", buttonSize, e -> selectUserRole());
 
