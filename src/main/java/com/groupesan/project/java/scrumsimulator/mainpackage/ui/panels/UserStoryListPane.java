@@ -111,4 +111,9 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
         widgets.add(widget);
         refreshUserStories();
     }
+
+    // Add this method to access the list of widgets
+    public List<UserStoryWidget> getWidgets() {
+        return widgets;
+    }
 }
