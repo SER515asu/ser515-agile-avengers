@@ -139,7 +139,7 @@ public class SimulationStateManager {
 
                 for (int j = 0; j < sprints.length(); j++) {
                     JSONObject sprintJson = sprints.getJSONObject(j);
-                    int id = sprintJson.getInt("ID");
+                    String id = sprintJson.getString("ID");
                     String name = sprintJson.optString("Name");
                     String description = sprintJson.optString("Description", "No description");
                     int length = Integer.parseInt(simulation.optString("LengthOfSprint", "1"));

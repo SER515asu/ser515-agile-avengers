@@ -5,6 +5,7 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Sprint;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.SprintStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
+import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationStateManager;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 
@@ -20,11 +21,14 @@ public class SprintListPane extends JFrame implements BaseComponent {
     private List<Sprint> sprints = new ArrayList<>();
     private JPanel subPanel;
     private Player player;
+    private String simulationID;
 
-    public SprintListPane(Player player) {
+    public SprintListPane(Player player, String simulationID) {
         this.player = player;
+        this.simulationID = simulationID;
         this.init();
     }
+
 
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -37,17 +41,17 @@ public class SprintListPane extends JFrame implements BaseComponent {
         myJpanel.setLayout(myGridbagLayout);
 
         // Add predefined sprints to the store if they don't exist already
-        if (SprintStore.getInstance().getSprints().isEmpty()) {
-            Sprint sprint1 = new Sprint("Sprint 1", "Initial sprint with basic tasks", 2,1);
-            Sprint sprint2 = new Sprint("Sprint 2", "Sprint for refining features", 3,2);
-            Sprint sprint3 = new Sprint("Sprint 3", "Bug fixing and testing", 1,3);
-            SprintStore.getInstance().addSprint(sprint1);
-            SprintStore.getInstance().addSprint(sprint2);
-            SprintStore.getInstance().addSprint(sprint3);
+        if (SprintStore.getInstance(simulationID).getSprints().isEmpty()) {
+//            Sprint sprint1 = new Sprint("Sprint 1", "Initial sprint with basic tasks", 2,1);
+//            Sprint sprint2 = new Sprint("Sprint 2", "Sprint for refining features", 3,2);
+//            Sprint sprint3 = new Sprint("Sprint 3", "Bug fixing and testing", 1,3);
+//            SprintStore.getInstance().addSprint(sprint1);
+//            SprintStore.getInstance().addSprint(sprint2);
+//            SprintStore.getInstance().addSprint(sprint3);
         }
 
         // Load existing sprints from the store
-        sprints.addAll(SprintStore.getInstance().getSprints());
+        sprints.addAll(SprintStore.getInstance(simulationID).getSprints());
 
         subPanel = new JPanel(new GridBagLayout());
         updateSprintList();
@@ -64,14 +68,14 @@ public class SprintListPane extends JFrame implements BaseComponent {
             newSprintButton.setEnabled(false);
         }
         newSprintButton.addActionListener(e -> {
-            NewSprintForm form = new NewSprintForm();
+            NewSprintForm form = new NewSprintForm(simulationID);
             form.setVisible(true);
 
             form.addWindowListener(new java.awt.event.WindowAdapter() {
                 public void windowClosed(java.awt.event.WindowEvent windowEvent) {
                     Sprint newSprint = form.getSprintObject();
                     if (newSprint != null && !sprints.contains(newSprint)) {
-                        SprintStore.getInstance().addSprint(newSprint);
+                        SprintStore.getInstance(simulationID).addSprint(newSprint);
                         updateSprintList();
                     }
                 }
@@ -88,17 +92,18 @@ public class SprintListPane extends JFrame implements BaseComponent {
 
     private void updateSprintList() {
         subPanel.removeAll();
-        sprints.clear();
-        sprints = new ArrayList<>(SprintStore.getInstance().getSprints()); // Refresh the list from the store
-        int i = 0;
+        sprints = new ArrayList<>(SprintStore.getInstance(simulationID).getSprints());
+        List<Sprint> sprints = SimulationStateManager.getSprintsForSimulation(simulationID);
+
+        int row = 0;
         for (Sprint sprint : sprints) {
             JPanel sprintPanel = new JPanel(new GridBagLayout());
-            JButton sprintButton = new JButton(sprint.getName());
+            JButton sprintButton = new JButton("Sprint " +sprint.getName());
             sprintButton.addActionListener(e -> showSprintDetails(sprint));
 
             JButton removeSprintButton = new JButton("Remove");
             removeSprintButton.addActionListener(e -> {
-                SprintStore.getInstance().removeSprint(sprint);
+                SprintStore.getInstance(simulationID).removeSprint(sprint);
                 updateSprintList();
             });
 
@@ -115,7 +120,7 @@ public class SprintListPane extends JFrame implements BaseComponent {
                     sprintPanel,
                     new CustomConstraints(
                             0,
-                            i++,
+                            row++,
                             GridBagConstraints.WEST,
                             1.0,
                             0.1,

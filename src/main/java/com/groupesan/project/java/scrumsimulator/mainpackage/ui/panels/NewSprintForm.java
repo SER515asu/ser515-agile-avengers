@@ -32,12 +32,14 @@ public class NewSprintForm extends JFrame implements BaseComponent {
     JTextArea descArea = new JTextArea();
     SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(2, 1, 4, 1);
     JSpinner sprintDays = new JSpinner(spinnerNumberModel);
+    private String simulationID;
 
     DefaultListModel<String> listModel;
     JList<String> usList;
 
-    public NewSprintForm() {
+    public NewSprintForm(String simulationID) {
         this.init();
+        this.simulationID = simulationID;
     }
 
     public void init() {
@@ -104,7 +106,7 @@ public class NewSprintForm extends JFrame implements BaseComponent {
                 });
 
         listModel = new DefaultListModel<>();
-        for (UserStory userStory : UserStoryStore.getInstance().getUserStories()) {
+        for (UserStory userStory : UserStoryStore.getInstance(simulationID).getUserStories()) {
             listModel.addElement(userStory.toString());
         }
 
@@ -146,7 +148,7 @@ public class NewSprintForm extends JFrame implements BaseComponent {
 
         for (int idx : selectedIdx) {
             String stringIdentifier = listModel.getElementAt(idx);
-            for (UserStory userStory : UserStoryStore.getInstance().getUserStories()) {
+            for (UserStory userStory : UserStoryStore.getInstance(simulationID).getUserStories()) {
                 if (stringIdentifier.equals(userStory.toString())) {
                     mySprint.addUserStory(userStory);
                     break;
@@ -154,7 +156,7 @@ public class NewSprintForm extends JFrame implements BaseComponent {
             }
         }
 
-        SprintStore.getInstance().addSprint(mySprint);
+        SprintStore.getInstance(simulationID).addSprint(mySprint);
 
         System.out.println(mySprint);
 
