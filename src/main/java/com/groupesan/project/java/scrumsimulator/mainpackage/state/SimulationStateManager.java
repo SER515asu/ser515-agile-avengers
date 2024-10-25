@@ -5,7 +5,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import javax.swing.JOptionPane;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Sprint;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -16,18 +21,13 @@ import org.json.JSONTokener;
  */
 public class SimulationStateManager {
     private boolean running;
-    private static final String JSON_FILE_PATH = "src/main/resources/simulation.JSON";
+    private static final String JSON_FILE_PATH = "src/main/resources/simulation.json";
 
     /** Simulation State manager. Not running by default. */
     public SimulationStateManager() {
         this.running = false;
     }
 
-    /**
-     * Returns the current state of the simulation.
-     *
-     * @return boolean running
-     */
     public boolean isRunning() {
         return running;
     }
@@ -36,28 +36,15 @@ public class SimulationStateManager {
         this.running = running;
     }
 
-    /** Method to set the simulation state to running. */
     public void startSimulation() {
         setRunning(true);
-        // Add other logic for starting the simulation
     }
 
-    /** Method to set the simulation state to not running. */
     public void stopSimulation() {
         setRunning(false);
-        // Add other logic for stopping the simulation
     }
 
-    /**
-     * Saves the details of a new simulation to a JSON file.
-     *
-     * @param simId The ID of the simulation.
-     * @param simName The name of the simulation.
-     * @param numberOfSprints The number of sprints in the simulation.
-     * @param lengthOfSprint  The length of each sprint
-     */
-    public static void saveNewSimulationDetails(
-            String simId, String simName, String numberOfSprints, String lengthOfSprint) {
+    public static void saveNewSimulationDetails(String simId, String simName, String numberOfSprints, String lengthOfSprint) {
         JSONObject simulationData = getSimulationData();
         if (simulationData == null) {
             simulationData = new JSONObject();
@@ -101,23 +88,115 @@ public class SimulationStateManager {
         updateSimulationData(simulationData);
     }
 
+    /**
+     * Adds a Sprint to a specific simulation based on the provided simulation ID.
+     */
+    public static void addSprintToSimulation(String simulationID, Sprint sprint) {
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.getJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray sprints = simulation.optJSONArray("Sprints");
+                if (sprints == null) {
+                    sprints = new JSONArray();
+                    simulation.put("Sprints", sprints);
+                }
+
+                // Create JSON representation of Sprint
+                JSONObject newSprint = new JSONObject();
+                newSprint.put("Name", sprint.getName());
+                newSprint.put("Description", sprint.getDescription());
+                newSprint.put("Length", sprint.getLength());
+                newSprint.put("RemainingDays", sprint.getDaysRemaining());
+                newSprint.put("ID", UUID.randomUUID().toString());
+
+                sprints.put(newSprint);  // Add sprint to the array
+
+                updateSimulationData(simulationData);
+                JOptionPane.showMessageDialog(null, "Sprint added to simulation with ID: " + simulationID);
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Simulation with ID " + simulationID + " not found.");
+    }
+
+    public static List<Sprint> getSprintsForSimulation(String simulationID) {
+        JSONObject simulationData = getSimulationData();
+        List<Sprint> sprintsList = new ArrayList<>();
+
+        if (simulationData == null) return sprintsList;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray sprints = simulation.optJSONArray("Sprints");
+
+                for (int j = 0; j < sprints.length(); j++) {
+                    JSONObject sprintJson = sprints.getJSONObject(j);
+                    int id = sprintJson.getInt("ID");
+                    String name = sprintJson.optString("Name");
+                    String description = sprintJson.optString("Description", "No description");
+                    int length = Integer.parseInt(simulation.optString("LengthOfSprint", "1"));
+
+                    Sprint sprint = new Sprint(name, description, length, id);
+                    sprintsList.add(sprint);
+                }
+                break;
+            }
+        }
+
+        return sprintsList;
+    }
+
+    public static void removeSprintFromSimulation(String simulationID, String sprintID) {
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+        System.out.println("Hitting");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray sprints = simulation.optJSONArray("Sprints");
+
+                for (int j = 0; j < sprints.length(); j++) {
+                    JSONObject sprint = sprints.getJSONObject(j);
+                    if (sprint.getString("ID").equals(sprintID)) {
+                        sprints.remove(j);  // Remove the sprint from JSON array
+                        updateSimulationData(simulationData);  // Save the updated JSON data
+                        JOptionPane.showMessageDialog(null, "Sprint removed from simulation with ID: " + simulationID);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
     private static JSONObject getSimulationData() {
         try (FileInputStream fis = new FileInputStream(JSON_FILE_PATH)) {
             JSONTokener tokener = new JSONTokener(fis);
             return new JSONObject(tokener);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading from simulation.JSON");
+            JOptionPane.showMessageDialog(null, "Error reading from simulation.json");
             return null;
         }
     }
 
     private static void updateSimulationData(JSONObject updatedData) {
         try (OutputStreamWriter writer =
-                new OutputStreamWriter(
-                        new FileOutputStream(JSON_FILE_PATH), StandardCharsets.UTF_8)) {
+                     new OutputStreamWriter(
+                             new FileOutputStream(JSON_FILE_PATH), StandardCharsets.UTF_8)) {
             writer.write(updatedData.toString(4));
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error writing to simulation.JSON");
+            JOptionPane.showMessageDialog(null, "Error writing to simulation.json");
         }
     }
+
 }
