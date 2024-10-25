@@ -29,6 +29,8 @@ public class UserStory extends ScrumObject {
 
     private String sprint;
 
+//    private
+
     // private ArrayList<Task> tasks;  TODO: implement tasks
 
     /**
