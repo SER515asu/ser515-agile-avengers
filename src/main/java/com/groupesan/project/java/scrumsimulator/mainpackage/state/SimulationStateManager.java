@@ -199,4 +199,85 @@ public class SimulationStateManager {
         }
     }
 
+    public static void addUserStoryToSimulation(String simulationID, UserStory userStory) {
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray userStories = simulation.optJSONArray("UserStories");
+                if (userStories == null) {
+                    userStories = new JSONArray();
+                    simulation.put("UserStories", userStories);
+                }
+
+                JSONObject newUserStory = new JSONObject();
+                newUserStory.put("Name", userStory.getName());
+                newUserStory.put("Description", userStory.getDescription());
+                newUserStory.put("PointValue", userStory.getPointValue());
+                newUserStory.put("BusinessValue", userStory.getBusinessValue());
+
+                userStories.put(newUserStory);  // Add user story to JSON array
+                updateSimulationData(simulationData);
+                return;
+            }
+        }
+    }
+
+    public static void removeUserStoryFromSimulation(String simulationID, String userStoryName) {
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray userStories = simulation.optJSONArray("UserStories");
+
+                for (int j = 0; j < userStories.length(); j++) {
+                    JSONObject userStory = userStories.getJSONObject(j);
+                    if (userStory.getString("Name").equals(userStoryName)) {
+                        userStories.remove(j);  // Remove the user story
+                        updateSimulationData(simulationData);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    public static List<UserStory> getUserStoriesForSimulation(String simulationID) {
+        JSONObject simulationData = getSimulationData();
+        List<UserStory> userStoryList = new ArrayList<>();
+
+        if (simulationData == null) return userStoryList;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray userStories = simulation.optJSONArray("UserStories");
+
+                for (int j = 0; j < userStories.length(); j++) {
+                    JSONObject userStoryJson = userStories.getJSONObject(j);
+                    String name = userStoryJson.getString("Name");
+                    String description = userStoryJson.optString("Description", "No description");
+                    double pointValue = userStoryJson.optDouble("PointValue", 0.0);
+                    double businessValue = userStoryJson.optDouble("BusinessValue", 0.0);
+
+                    UserStory userStory = new UserStory(name, description, pointValue, businessValue);
+                    userStoryList.add(userStory);
+                }
+                break;
+            }
+        }
+
+        return userStoryList;
+    }
+
 }
