@@ -14,7 +14,6 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumRole;
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationManager;
-import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationStateManager;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.dialogs.simulation.SimulationWizard;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
@@ -48,10 +47,10 @@ public class DemoPane extends JFrame implements BaseComponent {
         myJpanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         myJpanel.setLayout(myGridbagLayout);
 
-        SimulationStateManager simulationStateManager = new SimulationStateManager();
-        SimulationPanel simulationPanel = new SimulationPanel(simulationStateManager);
+        // SimulationStateManager simulationStateManager = new SimulationStateManager();
+        // SimulationPanel simulationPanel = new SimulationPanel(simulationStateManager);
 
-        JButton updateStoryStatusButton = new JButton("Update User Story Status");
+       // JButton updateStoryStatusButton = new JButton("Update User Story Status");
 
         // Simulation button for Demo
         simulationButton = new JButton("Add User");
