@@ -22,9 +22,16 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstra
 public class DemoPane extends JFrame implements BaseComponent {
     private Player player = new Player("bob", new ScrumRole(Roles.SCRUM_MASTER.getDisplayName()));
 
+    private JButton simulationButton;
+    private JButton modifySimulationButton;
+    private JButton newSimulationButton;
+    private JButton joinSimulationButton;
+    private JButton SprintUIButton;
+
     public DemoPane() {
         this.init();
         player.doRegister();
+        refreshUIComponentsBasedOnRole();
     }
 
     /**
@@ -47,7 +54,7 @@ public class DemoPane extends JFrame implements BaseComponent {
         JButton updateStoryStatusButton = new JButton("Update User Story Status");
 
         // Simulation button for Demo
-        JButton simulationButton = new JButton("Add User");
+        simulationButton = new JButton("Add User");
         simulationButton.addActionListener(
                 new ActionListener() {
                     @Override
@@ -63,7 +70,8 @@ public class DemoPane extends JFrame implements BaseComponent {
                         7, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         // Modify Simulation button
-        JButton modifySimulationButton = new JButton("Modify Simulation");
+        modifySimulationButton = new JButton("Modify Simulation");
+
         modifySimulationButton.addActionListener(
                 new ActionListener() {
                     @Override
@@ -82,7 +90,7 @@ public class DemoPane extends JFrame implements BaseComponent {
                         5, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         // Create Simulation button
-        JButton newSimulationButton = new JButton("New Simulation");
+        newSimulationButton = new JButton("New Simulation");
         newSimulationButton.addActionListener(
                 new ActionListener() {
                     @Override
@@ -101,7 +109,7 @@ public class DemoPane extends JFrame implements BaseComponent {
                         0, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         // Join Simulation button
-        JButton joinSimulationButton = new JButton("Join Simulation");
+        joinSimulationButton = new JButton("Join Simulation");
         joinSimulationButton.addActionListener(
                 e -> {
                     SimulationUI simulationUserInterface = new SimulationUI();
@@ -117,7 +125,7 @@ public class DemoPane extends JFrame implements BaseComponent {
         JButton simulationSwitchRoleButton = new JButton("Switch Role");
         simulationSwitchRoleButton.addActionListener(e -> {
             SimulationSwitchRolePane roleSwitchPane = new SimulationSwitchRolePane(newRole -> {
-                player.setRole(newRole); 
+                player.setRole(newRole);
                 refreshUIComponentsBasedOnRole();
             });
             roleSwitchPane.setVisible(true);
@@ -133,7 +141,7 @@ public class DemoPane extends JFrame implements BaseComponent {
                     }
                 });
 
-        JButton SprintUIButton = new JButton("US Selection UI");
+        SprintUIButton = new JButton("US Selection UI");
         SprintUIButton.addActionListener(
                 new ActionListener() {
                     @Override
@@ -154,6 +162,11 @@ public class DemoPane extends JFrame implements BaseComponent {
     }
 
     private void refreshUIComponentsBasedOnRole() {
-        System.err.println("Still to be implemented");
+        String roleName = player.getRole().getName();
+        simulationButton.setEnabled(!(roleName.equals(Roles.SCRUM_MASTER.getDisplayName()) || roleName.equals(Roles.DEVELOPER.getDisplayName())));
+        modifySimulationButton.setEnabled(!(roleName.equals(Roles.PRODUCT_OWNER.getDisplayName()) || roleName.equals(Roles.DEVELOPER.getDisplayName())));
+        SprintUIButton.setEnabled(!roleName.equals(Roles.SCRUM_MASTER.getDisplayName()));
+        newSimulationButton.setVisible(!roleName.equals(Roles.PRODUCT_OWNER.getDisplayName()));
+        joinSimulationButton.setVisible(!roleName.equals(Roles.PRODUCT_OWNER.getDisplayName()));
     }
 }
