@@ -28,6 +28,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
     public UserStoryListPane(Player player) {
         this.player = player;
         this.init();
+    }
     private List<UserStoryWidget> widgets = new ArrayList<>();
     private JPanel subPanel = new JPanel();
 
@@ -53,12 +54,10 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
         if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
             newSprintButton.setEnabled(false); 
         }
-
         newSprintButton.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        NewUserStoryForm form = new NewUserStoryForm();
                         StoryForm form = new StoryForm();
                         form.setVisible(true);
                         form.addWindowListener(
@@ -111,5 +110,10 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
     public void addUserStoryWidget(UserStoryWidget widget) {
         widgets.add(widget);
         refreshUserStories();
+    }
+
+    // Add this method to access the list of widgets
+    public List<UserStoryWidget> getWidgets() {
+        return widgets;
     }
 }

@@ -64,7 +64,6 @@ public class DemoPane extends JFrame implements BaseComponent {
 
         // Modify Simulation button
         JButton modifySimulationButton = new JButton("Modify Simulation");
-
         modifySimulationButton.addActionListener(
                 new ActionListener() {
                     @Override

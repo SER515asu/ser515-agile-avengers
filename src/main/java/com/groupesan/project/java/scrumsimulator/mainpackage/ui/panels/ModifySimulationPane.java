@@ -64,6 +64,7 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                 simulationNameField.addItem(simulation.getString("Name") + " - " + simulation.getString("ID"));
                 if(i == 0){
                         numberOfSprintsField.setText(simulation.getString("NumberOfSprints"));
+                        lengthOfSprintField.setText(simulation.getString("LengthOfSprint"));
                 }
         }
 
@@ -75,6 +76,7 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                                 selectedSimulation = SimulationHelper.getSprintParamsFromSimulation(simulations, selectedSimulationName);
                                 if(selectedSimulation != null){
                                         numberOfSprintsField.setText(selectedSimulation.getString("NumberOfSprints"));
+                                        lengthOfSprintField.setText(selectedSimulation.getString("LengthOfSprint"));
                                 }
                         }
                 }
@@ -118,9 +120,9 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                         String numberOfSprints = numberOfSprintsField.getText();
 
                         String lengthOfSprint = lengthOfSprintField.getText();
-                        simulationManager.createSimulation(simId, simName, numberOfSprints, lengthOfSprint);
 
                         selectedSimulation.put("NumberOfSprints", numberOfSprints);
+                        selectedSimulation.put("LengthOfSprint", lengthOfSprint);
                         simulationManager.modifySimulation(selectedSimulation);
 
 
@@ -136,12 +138,8 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                                 JOptionPane.INFORMATION_MESSAGE);
 
                         // Reset fields and simulation ID display to blank
-
-                        simulationNameField.setText("");
-                        numberOfSprintsField.setText("");
-                        lengthOfSprintField.setText("");
-
                         numberOfSprintsField.setText(selectedSimulation.getString("NumberOfSprints"));
+                        lengthOfSprintField.setText(selectedSimulation.getString("LengthOfSprint"));
 
                         simulationIdDisplay.setText("");
                     }
@@ -158,18 +156,13 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
 
         panel.add(
                 cancelButton,
-                new CustomConstraints(0, 2, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
+                new CustomConstraints(0, 3, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
 
         panel.add(
                 submitButton,
                 new CustomConstraints(
-                        0, 3, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
-        panel.add(
-                simulationIdDisplay,
-                new CustomConstraints(
                         1, 3, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
-                        1, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
         panel.add(
                 simulationIdDisplay,
                 new CustomConstraints(

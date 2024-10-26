@@ -17,12 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SprintListPane extends JFrame implements BaseComponent {
+    private List<Sprint> sprints = new ArrayList<>();
+    private JPanel subPanel;
     private Player player;
+
     public SprintListPane(Player player) {
         this.player = player;
         this.init();
-    private List<Sprint> sprints = new ArrayList<>();
-    private JPanel subPanel;
+    }
 
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -56,6 +58,11 @@ public class SprintListPane extends JFrame implements BaseComponent {
                         0, 0, GridBagConstraints.WEST, 1.0, 0.8, GridBagConstraints.BOTH));
 
         JButton newSprintButton = new JButton("New Sprint");
+        // Will enable functionality next sprint
+        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName()) || player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName()))
+        {
+            newSprintButton.setEnabled(false);
+        }
         newSprintButton.addActionListener(e -> {
             NewSprintForm form = new NewSprintForm();
             form.setVisible(true);
@@ -131,40 +138,6 @@ public class SprintListPane extends JFrame implements BaseComponent {
                 new CustomConstraints(
                         0, 0, GridBagConstraints.WEST, 1.0, 0.0, GridBagConstraints.HORIZONTAL));
 
-        JButton newSprintButton = new JButton("New Sprint");
-        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName()) || player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) 
-        {
-            newSprintButton.setEnabled(false); 
-        }
-        newSprintButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        NewSprintForm form = new NewSprintForm();
-                        form.setVisible(true);
-
-                        form.addWindowListener(
-                                new java.awt.event.WindowAdapter() {
-                                    public void windowClosed(
-                                            java.awt.event.WindowEvent windowEvent) {
-                                        Sprint newSprint = form.getSprintObject();
-                                        widgets.add(new SprintWidget(newSprint));
-                                        int idx = widgets.size() - 1;
-                                        subPanel.add(
-                                                widgets.get(idx),
-                                                new CustomConstraints(
-                                                        0,
-                                                        idx,
-                                                        GridBagConstraints.WEST,
-                                                        1.0,
-                                                        0.1,
-                                                        GridBagConstraints.HORIZONTAL));
-                                    }
-                                });
-                    }
-                });
-        myJpanel.add(
-                newSprintButton,
         // Show details of each user story in the sprint
         int row = 1;
         for (UserStory userStory : sprint.getUserStories()) {
