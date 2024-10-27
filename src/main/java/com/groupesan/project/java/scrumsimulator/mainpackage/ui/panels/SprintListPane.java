@@ -158,7 +158,7 @@ public class SprintListPane extends JFrame implements BaseComponent {
 
         JButton addUserStoryButton = new JButton("Add User Story");
         addUserStoryButton.addActionListener(e -> {
-            AddUserStoryToSprintForm form = new AddUserStoryToSprintForm(sprint);
+            AddUserStoryToSprintForm form = new AddUserStoryToSprintForm(sprint, simulationID);
             form.setVisible(true);
             form.addWindowListener(new java.awt.event.WindowAdapter() {
                 public void windowClosed(java.awt.event.WindowEvent windowEvent) {

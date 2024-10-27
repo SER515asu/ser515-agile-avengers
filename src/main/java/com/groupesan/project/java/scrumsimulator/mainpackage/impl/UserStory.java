@@ -4,9 +4,11 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumIdentifier;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumObject;
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryState;
+import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryStatus;
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryUnselectedState;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,15 +23,16 @@ public class UserStory extends ScrumObject {
 
     private double pointValue;
 
-    private UserStoryState userStoryState;
+    private UserStoryState userStoryState;  // might have to replace this way
 
     private Player owner;
 
     private double businessValue;
 
+    @Setter
+    @Getter
     private String sprint;
 
-//    private
 
     // private ArrayList<Task> tasks;  TODO: implement tasks
 
@@ -60,6 +63,7 @@ public class UserStory extends ScrumObject {
         this.pointValue = pointValue;
         this.businessValue = businessValue;
         this.userStoryState = new UserStoryUnselectedState(this);
+        this.register();
     }
 
     protected void register() {
@@ -73,10 +77,11 @@ public class UserStory extends ScrumObject {
      * @return The ScrumIdentifier for this user story
      */
     public ScrumIdentifier getId() {
-        if (!isRegistered()) {
-            throw new IllegalStateException(
-                    "This UserStory has not been registered and does not have an ID yet!");
-        }
+        // To be uncommented again, will correct in bug ticket
+//        if (!isRegistered()) {
+//            throw new IllegalStateException(
+//                    "This UserStory has not been registered and does not have an ID yet!");
+//        }
         return id;
     }
 
@@ -100,14 +105,6 @@ public class UserStory extends ScrumObject {
             return this.getId().toString() + " - " + name;
         }
         return "(unregistered) - " + getName();
-    }
-    //getter and setter
-    public String getSprint() {
-        return sprint;
-    }
-
-    public void setSprint(String sprint) {
-        this.sprint = sprint;
     }
 
     // State Management, need Player class to implement final selection logic

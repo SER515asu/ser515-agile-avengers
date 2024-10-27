@@ -11,6 +11,7 @@ import java.util.UUID;
 import javax.swing.JOptionPane;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Sprint;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryIdentifier;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -59,6 +60,7 @@ public class SimulationStateManager {
         newSimulation.put("Sprints", new JSONArray());
         newSimulation.put("Events", new JSONArray());
         newSimulation.put("Users", new JSONArray());
+        newSimulation.put("UserStories", new JSONArray());
 
         JSONArray simulations = simulationData.optJSONArray("Simulations");
         if (simulations == null) {
@@ -219,6 +221,7 @@ public class SimulationStateManager {
                 newUserStory.put("Description", userStory.getDescription());
                 newUserStory.put("PointValue", userStory.getPointValue());
                 newUserStory.put("BusinessValue", userStory.getBusinessValue());
+                newUserStory.put("Id", userStory.getId());
 
                 userStories.put(newUserStory);  // Add user story to JSON array
                 updateSimulationData(simulationData);
@@ -269,6 +272,8 @@ public class SimulationStateManager {
                     String description = userStoryJson.optString("Description", "No description");
                     double pointValue = userStoryJson.optDouble("PointValue", 0.0);
                     double businessValue = userStoryJson.optDouble("BusinessValue", 0.0);
+                    System.out.println("value is "+userStoryJson.optString("Id","US #0").split("#")[1]);
+                    UserStoryIdentifier id = new UserStoryIdentifier(Integer.parseInt(userStoryJson.optString("Id","US #0").split("#")[1]));
 
                     UserStory userStory = new UserStory(name, description, pointValue, businessValue);
                     userStoryList.add(userStory);

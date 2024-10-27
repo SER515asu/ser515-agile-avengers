@@ -1,33 +1,30 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
 
+import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationStateManager;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserStoryStore {
-
     private static UserStoryStore userStoryStore;
+    private List<UserStory> userStories;
+    private String simulationID;
 
-    /**
-     * returns the shared instance of the UserStoryStore which contains all user stories in the
-     * system.
-     *
-     * @return
-     */
-    public static UserStoryStore getInstance() {
+    private UserStoryStore(String simulationID) {
+        this.simulationID = simulationID;
+        userStories = new ArrayList<>();
+        loadUserStoriesFromJson();
+    }
+
+    public static UserStoryStore getInstance(String simulationID) {
         if (userStoryStore == null) {
-            userStoryStore = new UserStoryStore();
+            userStoryStore = new UserStoryStore(simulationID);
         }
         return userStoryStore;
     }
 
-    private List<UserStory> userStories;
-
-    private UserStoryStore() {
-        userStories = new ArrayList<>();
-    }
-
     public void addUserStory(UserStory userStory) {
         userStories.add(userStory);
+        SimulationStateManager.addUserStoryToSimulation(simulationID, userStory);
     }
 
     public List<UserStory> getUserStories() {
@@ -36,5 +33,14 @@ public class UserStoryStore {
 
     public void removeUserStory(UserStory userStory) {
         userStories.remove(userStory);
+        SimulationStateManager.removeUserStoryFromSimulation(simulationID, userStory.getName());
+    }
+
+    /**
+     * Loads user stories from JSON for a specific simulation ID and populates the UserStoryStore.
+     */
+    public void loadUserStoriesFromJson() {
+        userStories.clear();  // Clear existing user stories
+        userStories.addAll(SimulationStateManager.getUserStoriesForSimulation(simulationID));
     }
 }

@@ -20,13 +20,17 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.UserStoryWidget;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
+import lombok.Getter;
 
 
 public class UserStoryListPane extends JFrame implements BaseComponent {
     private Player player;
+    @Getter
+    private String simulationID;
     
-    public UserStoryListPane(Player player) {
+    public UserStoryListPane(Player player, String simulationId) {
         this.player = player;
+        this.simulationID = simulationId;
         this.init();
     }
     private List<UserStoryWidget> widgets = new ArrayList<>();
@@ -65,7 +69,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
                                     public void windowClosed(
                                             java.awt.event.WindowEvent windowEvent) {
                                         UserStory userStory = form.getUserStoryObject();
-                                        UserStoryStore.getInstance().addUserStory(userStory);
+                                        UserStoryStore.getInstance(simulationID).addUserStory(userStory);
                                         addUserStoryWidget(new UserStoryWidget(userStory, UserStoryListPane.this));
                                     }
                                 });
@@ -84,7 +88,8 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
         widgets.clear();
 
         int i = 0;
-        for (UserStory userStory : UserStoryStore.getInstance().getUserStories()) {
+        for (UserStory userStory : UserStoryStore.getInstance(simulationID).getUserStories()) {
+            System.out.println("User stores count it "+ UserStoryStore.getInstance(simulationID).getUserStories().size());
             UserStoryWidget widget = new UserStoryWidget(userStory, this);
             widgets.add(widget);
             subPanel.add(

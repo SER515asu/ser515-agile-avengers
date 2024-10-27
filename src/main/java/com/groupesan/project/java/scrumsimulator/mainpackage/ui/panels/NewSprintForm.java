@@ -148,7 +148,7 @@ public class NewSprintForm extends JFrame implements BaseComponent {
 
         for (int idx : selectedIdx) {
             String stringIdentifier = listModel.getElementAt(idx);
-            for (UserStory userStory : UserStoryStore.getInstance().getUserStories()) {
+            for (UserStory userStory : UserStoryStore.getInstance(simulationID).getUserStories()) {
                 if (stringIdentifier.equals(userStory.toString())) {
                     mySprint.addUserStory(userStory);
                     break;

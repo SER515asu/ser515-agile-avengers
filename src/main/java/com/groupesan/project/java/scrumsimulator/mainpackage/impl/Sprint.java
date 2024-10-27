@@ -21,6 +21,7 @@ public class Sprint {
         this.length = length;
         this.remainingDays = length;
         this.id = id;
+        this.userStories = new ArrayList<>();
     }
 
     public void addUserStory(UserStory us) {
