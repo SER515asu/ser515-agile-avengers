@@ -4,7 +4,7 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumIdentifier;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumObject;
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryState;
-import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryStatus;
+//import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryStatus;
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryUnselectedState;
 import java.util.ArrayList;
 import java.util.List;
