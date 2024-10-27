@@ -14,9 +14,11 @@ public class AddUserStoryToSprintForm extends JFrame {
 
     private Sprint sprint;
     private JComboBox<UserStory> userStoryComboBox;
+    String simulationID;
 
-    public AddUserStoryToSprintForm(Sprint sprint) {
+    public AddUserStoryToSprintForm(Sprint sprint, String simulationID) {
         this.sprint = sprint;
+        this.simulationID = simulationID;
         this.init();
     }
 
@@ -34,7 +36,7 @@ public class AddUserStoryToSprintForm extends JFrame {
                         0, 0, GridBagConstraints.WEST, 1.0, 0.0, GridBagConstraints.HORIZONTAL));
 
         userStoryComboBox = new JComboBox<>();
-        for (UserStory userStory : UserStoryStore.getInstance().getUserStories()) {
+        for (UserStory userStory : UserStoryStore.getInstance(simulationID).getUserStories()) {
             if (!sprint.getUserStories().contains(userStory)) {
                 userStoryComboBox.addItem(userStory);
             }
