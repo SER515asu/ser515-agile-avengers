@@ -19,9 +19,11 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryStat
 
 public class UpdateUserStoryPanel extends JFrame {
     private Player player;
+    private String simulationID;
 
-    public UpdateUserStoryPanel(Player player) {
+    public UpdateUserStoryPanel(Player player, String simulationID) {
         this.player = player;
+        this.simulationID = simulationID;
         init();
     }
 
@@ -45,7 +47,7 @@ public class UpdateUserStoryPanel extends JFrame {
         panel.add(userStoryLabel);
 
         // Fetch user stories from UserStoryStore instead of UserStoryStateManager
-        List<UserStory> userStories = UserStoryStore.getInstance().getUserStories();
+        List<UserStory> userStories = UserStoryStore.getInstance(simulationID).getUserStories();
         JComboBox<String> userStoryComboBox = new JComboBox<>();
 
         // Populate the combo box with user stories' names

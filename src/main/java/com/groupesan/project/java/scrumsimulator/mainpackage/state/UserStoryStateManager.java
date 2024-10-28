@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UserStoryStateManager {
 
-    private static final String FILE_PATH = "src/main/resources/Simulation.json";
+    private static final String FILE_PATH = "src/main/resources/simulation.json";
 
     /**
      * Method to get all user stories in a simulation.

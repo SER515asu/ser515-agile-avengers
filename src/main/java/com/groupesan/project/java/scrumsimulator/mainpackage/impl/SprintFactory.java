@@ -1,5 +1,7 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
 
+import java.util.UUID;
+
 public class SprintFactory {
     private static SprintFactory sprintFactory;
 
@@ -18,7 +20,7 @@ public class SprintFactory {
     }
 
     public Sprint createNewSprint(String name, String description, int length) {
-        Sprint newSprint = new Sprint(name, description, length, ++numSprints);
+        Sprint newSprint = new Sprint(name, description, length, UUID.randomUUID().toString());
         return newSprint;
     }
 }

@@ -36,8 +36,12 @@ public class ScrumIdentifierStoreSingleton {
     }
 
     public void registerIdentifier(ScrumIdentifier identifier) {
-        assert identifier.getValue() < objectList.size();
-        assert objectList.get(identifier.getValue()) == null;
-        objectList.set(identifier.getValue(), identifier);
+        int index = identifier.getValue();
+        while (objectList.size() <= index) {
+            objectList.add(null);  // Expand the list to avoid nulll exception
+        }
+        assert objectList.get(index) == null;
+        objectList.set(index, identifier);
     }
+
 }

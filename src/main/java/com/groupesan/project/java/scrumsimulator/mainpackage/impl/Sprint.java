@@ -13,14 +13,15 @@ public class Sprint {
 
     private int remainingDays;
 
-    private int id;
+    private String id;
 
-    public Sprint(String name, String description, int length, int id) {
+    public Sprint(String name, String description, int length, String id) {
         this.name = name;
         this.description = description;
         this.length = length;
         this.remainingDays = length;
         this.id = id;
+        this.userStories = new ArrayList<>();
     }
 
     public void addUserStory(UserStory us) {
@@ -55,7 +56,7 @@ public class Sprint {
         if (remainingDays > 0) remainingDays--;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
