@@ -3,7 +3,7 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumRole;
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationManager;
-import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationStateManager;
+//import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationStateManager;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.dialogs.simulation.SimulationWizard;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
@@ -47,84 +47,84 @@ public class DemoPane extends JFrame implements BaseComponent {
         myJpanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         myJpanel.setLayout(myGridbagLayout);
 
-        JButton sprintsButton = new JButton("Sprints");
-        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
-            sprintsButton.setEnabled(false); 
-        }
-
-        sprintsButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        SprintListPane form = new SprintListPane(player);
-                        form.setVisible(true);
-                    }
-                });
+//        JButton sprintsButton = new JButton("Sprints");
+//        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
+//            sprintsButton.setEnabled(false);
+//        }
+//
+//        sprintsButton.addActionListener(
+//                new ActionListener() {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        SprintListPane form = new SprintListPane(player);
+//                        form.setVisible(true);
+//                    }
+//                });
 
         SimulationStateManager simulationStateManager = new SimulationStateManager();
         SimulationPanel simulationPanel = new SimulationPanel(simulationStateManager);
-        myJpanel.add(
-                simulationPanel,
-                new CustomConstraints(
-                        2, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+//        myJpanel.add(
+//                simulationPanel,
+//                new CustomConstraints(
+//                        2, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
-        myJpanel.add(
-                sprintsButton,
-                new CustomConstraints(
-                        0, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+//        myJpanel.add(
+//                sprintsButton,
+//                new CustomConstraints(
+//                        0, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
-        JButton userStoriesButton = new JButton("Product Backlog");
-        userStoriesButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        UserStoryListPane form = new UserStoryListPane(player);
-                        form.setVisible(true);
-                    }
-                });
+//        JButton userStoriesButton = new JButton("Product Backlog");
+//        userStoriesButton.addActionListener(
+//                new ActionListener() {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        UserStoryListPane form = new UserStoryListPane(player);
+//                        form.setVisible(true);
+//                    }
+//                });
 
-        myJpanel.add(
-                userStoriesButton,
-                new CustomConstraints(
-                        1, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+//        myJpanel.add(
+//                userStoriesButton,
+//                new CustomConstraints(
+//                        1, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         JButton updateStoryStatusButton = new JButton("Update User Story Status");
         // if (player.getRole() instanceof ScrumMaster)
         // {
 
         // }
-        updateStoryStatusButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        UpdateUserStoryPanel form = new UpdateUserStoryPanel(player);
-                        form.setVisible(true);
-                    }
-                });
+//        updateStoryStatusButton.addActionListener(
+//                new ActionListener() {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        UpdateUserStoryPanel form = new UpdateUserStoryPanel(player);
+//                        form.setVisible(true);
+//                    }
+//                });
 
-        myJpanel.add(
-                updateStoryStatusButton,
-                new CustomConstraints(
-                        3, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+//        myJpanel.add(
+//                updateStoryStatusButton,
+//                new CustomConstraints(
+//                        3, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         // Simulation button for Demo
-        JButton simulationButton = new JButton("Add User");
-        if (player.getRole().getName().equals(Roles.SCRUM_MASTER.getDisplayName()) || player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
-            simulationButton.setEnabled(false); 
-        }
-        simulationButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        SimulationPane simulationPane = new SimulationPane();
-                        simulationPane.setVisible(true);
-                    }
-                });
+//        JButton simulationButton = new JButton("Add User");
+//        if (player.getRole().getName().equals(Roles.SCRUM_MASTER.getDisplayName()) || player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
+//            simulationButton.setEnabled(false);
+//        }
+//        simulationButton.addActionListener(
+//                new ActionListener() {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        SimulationPane simulationPane = new SimulationPane();
+//                        simulationPane.setVisible(true);
+//                    }
+//                });
 
-        myJpanel.add(
-                simulationButton,
-                new CustomConstraints(
-                        7, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+//        myJpanel.add(
+//                simulationButton,
+//                new CustomConstraints(
+//                        7, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         // Modify Simulation button
         JButton modifySimulationButton = new JButton("Modify Simulation");
@@ -166,7 +166,7 @@ public class DemoPane extends JFrame implements BaseComponent {
         myJpanel.add(
                 newSimulationButton,
                 new CustomConstraints(
-                        2, 1, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+                        0, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
 
         // *** Role Selection now through SimulationUI ***
@@ -205,53 +205,53 @@ public class DemoPane extends JFrame implements BaseComponent {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        SimulationSwitchRolePane feedbackPanelUI = new SimulationSwitchRolePane();
-                        feedbackPanelUI.setVisible(true);
+//                        SimulationSwitchRolePane feedbackPanelUI = new SimulationSwitchRolePane();
+//                        feedbackPanelUI.setVisible(true);
                     }
                 });
 
-        myJpanel.add(
-                simulationSwitchRoleButton,
-                new CustomConstraints(
-                        1, 1, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+//        myJpanel.add(
+//                simulationSwitchRoleButton,
+//                new CustomConstraints(
+//                        1, 1, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         // New button for Variant Simulation UI
-        JButton variantSimulationUIButton = new JButton("Variant Simulation UI");
-        variantSimulationUIButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        VariantSimulationUI variantSimulationUI = new VariantSimulationUI();
-                        variantSimulationUI.setVisible(true);
-                    }
-                });
+//        JButton variantSimulationUIButton = new JButton("Variant Simulation UI");
+//        variantSimulationUIButton.addActionListener(
+//                new ActionListener() {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        VariantSimulationUI variantSimulationUI = new VariantSimulationUI();
+//                        variantSimulationUI.setVisible(true);
+//                    }
+//                });
 
-        // Adding the button to the panel
-        myJpanel.add(
-                variantSimulationUIButton,
-                new CustomConstraints(
-                        3, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+//         Adding the button to the panel
+//        myJpanel.add(
+//                variantSimulationUIButton,
+//                new CustomConstraints(
+//                        3, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         JButton SprintUIButton = new JButton("US Selection UI");
         SprintUIButton.setEnabled(false);
         if (player.getRole().getName().equals(Roles.SCRUM_MASTER.getDisplayName())) {
-            SprintUIButton.setEnabled(false); 
+            SprintUIButton.setEnabled(false);
         }
-        SprintUIButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        // Load SprintUIPane
-                        SprintUIPane sprintUIPane = new SprintUIPane(player);
-                        sprintUIPane.setVisible(true);
-                    }
-                });
+//        SprintUIButton.addActionListener(
+//                new ActionListener() {
+//                    @Override
+//                    public void actionPerformed(ActionEvent e) {
+//                        // Load SprintUIPane
+////                        SprintUIPane sprintUIPane = new SprintUIPane(player);
+////                        sprintUIPane.setVisible(true);
+//                    }
+//                });
 
         // Adding the button to the panel
-        myJpanel.add(
-                SprintUIButton,
-                new CustomConstraints(
-                        8, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
+//        myJpanel.add(
+//                SprintUIButton,
+//                new CustomConstraints(
+//                        8, 0, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         add(myJpanel);
     }

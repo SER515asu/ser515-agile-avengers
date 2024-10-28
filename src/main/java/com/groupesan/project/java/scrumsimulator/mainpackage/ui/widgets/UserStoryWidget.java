@@ -128,7 +128,7 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
     private void addHeaders() {
         JLabel idHeader = new JLabel("ID");
         JLabel pointsHeader = new JLabel("Points");
-        JLabel bvHeader = new JLabel("Business Value");
+        JLabel bvHeader = new JLabel("BV");
         JLabel nameHeader = new JLabel("Name");
         JLabel descHeader = new JLabel("Description");
         JLabel actionHeader = new JLabel("Action");
@@ -149,7 +149,7 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
                 JOptionPane.YES_NO_OPTION);
 
         if (confirmation == JOptionPane.YES_OPTION) {
-            UserStoryStore.getInstance().removeUserStory(userStory);
+            UserStoryStore.getInstance(parentPane.getSimulationID()).removeUserStory(userStory);
             parentPane.removeUserStoryWidget(this);
         }
     }
