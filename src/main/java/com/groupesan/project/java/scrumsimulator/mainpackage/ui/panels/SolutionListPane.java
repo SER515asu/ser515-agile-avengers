@@ -35,8 +35,8 @@ public class SolutionListPane extends JFrame implements BaseComponent {
         subPanel.setLayout(new GridBagLayout());
 
         myJpanel.add(
-                subPanel,
-                new CustomConstraints(0, 0, GridBagConstraints.WEST, 1.0, 0.8, GridBagConstraints.HORIZONTAL)
+                new JScrollPane(subPanel),
+                new CustomConstraints(0, 0, GridBagConstraints.WEST, 1.0, 0.8, GridBagConstraints.BOTH)
         );
 
         JButton newSolutionButton = new JButton("Add solution");

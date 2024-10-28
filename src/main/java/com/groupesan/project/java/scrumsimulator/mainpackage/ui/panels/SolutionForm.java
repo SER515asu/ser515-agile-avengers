@@ -1,5 +1,6 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Solution;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
@@ -31,6 +32,7 @@ public class SolutionForm extends JFrame implements BaseComponent {
     JTextField titleField = new JTextField();
     JTextArea descArea = new JTextArea();
     // Create JComboBox for blocker selection
+    JComboBox<Blocker> blockersBox = new JComboBox<>();
 
     public void init(){
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -65,11 +67,21 @@ public class SolutionForm extends JFrame implements BaseComponent {
                 new CustomConstraints(
                         1, 1, GridBagConstraints.EAST, 1.0, 0.3, GridBagConstraints.BOTH));
 
+        JLabel blockerSelectionLabel = new JLabel("Blocker:");
+        myJpanel.add(
+                blockerSelectionLabel,
+                new CustomConstraints(
+                        0, 2, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
+        myJpanel.add(
+                blockersBox,
+                new CustomConstraints(
+                        1, 2, GridBagConstraints.EAST, 1.0, 0.0, GridBagConstraints.HORIZONTAL));
+
         JButton submitButton = new JButton("Submit");
         myJpanel.add(
                 submitButton,
                 new CustomConstraints(
-                        1, 2, GridBagConstraints.EAST, GridBagConstraints.NONE));
+                        1, 3, GridBagConstraints.EAST, GridBagConstraints.NONE));
 
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(
@@ -83,7 +95,7 @@ public class SolutionForm extends JFrame implements BaseComponent {
         myJpanel.add(
                 cancelButton,
                 new CustomConstraints(
-                        0, 2, GridBagConstraints.EAST, GridBagConstraints.NONE));
+                        0, 3, GridBagConstraints.EAST, GridBagConstraints.NONE));
 
 
         add(myJpanel);
