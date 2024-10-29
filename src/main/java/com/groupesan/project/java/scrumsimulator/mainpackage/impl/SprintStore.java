@@ -12,11 +12,10 @@ public class SprintStore {
     private SprintStore(String simulationID) {
         sprints = new ArrayList<>();
         this.simulationID = simulationID;
-        loadSprintsFromJson(simulationID); // Load initial data
     }
 
     public static SprintStore getInstance(String simulationID) {
-        if (sprintStore == null || !sprintStore.simulationID.equals(simulationID)) {
+        if (sprintStore == null) {
             sprintStore = new SprintStore(simulationID);
         }
         return sprintStore;
@@ -33,19 +32,11 @@ public class SprintStore {
         return new ArrayList<>(sprints);
     }
 
-    public Sprint getSprint(String name) {
-        for (Sprint sprint : sprints) {
-            if (sprint.getName().equals(name)) {
-                return sprint;
-            }
-        }
-        return null;
-    }
-
     public void removeSprint(Sprint sprint) {
         sprints.remove(sprint);
         SimulationStateManager.removeSprintFromSimulation(simulationID, sprint.getId());
     }
+
 
     /**
      * Loads sprints from the JSON file for a specific simulation ID and populates the SprintStore.
@@ -54,12 +45,5 @@ public class SprintStore {
         sprints.clear();  // Clear existing sprints
         List<Sprint> loadedSprints = SimulationStateManager.getSprintsForSimulation(simulationID);
         sprints.addAll(loadedSprints);
-    }
-
-    /**
-     * Refreshes the SprintStore with the latest data from the simulation state manager.
-     */
-    public void refresh() {
-        loadSprintsFromJson(this.simulationID);
     }
 }

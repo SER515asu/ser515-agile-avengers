@@ -20,35 +20,12 @@
                 "Name": "dsasd"
             }
         ],
-        "UserStories": [
-            {
-                "Description": "werwerwerwerw",
-                "BusinessValue": 1,
-                "PointValue": 1,
-                "Name": "erwr"
-            },
-            {
-                "Description": "test",
-                "BusinessValue": 1,
-                "PointValue": 1,
-                "Id": "US #4",
-                "Name": "new ys"
-            },
-            {
-                "Description": "adsas",
-                "BusinessValue": 1,
-                "PointValue": 1,
-                "Id": "US #6",
-                "Name": "1"
-            },
-            {
-                "Description": "dsacssad",
-                "BusinessValue": 1,
-                "PointValue": 1,
-                "Id": "US #8",
-                "Name": "dfs"
-            }
-        ],
+        "UserStories": [{
+            "Description": "werwerwerwerw",
+            "BusinessValue": 1,
+            "PointValue": 1,
+            "Name": "erwr"
+        }],
         "Events": [],
         "LengthOfSprint": "2",
         "NumberOfSprints": "5",
