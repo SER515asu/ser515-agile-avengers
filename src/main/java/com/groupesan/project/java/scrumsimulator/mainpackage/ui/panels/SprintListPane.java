@@ -59,11 +59,11 @@ public class SprintListPane extends JFrame implements BaseComponent {
 
             form.addWindowListener(new java.awt.event.WindowAdapter() {
                 public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                    Sprint newSprint = form.getSprintObject();
-                    if (newSprint != null && !sprints.contains(newSprint)) {
-                        SprintStore.getInstance(simulationID).addSprint(newSprint);
+                    //Sprint newSprint = form.getSprintObject();
+                    //if (newSprint != null && !sprints.contains(newSprint)) {
+                        //SprintStore.getInstance(simulationID).addSprint(newSprint);
                         updateSprintList();
-                    }
+                    //}
                 }
             });
         });

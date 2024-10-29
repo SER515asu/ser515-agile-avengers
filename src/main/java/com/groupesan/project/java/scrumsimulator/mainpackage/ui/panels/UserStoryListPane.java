@@ -38,7 +38,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
 
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setTitle("User Story list");
+        setTitle("User Story List");
         setSize(500, 300);
 
         GridBagLayout myGridbagLayout = new GridBagLayout();
@@ -109,16 +109,22 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
     }
 
     public void removeUserStoryWidget(UserStoryWidget widget) {
-        widgets.remove(widget);
-        refreshUserStories();
+        UserStory userStory = widget.getUserStory();
+        UserStoryStore.getInstance(simulationID).removeUserStoryFromBacklog(userStory); // Remove from backlog
+        widgets.remove(widget); // Remove from widget list
+        refreshUserStories(); // Refresh UI
+        subPanel.revalidate();
+        subPanel.repaint();
     }
 
     public void addUserStoryWidget(UserStoryWidget widget) {
         widgets.add(widget);
         refreshUserStories();
+        subPanel.revalidate();
+        subPanel.repaint();
     }
 
-    // Add this method to access the list of widgets
+    // Method to access the list of widgets
     public List<UserStoryWidget> getWidgets() {
         return widgets;
     }

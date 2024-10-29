@@ -49,15 +49,20 @@ public class SprintStore {
 
     /**
      * Loads sprints from the JSON file for a specific simulation ID and populates the SprintStore.
+     * Ensures no duplicate sprints are added.
      */
     public void loadSprintsFromJson(String simulationID) {
-        sprints.clear();  // Clear existing sprints
         List<Sprint> loadedSprints = SimulationStateManager.getSprintsForSimulation(simulationID);
-        sprints.addAll(loadedSprints);
+        for (Sprint loadedSprint : loadedSprints) {
+            if (!sprints.contains(loadedSprint)) { // Check to prevent duplicates
+                sprints.add(loadedSprint);
+            }
+        }
     }
 
     /**
-     * Refreshes the SprintStore with the latest data from the simulation state manager.
+     * Refreshes the SprintStore with the latest data from the simulation state manager,
+     * ensuring no duplicates are added.
      */
     public void refresh() {
         loadSprintsFromJson(this.simulationID);

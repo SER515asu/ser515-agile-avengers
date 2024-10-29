@@ -53,6 +53,9 @@ public class UserStoryStore {
     public void removeUserStoryFromBacklog(UserStory userStory) {
         if (backlogStories.remove(userStory)) {
             SimulationStateManager.removeUserStoryFromSimulation(simulationID, userStory.getName());
+            System.out.println("User Story removed from backlog: " + userStory.getName()); // For debugging
+        } else {
+            System.out.println("User Story not found in backlog for removal: " + userStory.getName()); // For debugging
         }
     }
 
