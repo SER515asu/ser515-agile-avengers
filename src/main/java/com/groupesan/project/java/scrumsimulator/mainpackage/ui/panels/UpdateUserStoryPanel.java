@@ -46,8 +46,8 @@ public class UpdateUserStoryPanel extends JFrame {
         userStoryLabel.setBounds(10, 20, 120, 25);
         panel.add(userStoryLabel);
 
-        // Fetch user stories from the backlog in UserStoryStore
-        List<UserStory> userStories = UserStoryStore.getInstance(simulationID).getBacklogStories();
+        // Fetch user stories from UserStoryStore instead of UserStoryStateManager
+        List<UserStory> userStories = UserStoryStore.getInstance(simulationID).getUserStories();
         JComboBox<String> userStoryComboBox = new JComboBox<>();
 
         // Populate the combo box with user stories' names
@@ -71,14 +71,10 @@ public class UpdateUserStoryPanel extends JFrame {
         updateButton.setBounds(150, 80, 150, 25);
         panel.add(updateButton);
 
-        // Uncomment the following block if you want to restrict updating permissions based on roles
-        /*
-        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName()) || 
-            player.getRole().getName().equals(Roles.SCRUM_MASTER.getDisplayName())) {
-            updateButton.setEnabled(false); 
-        }
-        */
-
+        // if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName()) || player.getRole().getName().equals(Roles.SCRUM_MASTER.getDisplayName())) {
+        //     updateButton.setEnabled(false); 
+        // }
+        
         updateButton.addActionListener(
                 new ActionListener() {
                     @Override

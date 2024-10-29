@@ -2,7 +2,6 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Sprint;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 
 import javax.swing.*;
@@ -14,11 +13,9 @@ public class RemoveUserStoryFromSprintForm extends JFrame {
 
     private Sprint sprint;
     private JComboBox<UserStory> userStoryComboBox;
-    private String simulationID;
 
-    public RemoveUserStoryFromSprintForm(Sprint sprint, String simulationID) {
+    public RemoveUserStoryFromSprintForm(Sprint sprint) {
         this.sprint = sprint;
-        this.simulationID = simulationID;
         this.init();
     }
 
@@ -53,7 +50,6 @@ public class RemoveUserStoryFromSprintForm extends JFrame {
                         UserStory selectedUserStory = (UserStory) userStoryComboBox.getSelectedItem();
                         if (selectedUserStory != null) {
                             sprint.removeUserStory(selectedUserStory);
-                            UserStoryStore.getInstance(simulationID).removeUserStoryFromSprint(selectedUserStory); // Move back to backlog
                             JOptionPane.showMessageDialog(RemoveUserStoryFromSprintForm.this,
                                     "User story removed successfully.",
                                     "Success",

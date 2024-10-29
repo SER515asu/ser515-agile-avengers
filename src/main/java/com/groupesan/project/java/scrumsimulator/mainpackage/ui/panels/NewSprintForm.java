@@ -7,15 +7,25 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
-
-import javax.swing.border.EmptyBorder; // Add this import
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.border.EmptyBorder;
 
 public class NewSprintForm extends JFrame implements BaseComponent {
     JTextField nameField = new JTextField();
@@ -28,8 +38,8 @@ public class NewSprintForm extends JFrame implements BaseComponent {
     JList<String> usList;
 
     public NewSprintForm(String simulationID) {
-        this.simulationID = simulationID;
         this.init();
+        this.simulationID = simulationID;
     }
 
     public void init() {
@@ -42,6 +52,7 @@ public class NewSprintForm extends JFrame implements BaseComponent {
         myJpanel.setLayout(myGridbagLayout);
 
         BorderLayout myBorderLayout = new BorderLayout();
+
         setLayout(myBorderLayout);
 
         JLabel nameLabel = new JLabel("Name:");
@@ -75,18 +86,29 @@ public class NewSprintForm extends JFrame implements BaseComponent {
                         1, 2, GridBagConstraints.EAST, 1.0, 0.0, GridBagConstraints.WEST));
 
         JButton cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener(e -> dispose());
+
+        cancelButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                    }
+                });
 
         JButton submitButton = new JButton("Submit");
-        submitButton.addActionListener(e -> {
-            getSprintObject();
-            dispose();
-        });
+
+        submitButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                    }
+                });
 
         listModel = new DefaultListModel<>();
-        for (UserStory userStory : UserStoryStore.getInstance(simulationID).getBacklogStories()) {
-            listModel.addElement(userStory.toString());
-        }
+//        for (UserStory userStory : UserStoryStore.getInstance(simulationID).getUserStories()) {
+//            listModel.addElement(userStory.toString());
+//        }
 
         usList = new JList<>(listModel);
         usList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -99,7 +121,7 @@ public class NewSprintForm extends JFrame implements BaseComponent {
                 new CustomConstraints(
                         0, 3, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL));
         myJpanel.add(
-                scrollPane,
+                usList,
                 new CustomConstraints(
                         1, 3, GridBagConstraints.WEST, 1.0, 0.0, GridBagConstraints.NONE));
 
@@ -119,22 +141,25 @@ public class NewSprintForm extends JFrame implements BaseComponent {
         Integer length = (Integer) sprintDays.getValue();
 
         SprintFactory sprintFactory = SprintFactory.getSprintFactory();
+
         Sprint mySprint = sprintFactory.createNewSprint(name, description, length);
 
         int[] selectedIdx = usList.getSelectedIndices();
+
         for (int idx : selectedIdx) {
             String stringIdentifier = listModel.getElementAt(idx);
-            for (UserStory userStory : UserStoryStore.getInstance(simulationID).getBacklogStories()) {
+            for (UserStory userStory : UserStoryStore.getInstance(simulationID).getUserStories()) {
                 if (stringIdentifier.equals(userStory.toString())) {
                     mySprint.addUserStory(userStory);
-                    UserStoryStore.getInstance(simulationID).addUserStoryToSprint(userStory); // Move user story to sprint
                     break;
                 }
             }
         }
 
         SprintStore.getInstance(simulationID).addSprint(mySprint);
+
         System.out.println(mySprint);
+
         return mySprint;
     }
 }
