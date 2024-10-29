@@ -39,7 +39,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("User Story List");
-        setSize(500, 300);
+        setSize(700, 500);
 
         GridBagLayout myGridbagLayout = new GridBagLayout();
         JPanel myJpanel = new JPanel();
