@@ -16,7 +16,7 @@ public class SolutionListTest {
     @Test
     public void testAddSolution(){
         // Create a new solution
-        Solution newSolution = SolutionFactory.getSprintFactory().createNewSolution("Test solution", "Test description");
+        Solution newSolution = SolutionFactory.getSolutionFactory().createNewSolution("Test solution", "Test description");
 
         // Add solution to the store
         SolutionStore.getInstance().addSolution(newSolution);
@@ -35,7 +35,7 @@ public class SolutionListTest {
 
     @Test
     public void testSolutionDetails(){
-        Solution newSolution = SolutionFactory.getSprintFactory().createNewSolution("Test solution", "Test description");
+        Solution newSolution = SolutionFactory.getSolutionFactory().createNewSolution("Test solution", "Test description");
 
         SolutionStore.getInstance().addSolution(newSolution);
 

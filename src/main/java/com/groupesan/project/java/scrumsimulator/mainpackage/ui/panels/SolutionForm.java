@@ -2,6 +2,8 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Solution;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.SolutionFactory;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.SolutionStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 
@@ -78,6 +80,42 @@ public class SolutionForm extends JFrame implements BaseComponent {
                         1, 2, GridBagConstraints.EAST, 1.0, 0.0, GridBagConstraints.HORIZONTAL));
 
         JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String title = titleField.getText();
+                        String desc = descArea.getText();
+                        if(title.isEmpty() || desc.isEmpty()){
+                            Object[] message = {
+                                    " Title and Description cannot be empty ",
+                            };
+
+                            // Show a dialog with the JTextField containing the Simulation ID
+                            JOptionPane.showMessageDialog(
+                                    SolutionForm.this,
+                                    message,
+                                    "Error",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else{
+                            mySolution = SolutionFactory.getSolutionFactory().createNewSolution(title, desc);
+                            SolutionStore.getInstance().addSolution(mySolution);
+                            Object[] message = {
+                                    " Solution added successfully",
+                            };
+
+                            // Show a dialog with the JTextField containing the Simulation ID
+                            JOptionPane.showMessageDialog(
+                                    SolutionForm.this,
+                                    message,
+                                    "Success",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            dispose();
+                        }
+                    }
+                }
+        );
         myJpanel.add(
                 submitButton,
                 new CustomConstraints(
