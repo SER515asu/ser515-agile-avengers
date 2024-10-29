@@ -2,11 +2,14 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -62,7 +65,7 @@ public class BlockersListPane extends JFrame implements BaseComponent {
                         public void windowClosed(java.awt.event.WindowEvent windowEvent) {
                             Blocker blocker = form.getBlockerObject();
                             if (blocker != null) {  // Ensure blocker is valid
-                                addBlockerWidget(blocker); // Use the new addBlockerWidget method
+                                addBlockerWidget(new BlockerWidget(blocker, BlockersListPane.this));
                             }
                         }
                     });
@@ -80,14 +83,14 @@ public class BlockersListPane extends JFrame implements BaseComponent {
         subPanel.removeAll();
         widgets.clear();
 
-        int i = 1; // Start sequence numbering from 1
+        int i = 0;
         for (Blocker blocker : BlockerStore.getInstance().getAllBlockers()) {
-            BlockerWidget widget = new BlockerWidget(blocker, i++, this); // Pass sequence number i
+            BlockerWidget widget = new BlockerWidget(blocker, this);
             widgets.add(widget);
             subPanel.add(
                     widget,
                     new CustomConstraints(
-                            0, i - 1, GridBagConstraints.WEST, 1.0, 0.1, GridBagConstraints.HORIZONTAL));
+                            0, i++, GridBagConstraints.WEST, 1.0, 0.1, GridBagConstraints.HORIZONTAL));
         }
 
         subPanel.revalidate();
@@ -99,9 +102,7 @@ public class BlockersListPane extends JFrame implements BaseComponent {
         refreshBlockers();
     }
 
-    public void addBlockerWidget(Blocker blocker) {
-        int sequenceNumber = widgets.size() + 1;
-        BlockerWidget widget = new BlockerWidget(blocker, sequenceNumber, this);
+    public void addBlockerWidget(BlockerWidget widget) {
         widgets.add(widget);
         refreshBlockers();  // Ensure UI is refreshed after adding new blocker
     }
