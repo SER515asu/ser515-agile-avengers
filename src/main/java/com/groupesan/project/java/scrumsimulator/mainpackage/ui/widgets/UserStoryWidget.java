@@ -149,7 +149,7 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
                 JOptionPane.YES_NO_OPTION);
 
         if (confirmation == JOptionPane.YES_OPTION) {
-            UserStoryStore.getInstance(parentPane.getSimulationID()).removeUserStory(userStory);
+            UserStoryStore.getInstance(parentPane.getSimulationID()).removeUserStoryFromSprint(userStory);
             parentPane.removeUserStoryWidget(this);
         }
     }
@@ -159,3 +159,5 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
         headersAdded = false;
     }
 }
+
+
