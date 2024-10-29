@@ -3,7 +3,7 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
 public class SolutionFactory {
     private static SolutionFactory solutionFactory;
 
-    public static SolutionFactory getSprintFactory() {
+    public static SolutionFactory getSolutionFactory() {
         if (solutionFactory == null) {
             solutionFactory = new SolutionFactory();
         }
