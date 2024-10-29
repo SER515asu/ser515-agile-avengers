@@ -22,7 +22,6 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.UserStor
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 import lombok.Getter;
 
-
 public class UserStoryListPane extends JFrame implements BaseComponent {
     private Player player;
     @Getter
@@ -33,6 +32,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
         this.simulationID = simulationId;
         this.init();
     }
+
     private List<UserStoryWidget> widgets = new ArrayList<>();
     private JPanel subPanel = new JPanel();
 
@@ -69,8 +69,10 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
                                     public void windowClosed(
                                             java.awt.event.WindowEvent windowEvent) {
                                         UserStory userStory = form.getUserStoryObject();
-                                        UserStoryStore.getInstance(simulationID).addUserStory(userStory);
-                                        addUserStoryWidget(new UserStoryWidget(userStory, UserStoryListPane.this));
+                                        if (userStory != null) {
+                                            UserStoryStore.getInstance(simulationID).addUserStoryToBacklog(userStory);
+                                            addUserStoryWidget(new UserStoryWidget(userStory, UserStoryListPane.this));
+                                        }
                                     }
                                 });
                     }
@@ -88,8 +90,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
         widgets.clear();
 
         int i = 0;
-        for (UserStory userStory : UserStoryStore.getInstance(simulationID).getUserStories()) {
-            System.out.println("User stores count it "+ UserStoryStore.getInstance(simulationID).getUserStories().size());
+        for (UserStory userStory : UserStoryStore.getInstance(simulationID).getBacklogStories()) {
             UserStoryWidget widget = new UserStoryWidget(userStory, this);
             widgets.add(widget);
             subPanel.add(
