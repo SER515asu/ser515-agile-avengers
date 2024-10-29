@@ -15,8 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 
-import static com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.UserStoryWidget.resetHeadersAddedFlag;
-
 public class BlockerWidget extends JPanel implements BaseComponent {
 
     JLabel id;
@@ -31,16 +29,11 @@ public class BlockerWidget extends JPanel implements BaseComponent {
     @Getter
     private Blocker blocker;
     private BlockersListPane parentPane;
+    private int sequenceNumber; // Sequence number for display as ID
 
-
-    public BlockerWidget(Blocker blocker) {
+    public BlockerWidget(Blocker blocker, int sequenceNumber, BlockersListPane parentPane) {
         this.blocker = blocker;
-        this.init();
-    }
-
-
-    public BlockerWidget(Blocker blocker, BlockersListPane parentPane) {
-        this.blocker = blocker;
+        this.sequenceNumber = sequenceNumber;
         this.parentPane = parentPane;
         this.init();
     }
@@ -59,7 +52,7 @@ public class BlockerWidget extends JPanel implements BaseComponent {
             headersAdded = true;
         }
 
-        id = new JLabel(blocker.getId().toString());
+        id = new JLabel(String.valueOf(sequenceNumber)); // Display sequence number as ID
         name = new JLabel(blocker.getName());
         description = new JLabel(blocker.getDescription());
 
@@ -114,5 +107,10 @@ public class BlockerWidget extends JPanel implements BaseComponent {
             BlockerStore.getInstance().removeBlocker(blocker.getId());
             parentPane.removeBlockerWidget(this);
         }
+    }
+
+    // Method to reset the headersAdded flag
+    public static void resetHeadersAddedFlag() {
+        headersAdded = false;
     }
 }
