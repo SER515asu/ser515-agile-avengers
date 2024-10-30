@@ -222,6 +222,7 @@ public class SimulationStateManager {
                 newUserStory.put("PointValue", userStory.getPointValue());
                 newUserStory.put("BusinessValue", userStory.getBusinessValue());
                 newUserStory.put("Id", userStory.getId());
+                newUserStory.put("State", userStory.getState());
 
                 userStories.put(newUserStory);  // Add user story to JSON array
                 updateSimulationData(simulationData);
@@ -272,10 +273,29 @@ public class SimulationStateManager {
                     String description = userStoryJson.optString("Description", "No description");
                     double pointValue = userStoryJson.optDouble("PointValue", 0.0);
                     double businessValue = userStoryJson.optDouble("BusinessValue", 0.0);
-                    System.out.println("value is "+userStoryJson.optString("Id","US #0").split("#")[1]);
                     UserStoryIdentifier id = new UserStoryIdentifier(Integer.parseInt(userStoryJson.optString("Id","US #0").split("#")[1]));
 
-                    UserStory userStory = new UserStory(name, description, pointValue, businessValue);
+                    UserStory userStory = new UserStory(name, description, pointValue, businessValue, id);
+
+                    // read state data from json
+                    String state = userStoryJson.optString("State", "Unassigned");
+                    switch (state) {
+                        case "New":
+                            userStory.setState(new NewState(userStory));
+                            break;
+                        case "InProgress":
+                            userStory.setState(new InProgressState(userStory));
+                            break;
+                        case "ReadyToTest":
+                            userStory.setState(new ReadyToTestState(userStory));
+                            break;
+                        case "Complete":
+                            userStory.setState(new CompleteState(userStory));
+                            break;
+                        default:
+                            userStory.setState(new UnassignedState(userStory));
+                            break;
+                    }
                     userStoryList.add(userStory);
                 }
                 break;
@@ -285,4 +305,28 @@ public class SimulationStateManager {
         return userStoryList;
     }
 
+    public static void changeUserStoryState(String simulationID, String userStoryName, String newState) {
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray userStories = simulation.optJSONArray("UserStories");
+
+                for (int j = 0; j < userStories.length(); j++) {
+                    JSONObject userStoryJson = userStories.getJSONObject(j);
+                    if (userStoryJson.getString("Name").equals(userStoryName)) {
+                        // update the state in JSON
+                        userStoryJson.put("State", newState);
+
+                        updateSimulationData(simulationData);
+                        return;
+                    }
+                }
+            }
+        }
+    }
 }

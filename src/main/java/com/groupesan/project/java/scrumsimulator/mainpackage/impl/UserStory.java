@@ -3,9 +3,7 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumIdentifier;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumObject;
-import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryState;
-//import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryStatus;
-import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryUnselectedState;
+import com.groupesan.project.java.scrumsimulator.mainpackage.state.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +21,7 @@ public class UserStory extends ScrumObject {
 
     private double pointValue;
 
-    private UserStoryState userStoryState;  // might have to replace this way
+    private UserStoryState state;
 
     private Player owner;
 
@@ -46,7 +44,7 @@ public class UserStory extends ScrumObject {
         this.name = name;
         this.description = "";
         this.pointValue = pointValue;
-        this.userStoryState = new UserStoryUnselectedState(this);
+        this.state = new UnassignedState(this);
     }
 
     /**
@@ -62,7 +60,17 @@ public class UserStory extends ScrumObject {
         this.description = description;
         this.pointValue = pointValue;
         this.businessValue = businessValue;
-        this.userStoryState = new UserStoryUnselectedState(this);
+        this.state = new UnassignedState(this);
+        this.register();
+    }
+
+    public UserStory(String name, String description, double pointValue, double businessValue, UserStoryIdentifier id) {
+        this.name = name;
+        this.description = description;
+        this.pointValue = pointValue;
+        this.businessValue = businessValue;
+        this.state = new UnassignedState(this);
+        this.id = id;
         this.register();
     }
 
@@ -108,6 +116,17 @@ public class UserStory extends ScrumObject {
     }
 
     // State Management, need Player class to implement final selection logic
+    public void editStoryStateFunction() {
+        state.editStoryStateFunction();
+    }
 
+    public String getState() {
+        if (state instanceof UnassignedState) return "Unassigned";
+        if (state instanceof NewState) return "New";
+        if (state instanceof InProgressState) return "InProgress";
+        if (state instanceof ReadyToTestState) return "ReadyToTest";
+        if (state instanceof CompleteState) return "Complete";
+        return "Unknown";
+    }
 
 }

@@ -31,6 +31,11 @@ public class UserStoryStore {
         return new ArrayList<>(userStories);
     }
 
+    public List<UserStory> getUserStoriesFromJson() {
+        loadUserStoriesFromJson();
+        return new ArrayList<>(userStories);
+    }
+
     public void removeUserStory(UserStory userStory) {
         userStories.remove(userStory);
         SimulationStateManager.removeUserStoryFromSimulation(simulationID, userStory.getName());
