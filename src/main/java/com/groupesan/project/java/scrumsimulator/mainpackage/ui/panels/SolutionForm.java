@@ -33,8 +33,6 @@ public class SolutionForm extends JFrame implements BaseComponent {
 
     JTextField titleField = new JTextField();
     JTextArea descArea = new JTextArea();
-    // Create JComboBox for blocker selection
-    JComboBox<Blocker> blockersBox = new JComboBox<>();
 
     public void init(){
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -68,16 +66,6 @@ public class SolutionForm extends JFrame implements BaseComponent {
                 new JScrollPane(descArea),
                 new CustomConstraints(
                         1, 1, GridBagConstraints.EAST, 1.0, 0.3, GridBagConstraints.BOTH));
-
-        JLabel blockerSelectionLabel = new JLabel("Blocker:");
-        myJpanel.add(
-                blockerSelectionLabel,
-                new CustomConstraints(
-                        0, 2, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL));
-        myJpanel.add(
-                blockersBox,
-                new CustomConstraints(
-                        1, 2, GridBagConstraints.EAST, 1.0, 0.0, GridBagConstraints.HORIZONTAL));
 
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(
