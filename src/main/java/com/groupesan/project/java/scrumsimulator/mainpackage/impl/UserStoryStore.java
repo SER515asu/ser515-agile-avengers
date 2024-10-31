@@ -91,6 +91,14 @@ public class UserStoryStore {
      */
     public List<UserStory> getUserStoriesInSprint() {
         return new ArrayList<>(sprintStories);
+    public List<UserStory> getUserStoriesFromJson() {
+        loadUserStoriesFromJson();
+        return new ArrayList<>(userStories);
+    }
+
+    public void removeUserStory(UserStory userStory) {
+        userStories.remove(userStory);
+        SimulationStateManager.removeUserStoryFromSimulation(simulationID, userStory.getName());
     }
 
     /**
