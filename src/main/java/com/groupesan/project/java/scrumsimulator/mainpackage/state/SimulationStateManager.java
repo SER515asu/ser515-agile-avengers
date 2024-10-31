@@ -347,7 +347,7 @@ public class SimulationStateManager {
                     return blockers;
                 }
                 for(int j=0;j<blockersInSimulation.length(); j++){
-                    JSONObject blockerObj = blockersInSimulation.getJSONObject(i);
+                    JSONObject blockerObj = blockersInSimulation.getJSONObject(j);
                     Blocker blocker = new Blocker(UUID.fromString(blockerObj.getString("ID")), blockerObj.getString("Name"), blockerObj.getString("Description"));
                     blockers.add(blocker);
                 }

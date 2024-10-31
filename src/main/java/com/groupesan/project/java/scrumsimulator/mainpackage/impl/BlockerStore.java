@@ -23,7 +23,7 @@ public class BlockerStore {
 
     // Method to get the singleton instance of BlockerStore
     public static BlockerStore getInstance(String simulationId) {
-        if (instance == null || !currentSimulationId.equals(simulationId)) {
+        if (instance == null || !simulationId.equals(currentSimulationId)) {
             currentSimulationId = simulationId;
             instance = new BlockerStore();
         }
