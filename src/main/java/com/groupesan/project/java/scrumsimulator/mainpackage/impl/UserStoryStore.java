@@ -14,7 +14,7 @@ public class UserStoryStore {
         this.simulationID = simulationID;
         backlogStories = new ArrayList<>();
         sprintStories = new ArrayList<>();
-        loadUserStoriesFromJson();
+        loadProductBacklogFromJson();
     }
 
     public static UserStoryStore getInstance(String simulationID) {
@@ -90,23 +90,28 @@ public class UserStoryStore {
      * @return List of user stories in the sprint.
      */
     public List<UserStory> getUserStoriesInSprint() {
-        return new ArrayList<>(sprintStories);
+        loadProductBacklogFromJson();
+        return new ArrayList<>(backlogStories);
+//        return new ArrayList<>(sprintStories); // switch it back
+    }
     public List<UserStory> getUserStoriesFromJson() {
-        loadUserStoriesFromJson();
-        return new ArrayList<>(userStories);
+        loadProductBacklogFromJson();
+        return new ArrayList<>(backlogStories);
     }
 
     public void removeUserStory(UserStory userStory) {
-        userStories.remove(userStory);
+        backlogStories.remove(userStory);
         SimulationStateManager.removeUserStoryFromSimulation(simulationID, userStory.getName());
     }
 
     /**
      * Loads user stories from JSON for a specific simulation ID and populates the UserStoryStore.
      */
-    public void loadUserStoriesFromJson() {
+    public void loadProductBacklogFromJson() {
         backlogStories.clear();
         sprintStories.clear();
-        backlogStories.addAll(SimulationStateManager.getUserStoriesForSimulation(simulationID));
+        backlogStories.addAll(SimulationStateManager.getUserStoriesForSimulation(simulationID,true)); // switch to false
+        sprintStories.addAll(SimulationStateManager.getUserStoriesForSimulation(simulationID,true));
     }
+
 }

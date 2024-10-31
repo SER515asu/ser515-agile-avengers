@@ -254,7 +254,7 @@ public class SimulationStateManager {
         }
     }
 
-    public static List<UserStory> getUserStoriesForSimulation(String simulationID) {
+    public static List<UserStory> getUserStoriesForSimulation(String simulationID, boolean isProductBacklog) {
         JSONObject simulationData = getSimulationData();
         List<UserStory> userStoryList = new ArrayList<>();
 
@@ -265,7 +265,7 @@ public class SimulationStateManager {
         for (int i = 0; i < simulations.length(); i++) {
             JSONObject simulation = simulations.getJSONObject(i);
             if (simulation.getString("ID").equals(simulationID)) {
-                JSONArray userStories = simulation.optJSONArray("UserStories");
+                JSONArray userStories = simulation.optJSONArray(isProductBacklog?"UserStories":"UserStories");
 
                 for (int j = 0; j < userStories.length(); j++) {
                     JSONObject userStoryJson = userStories.getJSONObject(j);
