@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.swing.JOptionPane;
-
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.*;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Sprint;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryIdentifier;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;

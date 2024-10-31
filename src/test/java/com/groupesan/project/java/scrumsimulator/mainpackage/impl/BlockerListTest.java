@@ -1,6 +1,5 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
 
-import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationStateManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.UUID;
