@@ -39,7 +39,7 @@ public class UpdateUserStoryPanel extends JFrame {
         add(panel);
 
         setLocationRelativeTo(null);
-//        reloadData();
+        reloadData();
     }
 
     private void placeComponents(JPanel panel) {
