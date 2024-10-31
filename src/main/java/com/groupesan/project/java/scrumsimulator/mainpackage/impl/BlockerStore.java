@@ -36,12 +36,6 @@ public class BlockerStore {
         SimulationStateManager.storeBlockerInSimulation(currentSimulationId, blocker);
     }
 
-    public void addBlocker(Blocker blocker, boolean test){
-        if(test){
-            blockers.add(blocker);
-        }
-    }
-
     // Method to remove a blocker by its UUID
     public void removeBlocker(UUID id) {
         blockers.removeIf(blocker -> blocker.getId().equals(id));
