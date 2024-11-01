@@ -101,11 +101,13 @@ public class BlockersProbabilityPane extends JFrame implements BaseComponent {
         for(int i=0; i<probabilities.size()-1; i++){
             startValue.addItem(String.valueOf(probabilities.get(i)));
         }
+        startValue.setSelectedIndex(0);
 
         JComboBox<String> endValue = new JComboBox<>();
         for(int i=1; i<probabilities.size(); i++){
             endValue.addItem(String.valueOf(probabilities.get(i)));
         }
+        endValue.setSelectedIndex(0);
 
         startValue.addActionListener(
                 new ActionListener() {
