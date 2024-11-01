@@ -18,16 +18,20 @@ public class BlockersProbabilityPane extends JFrame implements BaseComponent {
     private List<Blocker> selectedBlockers = new ArrayList<>();
     private JComboBox<String> blockerJComboBox = new JComboBox<>();
     JPanel subPanel = new JPanel();
+    private List<Float> probabilities = new ArrayList<>();
 
     public BlockersProbabilityPane(){
         this.availableBlockers = BlockerStore.getInstance().getAllBlockers();
+        for(int i=0;i<=10;i++){
+            probabilities.add((float) i/10);
+        }
         this.init();
     }
 
     public void init(){
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Fine-tune Blockers Probabilities");
-        setSize(400, 300);
+        setSize(500, 500);
 
         GridBagLayout myGridbagLayout = new GridBagLayout();
         JPanel myJpanel = new JPanel();
@@ -70,6 +74,61 @@ public class BlockersProbabilityPane extends JFrame implements BaseComponent {
         myJpanel.add(
                 new JScrollPane(subPanel),
                 new CustomConstraints(0, 4, GridBagConstraints.WEST, 1.0, 0.1, GridBagConstraints.BOTH));
+
+        // Probability range selection
+        JLabel probabilitySelectionLabel = new JLabel("Select Probability Range:");
+        myJpanel.add(
+                probabilitySelectionLabel,
+                new CustomConstraints(0, 5, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+
+        // Sub panel for probability range
+        JPanel probabilitySubPanel = new JPanel();
+        probabilitySubPanel.setLayout(new GridBagLayout());
+
+        JLabel startLabel = new JLabel("Start:");
+        JLabel endLabel = new JLabel("End:");
+        probabilitySubPanel.add(
+                startLabel,
+                new CustomConstraints(0, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        probabilitySubPanel.add(
+                endLabel,
+                new CustomConstraints(1, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+
+        // Dropdowns for range selection
+        JComboBox<String> startValue = new JComboBox<>();
+        for(int i=0; i<probabilities.size()-1; i++){
+            startValue.addItem(String.valueOf(probabilities.get(i)));
+        }
+
+        JComboBox<String> endValue = new JComboBox<>();
+        for(int i=1; i<probabilities.size(); i++){
+            endValue.addItem(String.valueOf(probabilities.get(i)));
+        }
+
+        startValue.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        int selectedIndex = startValue.getSelectedIndex();
+                        endValue.removeAllItems();
+                        for(int i=selectedIndex+1; i<probabilities.size(); i++){
+                            endValue.addItem(String.valueOf(probabilities.get(i)));
+                        }
+                    }
+                }
+        );
+
+        probabilitySubPanel.add(
+                startValue,
+                new CustomConstraints(0, 1, GridBagConstraints.WEST, 0.2, 0.1, GridBagConstraints.HORIZONTAL));
+
+        probabilitySubPanel.add(
+                endValue,
+                new CustomConstraints(1, 1, GridBagConstraints.WEST, 0.2, 0.1, GridBagConstraints.HORIZONTAL));
+
+        myJpanel.add(
+                probabilitySubPanel,
+                new CustomConstraints(0, 6, GridBagConstraints.WEST, 0.0, 0.0, GridBagConstraints.BOTH));
 
         add(myJpanel);
     }
