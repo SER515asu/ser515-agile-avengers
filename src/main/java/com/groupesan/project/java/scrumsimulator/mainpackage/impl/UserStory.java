@@ -129,6 +129,7 @@ public class UserStory extends ScrumObject {
         if (linkedBlockers.remove(blocker)) {
             blocker.removeLinkedUserStory(this); // Remove this user story from the blocker's linked stories
         }
+    }
 
     /**
      * Returns a list of linked blockers for this user story.
