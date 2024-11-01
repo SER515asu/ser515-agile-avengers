@@ -1,6 +1,7 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Solution;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.SolutionStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
@@ -73,6 +74,23 @@ public class SolutionListPane extends JFrame implements BaseComponent {
                 new CustomConstraints(0, 1, GridBagConstraints.WEST, 1.0, 0.2, GridBagConstraints.HORIZONTAL)
         );
 
+        JButton probabilities_Button = new JButton("Fine-tune Probabilities");
+        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
+            probabilities_Button.setEnabled(false);
+        }
+        probabilities_Button.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        SolutionsProbabilityPane form = new SolutionsProbabilityPane();
+                        form.setVisible(true);
+                    }
+                }
+        );
+
+        myJpanel.add(
+                probabilities_Button,
+                new CustomConstraints(0, 2, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(myJpanel);
     }
 
