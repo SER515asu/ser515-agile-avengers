@@ -12,7 +12,7 @@ public abstract class UserStoryState {
     public abstract void editStoryStateFunction();
 
     public static String[] getStatusOptions() {
-        return new String[]{"Unassigned", "New", "InProgress", "ReadyToTest", "Complete"};
+        return new String[]{"Unassigned", "New", "InProgress", "ReadyToTest", "Complete", "Blocked"};
     }
 }
 
