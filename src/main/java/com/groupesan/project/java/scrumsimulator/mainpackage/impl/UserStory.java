@@ -130,20 +130,6 @@ public class UserStory extends ScrumObject {
             blocker.removeLinkedUserStory(this); // Remove this user story from the blocker's linked stories
         }
 
-    // State Management, need Player class to implement final selection logic
-    public void editStoryStateFunction() {
-        state.editStoryStateFunction();
-    }
-
-    public String getState() {
-        if (state instanceof UnassignedState) return "Unassigned";
-        if (state instanceof NewState) return "New";
-        if (state instanceof InProgressState) return "InProgress";
-        if (state instanceof ReadyToTestState) return "ReadyToTest";
-        if (state instanceof CompleteState) return "Complete";
-        return "Unknown";
-    }
-
     /**
      * Returns a list of linked blockers for this user story.
      *
