@@ -29,12 +29,9 @@ public class BlockerWidget extends JPanel implements BaseComponent {
     @Getter
     private Blocker blocker;
     private BlockersListPane parentPane;
+    private int sequenceNumber;
 
-    private int sequenceNumber; // Sequence number for display as ID
-    private String simulationId;
-
-    public BlockerWidget(String simulationId, Blocker blocker, int sequenceNumber, BlockersListPane parentPane) {
-        this.simulationId = simulationId;
+    public BlockerWidget(Blocker blocker, int sequenceNumber, BlockersListPane parentPane) {
         this.blocker = blocker;
         this.sequenceNumber = sequenceNumber;
         this.parentPane = parentPane;
@@ -141,7 +138,7 @@ public class BlockerWidget extends JPanel implements BaseComponent {
                 JOptionPane.YES_NO_OPTION);
 
         if (confirmation == JOptionPane.YES_OPTION) {
-            BlockerStore.getInstance(simulationId).removeBlocker(blocker.getId());
+            BlockerStore.getInstance().removeBlocker(blocker.getId());
             parentPane.removeBlockerWidget(this);
         }
     }

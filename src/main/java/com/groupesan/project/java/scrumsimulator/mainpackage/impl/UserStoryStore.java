@@ -91,7 +91,6 @@ public class UserStoryStore {
      */
     public List<UserStory> getUserStoriesInSprint() {
         return new ArrayList<>(sprintStories);
-
     }
 
     /**

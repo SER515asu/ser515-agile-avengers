@@ -59,5 +59,4 @@ public class Blocker {
     public String toString() {
         return name + " (ID: " + name + ")";
     }
-
 }

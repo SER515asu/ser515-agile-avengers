@@ -2,7 +2,6 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.BlockerFactory;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.BlockerStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 
@@ -18,7 +17,6 @@ public class BlockerForm extends JFrame implements BaseComponent {
     private JTextArea descArea;
     private Blocker blocker;
     private boolean isNewBlocker;
-    private String simulationId;
 
     public BlockerForm(Blocker blocker) {
         this.blocker = blocker;
@@ -26,9 +24,8 @@ public class BlockerForm extends JFrame implements BaseComponent {
         this.init();
     }
 
-    public BlockerForm(String simulationId) {
+    public BlockerForm() {
         this.isNewBlocker = true;
-        this.simulationId = simulationId;
         this.init();
     }
 
@@ -121,7 +118,7 @@ public class BlockerForm extends JFrame implements BaseComponent {
 
         BlockerFactory blockerFactory = BlockerFactory.getInstance();
         Blocker blocker = blockerFactory.createNewBlocker(name, description);
-        BlockerStore.getInstance(simulationId).addBlocker(blocker);
+        blocker.doRegister();
 
         return blocker;
     }
