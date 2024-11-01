@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Sprint;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryIdentifier;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -222,6 +223,7 @@ public class SimulationStateManager {
                 newUserStory.put("PointValue", userStory.getPointValue());
                 newUserStory.put("BusinessValue", userStory.getBusinessValue());
                 newUserStory.put("Id", userStory.getId());
+                newUserStory.put("State", userStory.getState());
 
                 userStories.put(newUserStory);  // Add user story to JSON array
                 updateSimulationData(simulationData);
@@ -272,10 +274,29 @@ public class SimulationStateManager {
                     String description = userStoryJson.optString("Description", "No description");
                     double pointValue = userStoryJson.optDouble("PointValue", 0.0);
                     double businessValue = userStoryJson.optDouble("BusinessValue", 0.0);
-                    System.out.println("value is "+userStoryJson.optString("Id","US #0").split("#")[1]);
                     UserStoryIdentifier id = new UserStoryIdentifier(Integer.parseInt(userStoryJson.optString("Id","US #0").split("#")[1]));
 
-                    UserStory userStory = new UserStory(name, description, pointValue, businessValue);
+                    UserStory userStory = new UserStory(name, description, pointValue, businessValue, id);
+
+                    // read state data from json
+                    String state = userStoryJson.optString("State", "Unassigned");
+                    switch (state) {
+                        case "New":
+                            userStory.setState(new NewState(userStory));
+                            break;
+                        case "InProgress":
+                            userStory.setState(new InProgressState(userStory));
+                            break;
+                        case "ReadyToTest":
+                            userStory.setState(new ReadyToTestState(userStory));
+                            break;
+                        case "Complete":
+                            userStory.setState(new CompleteState(userStory));
+                            break;
+                        default:
+                            userStory.setState(new UnassignedState(userStory));
+                            break;
+                    }
                     userStoryList.add(userStory);
                 }
                 break;
@@ -285,4 +306,86 @@ public class SimulationStateManager {
         return userStoryList;
     }
 
+    public static void changeUserStoryState(String simulationID, String userStoryName, String newState) {
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray userStories = simulation.optJSONArray("UserStories");
+
+                for (int j = 0; j < userStories.length(); j++) {
+                    JSONObject userStoryJson = userStories.getJSONObject(j);
+                    if (userStoryJson.getString("Name").equals(userStoryName)) {
+                        // update the state in JSON
+                        userStoryJson.put("State", newState);
+
+                        updateSimulationData(simulationData);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    public static List<Blocker> getBlockersForSimulation(String simulationId){
+        List<Blocker> blockers = new ArrayList<>();
+
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return blockers;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i<simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray blockersInSimulation = simulation.optJSONArray("Blockers");
+                if(blockersInSimulation == null){
+                    return blockers;
+                }
+                for(int j=0;j<blockersInSimulation.length(); j++){
+                    JSONObject blockerObj = blockersInSimulation.getJSONObject(j);
+                    Blocker blocker = new Blocker(UUID.fromString(blockerObj.getString("ID")), blockerObj.getString("Name"), blockerObj.getString("Description"));
+                    blockers.add(blocker);
+                }
+                break;
+            }
+        }
+        return blockers;
+    }
+
+    public static void storeBlockerInSimulation(String simulationId, Blocker blocker){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i<simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray blockersInSimulation = simulation.optJSONArray("Blockers");
+
+                JSONObject newBlockerObj = new JSONObject();
+                newBlockerObj.put("ID", blocker.getId());
+                newBlockerObj.put("Name", blocker.getName());
+                newBlockerObj.put("Description", blocker.getDescription());
+
+                if(blockersInSimulation == null){
+                    blockersInSimulation = new JSONArray();
+                    simulation.put("Blockers", blockersInSimulation);
+                }
+
+                blockersInSimulation.put(newBlockerObj);
+                updateSimulationData(simulationData);
+                return;
+            }
+        }
+    }
 }
