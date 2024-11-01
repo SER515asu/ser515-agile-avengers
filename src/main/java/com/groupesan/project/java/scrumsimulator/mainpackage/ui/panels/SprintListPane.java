@@ -13,7 +13,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-//import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,6 @@ public class SprintListPane extends JFrame implements BaseComponent {
         this.init();
     }
 
-
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Sprints List");
@@ -39,16 +37,6 @@ public class SprintListPane extends JFrame implements BaseComponent {
         JPanel myJpanel = new JPanel();
         myJpanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         myJpanel.setLayout(myGridbagLayout);
-
-        // Add predefined sprints to the store if they don't exist already
-        if (SprintStore.getInstance(simulationID).getSprints().isEmpty()) {
-//            Sprint sprint1 = new Sprint("Sprint 1", "Initial sprint with basic tasks", 2,1);
-//            Sprint sprint2 = new Sprint("Sprint 2", "Sprint for refining features", 3,2);
-//            Sprint sprint3 = new Sprint("Sprint 3", "Bug fixing and testing", 1,3);
-//            SprintStore.getInstance().addSprint(sprint1);
-//            SprintStore.getInstance().addSprint(sprint2);
-//            SprintStore.getInstance().addSprint(sprint3);
-        }
 
         // Load existing sprints from the store
         sprints.addAll(SprintStore.getInstance(simulationID).getSprints());
@@ -62,9 +50,7 @@ public class SprintListPane extends JFrame implements BaseComponent {
                         0, 0, GridBagConstraints.WEST, 1.0, 0.8, GridBagConstraints.BOTH));
 
         JButton newSprintButton = new JButton("New Sprint");
-        // Will enable functionality next sprint
-        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName()) || player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName()))
-        {
+        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName()) || player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
             newSprintButton.setEnabled(false);
         }
         newSprintButton.addActionListener(e -> {
@@ -73,11 +59,11 @@ public class SprintListPane extends JFrame implements BaseComponent {
 
             form.addWindowListener(new java.awt.event.WindowAdapter() {
                 public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                    Sprint newSprint = form.getSprintObject();
-                    if (newSprint != null && !sprints.contains(newSprint)) {
-                        SprintStore.getInstance(simulationID).addSprint(newSprint);
+                    //Sprint newSprint = form.getSprintObject();
+                    //if (newSprint != null && !sprints.contains(newSprint)) {
+                        //SprintStore.getInstance(simulationID).addSprint(newSprint);
                         updateSprintList();
-                    }
+                    //}
                 }
             });
         });
@@ -93,12 +79,11 @@ public class SprintListPane extends JFrame implements BaseComponent {
     private void updateSprintList() {
         subPanel.removeAll();
         sprints = new ArrayList<>(SprintStore.getInstance(simulationID).getSprints());
-        List<Sprint> sprints = SimulationStateManager.getSprintsForSimulation(simulationID);
 
         int row = 0;
         for (Sprint sprint : sprints) {
             JPanel sprintPanel = new JPanel(new GridBagLayout());
-            JButton sprintButton = new JButton("Sprint " +sprint.getName());
+            JButton sprintButton = new JButton("Sprint " + sprint.getName());
             sprintButton.addActionListener(e -> showSprintDetails(sprint));
 
             JButton removeSprintButton = new JButton("Remove");
@@ -131,13 +116,15 @@ public class SprintListPane extends JFrame implements BaseComponent {
     }
 
     private void showSprintDetails(Sprint sprint) {
-        JFrame sprintDetailsFrame = new JFrame("Sprint: " + sprint.getName());
+        Sprint refreshedSprint = SprintStore.getInstance(simulationID).getSprint(sprint.getName());
+
+        JFrame sprintDetailsFrame = new JFrame("Sprint: " + refreshedSprint.getName());
         sprintDetailsFrame.setSize(500, 400);
 
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new GridBagLayout());
 
-        JLabel sprintLabel = new JLabel("Sprint: " + sprint.getName() + " - " + sprint.getDescription());
+        JLabel sprintLabel = new JLabel("Sprint: " + refreshedSprint.getName() + " - " + refreshedSprint.getDescription());
         detailsPanel.add(
                 sprintLabel,
                 new CustomConstraints(
@@ -145,7 +132,7 @@ public class SprintListPane extends JFrame implements BaseComponent {
 
         // Show details of each user story in the sprint
         int row = 1;
-        for (UserStory userStory : sprint.getUserStories()) {
+        for (UserStory userStory : refreshedSprint.getUserStories()) {
             JLabel userStoryLabel = new JLabel("ID: " + userStory.getId() +
                     " | Name: " + userStory.getName() +
                     " | Points: " + userStory.getPointValue() +
@@ -158,26 +145,26 @@ public class SprintListPane extends JFrame implements BaseComponent {
 
         JButton addUserStoryButton = new JButton("Add User Story");
         addUserStoryButton.addActionListener(e -> {
-            AddUserStoryToSprintForm form = new AddUserStoryToSprintForm(sprint, simulationID);
+            AddUserStoryToSprintForm form = new AddUserStoryToSprintForm(refreshedSprint, simulationID);
             form.setVisible(true);
             form.addWindowListener(new java.awt.event.WindowAdapter() {
                 public void windowClosed(java.awt.event.WindowEvent windowEvent) {
                     updateSprintList();
                     sprintDetailsFrame.dispose();
-                    showSprintDetails(sprint);
+                    showSprintDetails(refreshedSprint);
                 }
             });
         });
 
         JButton removeUserStoryButton = new JButton("Remove User Story");
         removeUserStoryButton.addActionListener(e -> {
-            RemoveUserStoryFromSprintForm form = new RemoveUserStoryFromSprintForm(sprint);
+            RemoveUserStoryFromSprintForm form = new RemoveUserStoryFromSprintForm(refreshedSprint, simulationID);
             form.setVisible(true);
             form.addWindowListener(new java.awt.event.WindowAdapter() {
                 public void windowClosed(java.awt.event.WindowEvent windowEvent) {
                     updateSprintList();
                     sprintDetailsFrame.dispose();
-                    showSprintDetails(sprint);
+                    showSprintDetails(refreshedSprint);
                 }
             });
         });

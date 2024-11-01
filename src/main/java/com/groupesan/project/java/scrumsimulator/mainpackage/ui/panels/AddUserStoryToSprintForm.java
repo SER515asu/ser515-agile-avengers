@@ -14,7 +14,7 @@ public class AddUserStoryToSprintForm extends JFrame {
 
     private Sprint sprint;
     private JComboBox<UserStory> userStoryComboBox;
-    String simulationID;
+    private String simulationID;
 
     public AddUserStoryToSprintForm(Sprint sprint, String simulationID) {
         this.sprint = sprint;
@@ -36,7 +36,8 @@ public class AddUserStoryToSprintForm extends JFrame {
                         0, 0, GridBagConstraints.WEST, 1.0, 0.0, GridBagConstraints.HORIZONTAL));
 
         userStoryComboBox = new JComboBox<>();
-        for (UserStory userStory : UserStoryStore.getInstance(simulationID).getUserStories()) {
+        // Fetch only backlog stories for adding to sprint
+        for (UserStory userStory : UserStoryStore.getInstance(simulationID).getBacklogStories()) {
             if (!sprint.getUserStories().contains(userStory)) {
                 userStoryComboBox.addItem(userStory);
             }
@@ -55,6 +56,7 @@ public class AddUserStoryToSprintForm extends JFrame {
                         UserStory selectedUserStory = (UserStory) userStoryComboBox.getSelectedItem();
                         if (selectedUserStory != null) {
                             sprint.addUserStory(selectedUserStory);
+                            UserStoryStore.getInstance(simulationID).addUserStoryToSprint(selectedUserStory); // Move to sprint
                             JOptionPane.showMessageDialog(AddUserStoryToSprintForm.this,
                                     "User story added successfully.",
                                     "Success",

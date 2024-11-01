@@ -9,12 +9,10 @@ public abstract class UserStoryState {
         this.userStory = userStory;
     }
 
-    public abstract void editStoryStateFunction();
+    // Methods to change state, return a string of the state after change
+    public abstract String onSelect();
 
-    public static String[] getStatusOptions() {
-        return new String[]{"Unassigned", "New", "InProgress", "ReadyToTest", "Complete"};
-    }
+    public abstract String onComplete();
+
+    public abstract String onDelete();
 }
-
-
-

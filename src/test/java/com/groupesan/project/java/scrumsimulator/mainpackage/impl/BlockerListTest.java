@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BlockerListTest {
     private Blocker myBlocker;
-    private String mySimulationId;
 
     @BeforeEach
     public void setup() {
@@ -15,24 +14,23 @@ public class BlockerListTest {
         myBlocker =
                 BlockerFactory.getInstance()
                         .createNewBlocker("Blocker1","Blocker1description");
-        mySimulationId = "random_test_id";
     }
 
     //Testing AddBlocker functionality
-//    @Test
-//    public void testAddBlocker(){
-//        Blocker newBlocker = BlockerFactory.getInstance().createNewBlocker("Test Blocker", "Test description");
-//        BlockerStore.getInstance(mySimulationId).addBlocker(newBlocker);
-//        assertTrue(BlockerStore.getInstance(mySimulationId).getAllBlockers().contains(newBlocker));
-//    }
+    @Test
+    public void testAddBlocker(){
+        Blocker newBlocker = BlockerFactory.getInstance().createNewBlocker("Test Blocker", "Test description");
+        BlockerStore.getInstance().addBlocker(newBlocker);
+        assertTrue(BlockerStore.getInstance().getAllBlockers().contains(newBlocker));
+    }
 
     //Testing doRegister functionality on blocker creation
-//    @Test
-//    public void testBlockerRegistered() {
-//        BlockerStore.getInstance(mySimulationId).addBlocker(myBlocker);
-//        UUID id = myBlocker.getId();
-//        assertNotNull(id);
-//    }
+    @Test
+    public void testBlockerRegistered() {
+        myBlocker.doRegister();
+        UUID id = myBlocker.getId();
+        assertNotNull(id);
+    }
 
     //Testing blocker details after creation
     @Test

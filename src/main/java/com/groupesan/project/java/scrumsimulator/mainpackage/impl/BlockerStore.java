@@ -1,7 +1,5 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
 
-import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationStateManager;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,18 +11,15 @@ public class BlockerStore {
 
     // List to store the blockers
     private List<Blocker> blockers;
-    private static String currentSimulationId;
 
     // Private constructor to prevent instantiation
     private BlockerStore() {
         blockers = new ArrayList<>();
-        fetchAndStoreBlockersForSimulation();
     }
 
     // Method to get the singleton instance of BlockerStore
-    public static BlockerStore getInstance(String simulationId) {
-        if (instance == null || !simulationId.equals(currentSimulationId)) {
-            currentSimulationId = simulationId;
+    public static BlockerStore getInstance() {
+        if (instance == null) {
             instance = new BlockerStore();
         }
         return instance;
@@ -33,7 +28,6 @@ public class BlockerStore {
     // Method to add a blocker to the store
     public void addBlocker(Blocker blocker) {
         blockers.add(blocker);
-        SimulationStateManager.storeBlockerInSimulation(currentSimulationId, blocker);
     }
 
     // Method to remove a blocker by its UUID
@@ -62,9 +56,5 @@ public class BlockerStore {
             return true;
         }
         return false;
-    }
-
-    private void fetchAndStoreBlockersForSimulation(){
-        blockers.addAll(SimulationStateManager.getBlockersForSimulation(currentSimulationId));
     }
 }
