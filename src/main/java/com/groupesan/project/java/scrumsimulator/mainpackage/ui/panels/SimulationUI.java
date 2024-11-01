@@ -203,6 +203,14 @@ public class SimulationUI extends JFrame implements BaseComponent {
         }
         buttonPanel.add(blockersButton);
 
+        JButton spikeButton = new JButton("List of Spikes");
+        spikeButton.setPreferredSize(buttonSize);
+        spikeButton.addActionListener(e -> new SpikeListPanel(player).setVisible(true));
+//        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) { // activate later
+//            blockersButton.setVisible(false);
+//        }
+        buttonPanel.add(spikeButton);
+
         // Add the "List of Solutions" button with access only for Developer
         JButton solutionsButton = new JButton("List of Solutions");
         solutionsButton.setPreferredSize(buttonSize);
