@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,10 +91,10 @@ public class BlockersProbabilityPane extends JFrame implements BaseComponent {
         JLabel endLabel = new JLabel("End:");
         probabilitySubPanel.add(
                 startLabel,
-                new CustomConstraints(0, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+                new CustomConstraints(0, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         probabilitySubPanel.add(
                 endLabel,
-                new CustomConstraints(1, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+                new CustomConstraints(1, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
 
         // Dropdowns for range selection
         JComboBox<String> startValue = new JComboBox<>();
@@ -118,17 +120,61 @@ public class BlockersProbabilityPane extends JFrame implements BaseComponent {
                 }
         );
 
+        JCheckBox randomizeProbability = new JCheckBox("Randomize range");
+        randomizeProbability.addItemListener(
+                new ItemListener() {
+                    @Override
+                    public void itemStateChanged(ItemEvent e) {
+                        int state = e.getStateChange();
+                        startValue.setEnabled(state==2);
+                        endValue.setEnabled(state==2);
+                    }
+                }
+        );
+
         probabilitySubPanel.add(
                 startValue,
-                new CustomConstraints(0, 1, GridBagConstraints.WEST, 0.2, 0.1, GridBagConstraints.HORIZONTAL));
+                new CustomConstraints(0, 2, GridBagConstraints.WEST, 0.2, 0.1, GridBagConstraints.HORIZONTAL));
 
         probabilitySubPanel.add(
                 endValue,
-                new CustomConstraints(1, 1, GridBagConstraints.WEST, 0.2, 0.1, GridBagConstraints.HORIZONTAL));
+                new CustomConstraints(1, 2, GridBagConstraints.WEST, 0.2, 0.1, GridBagConstraints.HORIZONTAL));
+
+        probabilitySubPanel.add(
+                randomizeProbability,
+                new CustomConstraints(0, 0, GridBagConstraints.WEST, 0.2, 0.1, GridBagConstraints.NONE));
 
         myJpanel.add(
                 probabilitySubPanel,
                 new CustomConstraints(0, 6, GridBagConstraints.WEST, 0.0, 0.0, GridBagConstraints.BOTH));
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                    }
+                }
+        );
+
+        myJpanel.add(
+                cancelButton,
+                new CustomConstraints(0, 7, GridBagConstraints.WEST, GridBagConstraints.NONE));
+
+        JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Add logic to store probabilities in the backend
+                    }
+                }
+        );
+
+        myJpanel.add(
+                submitButton,
+                new CustomConstraints(0, 7, GridBagConstraints.EAST, GridBagConstraints.NONE));
 
         add(myJpanel);
     }
