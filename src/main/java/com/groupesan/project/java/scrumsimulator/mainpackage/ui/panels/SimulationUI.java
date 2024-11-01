@@ -181,7 +181,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
         // Add the "List of Blockers" button with access only for Developer
         JButton blockersButton = new JButton("List of Blockers");
         blockersButton.setPreferredSize(buttonSize);
-        blockersButton.addActionListener(e -> new BlockersListPane(player).setVisible(true));
+        blockersButton.addActionListener(e -> new BlockersListPane(player, selectedSimulationId).setVisible(true));
         if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
             blockersButton.setVisible(false);
         }

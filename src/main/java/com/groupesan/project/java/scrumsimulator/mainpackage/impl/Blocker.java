@@ -42,7 +42,7 @@ public class Blocker {
 
 
     // Method to register the blocker in the BlockerStore
-    public void doRegister() {
-        BlockerStore.getInstance().addBlocker(this); // Register this blocker in the store
-    }
+//    public void doRegister() {
+//        BlockerStore.getInstance().addBlocker(this); // Register this blocker in the store
+//    }
 }
