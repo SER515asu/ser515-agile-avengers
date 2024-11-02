@@ -1,5 +1,7 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets;
 
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.BlockerStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.StoryForm;
@@ -7,13 +9,13 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.UserStory
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 import lombok.Getter;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.*;
-import java.awt.event.ActionEvent;
+import java.util.List;
 
 public class UserStoryWidget extends JPanel implements BaseComponent {
 
@@ -22,7 +24,9 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
     JLabel bv;
     JLabel name;
     JLabel desc;
+    JLabel linkedBlockersLabel; // Display linked blockers
     JButton deleteButton;
+    JButton linkBlockerButton; // Button to link a blocker to this user story
 
     // Flag to ensure the headers are only added once
     private static boolean headersAdded = false;
@@ -30,7 +34,6 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
     @Getter
     private UserStory userStory;
 
-    ActionListener actionListener = e -> {};
     private UserStoryListPane parentPane;
 
     MouseAdapter openEditDialog =
@@ -84,42 +87,30 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
         name.addMouseListener(openEditDialog);
         desc = new JLabel(userStory.getDescription());
         desc.addMouseListener(openEditDialog);
+
+        // Display linked blockers
+        linkedBlockersLabel = new JLabel(getLinkedBlockersText());
+
+        // Delete button setup
         deleteButton = new JButton("Delete");
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteUserStory();
-            }
-        });
+        deleteButton.addActionListener(e -> deleteUserStory());
+
+        // Link Blocker button setup
+        linkBlockerButton = new JButton("Link Blocker");
+        linkBlockerButton.addActionListener(e -> linkBlockerToUserStory());
 
         GridBagLayout myGridBagLayout = new GridBagLayout();
         setLayout(myGridBagLayout);
 
-        // Add user story details below the header
-        add(
-                id,
-                new CustomConstraints(
-                        0, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                points,
-                new CustomConstraints(
-                        1, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                bv,
-                new CustomConstraints(
-                        2, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                name,
-                new CustomConstraints(
-                        3, 1, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                desc,
-                new CustomConstraints(
-                        4, 1, GridBagConstraints.WEST, 0.4, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                deleteButton,
-                new CustomConstraints(
-                        5, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        // Add user story details and buttons below the header
+        add(id, new CustomConstraints(0, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(points, new CustomConstraints(1, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(bv, new CustomConstraints(2, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(name, new CustomConstraints(3, 1, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+        add(desc, new CustomConstraints(4, 1, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+        add(linkedBlockersLabel, new CustomConstraints(5, 1, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+        add(deleteButton, new CustomConstraints(6, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(linkBlockerButton, new CustomConstraints(7, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
 
         revalidate();
         repaint();
@@ -131,14 +122,18 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
         JLabel bvHeader = new JLabel("BV");
         JLabel nameHeader = new JLabel("Name");
         JLabel descHeader = new JLabel("Description");
+        JLabel blockersHeader = new JLabel("Linked Blockers");
         JLabel actionHeader = new JLabel("Action");
+        JLabel linkBlockerHeader = new JLabel("Link Blocker");
 
         add(idHeader, new CustomConstraints(0, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(pointsHeader, new CustomConstraints(1, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(bvHeader, new CustomConstraints(2, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(nameHeader, new CustomConstraints(3, 0, GridBagConstraints.CENTER, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
-        add(descHeader, new CustomConstraints(4, 0, GridBagConstraints.CENTER, 0.4, 0.0, GridBagConstraints.HORIZONTAL));
-        add(actionHeader, new CustomConstraints(5, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(descHeader, new CustomConstraints(4, 0, GridBagConstraints.CENTER, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+        add(blockersHeader, new CustomConstraints(5, 0, GridBagConstraints.CENTER, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+        add(actionHeader, new CustomConstraints(6, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(linkBlockerHeader, new CustomConstraints(7, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
     }
 
     private void deleteUserStory() {
@@ -154,10 +149,40 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
         }
     }
 
+    private void linkBlockerToUserStory() {
+        // Show a dialog with a list of blockers to choose from
+        List<Blocker> blockers = BlockerStore.getInstance().getAllBlockers();
+        Blocker selectedBlocker = (Blocker) JOptionPane.showInputDialog(
+                this,
+                "Select a blocker to link:",
+                "Link Blocker",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                blockers.toArray(),
+                null);
+
+        if (selectedBlocker != null) {
+            userStory.addBlocker(selectedBlocker); // Link the selected blocker
+            linkedBlockersLabel.setText(getLinkedBlockersText()); // Update the linked blockers display
+            JOptionPane.showMessageDialog(this, "Blocker linked to User Story successfully!");
+        }
+    }
+
+    private String getLinkedBlockersText() {
+        List<Blocker> linkedBlockers = userStory.getLinkedBlockers();
+        if (linkedBlockers.isEmpty()) {
+            return "No blockers linked";
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for (Blocker blocker : linkedBlockers) {
+                sb.append(blocker.getName().toString()).append(", ");
+            }
+            return sb.substring(0, sb.length() - 2); // Remove the trailing comma and space
+        }
+    }
+
     // Reset the static flag if needed (e.g., when refreshing the UI)
     public static void resetHeadersAddedFlag() {
         headersAdded = false;
     }
 }
-
-

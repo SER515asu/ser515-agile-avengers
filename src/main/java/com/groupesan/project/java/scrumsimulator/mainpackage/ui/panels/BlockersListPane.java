@@ -18,16 +18,23 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.impl.BlockerStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BlockerWidget;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.BlockerForm;
+
+
+import lombok.Getter;
 
 public class BlockersListPane extends JFrame implements BaseComponent {
     private Player player;
     private List<BlockerWidget> widgets = new ArrayList<>();
     private JPanel subPanel = new JPanel();
-    private String simulationId;
 
-    public BlockersListPane(Player player, String simulationId) {
+    // Add simulationID to allow BlockerWidget to link with UserStory
+    @Getter
+    private String simulationID;
+
+    public BlockersListPane(Player player, String simulationID) {
         this.player = player;
-        this.simulationId = simulationId;
+        this.simulationID = simulationID; // Initialize simulationID
         this.init();
     }
 
@@ -57,7 +64,7 @@ public class BlockersListPane extends JFrame implements BaseComponent {
             newBlockerButton.setEnabled(false);
         }
         newBlockerButton.addActionListener(e -> {
-            BlockerForm form = new BlockerForm(simulationId);
+            BlockerForm form = new BlockerForm(simulationID);
             form.setVisible(true);
             form.addWindowListener(
                     new java.awt.event.WindowAdapter() {
@@ -83,8 +90,8 @@ public class BlockersListPane extends JFrame implements BaseComponent {
         widgets.clear();
 
         int i = 1; // Start sequence numbering from 1
-        for (Blocker blocker : BlockerStore.getInstance(simulationId).getAllBlockers()) {
-            BlockerWidget widget = new BlockerWidget(simulationId, blocker, i++, this); // Pass sequence number i
+        for (Blocker blocker : BlockerStore.getInstance().getAllBlockers()) {
+            BlockerWidget widget = new BlockerWidget(simulationID, blocker, i++, this); // Pass sequence number i
             widgets.add(widget);
             subPanel.add(
                     widget,
@@ -103,7 +110,7 @@ public class BlockersListPane extends JFrame implements BaseComponent {
 
     public void addBlockerWidget(Blocker blocker) {
         int sequenceNumber = widgets.size() + 1;
-        BlockerWidget widget = new BlockerWidget(simulationId, blocker, sequenceNumber, this);
+        BlockerWidget widget = new BlockerWidget(simulationID, blocker, sequenceNumber, this);
         widgets.add(widget);
         refreshBlockers();  // Ensure UI is refreshed after adding new blocker
     }
