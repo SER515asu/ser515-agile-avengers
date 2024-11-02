@@ -7,6 +7,7 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.StoryForm;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.UserStoryListPane;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
+
 import lombok.Getter;
 
 import javax.swing.*;

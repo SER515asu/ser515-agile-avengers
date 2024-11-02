@@ -1,4 +1,6 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.BlockerStore;
+
 
 import java.util.ArrayList;
 import java.util.List;
