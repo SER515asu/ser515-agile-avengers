@@ -5,14 +5,16 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionListener;
 import java.io.FileInputStream;
+import java.awt.event.ActionListener;
+
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -87,8 +89,8 @@ public class SimulationUI extends JFrame implements BaseComponent {
         else {
             JOptionPane.showMessageDialog(this, "No simulations available.", "Error", JOptionPane.ERROR_MESSAGE);
             dispose();
+        }
     }
-}
 
     // Method to read simulations from JSON file
     private JSONArray getSimulations() {
@@ -124,7 +126,6 @@ public class SimulationUI extends JFrame implements BaseComponent {
     
         roleSelectionPane.setVisible(true);
     }
-    
 
     /**
      * Sets the user role for the simulation and initializes the UI accordingly.
@@ -158,12 +159,6 @@ public class SimulationUI extends JFrame implements BaseComponent {
         Dimension buttonSize = new Dimension(150, 30);
 
         // Add buttons to the button panel
-        // addButton(buttonPanel, "Sprints", buttonSize, e -> new SprintListPane(player,selectedSimulationId).setVisible(true));
-        // addButton(buttonPanel, "Product Backlog", buttonSize, e -> new UserStoryListPane(player,selectedSimulationId).setVisible(true));
-        // addButton(buttonPanel, "Update User Story Status", buttonSize, e -> new UpdateUserStoryPanel(player,selectedSimulationId).setVisible(true));
-        // addButton(buttonPanel, "Switch Role", buttonSize, e -> selectUserRole());
-        // addButton(buttonPanel,"List of Blockers",buttonSize,e -> new BlockersListPane(player).setVisible(true));
-        
         JButton sprintsButton = new JButton("Sprints");
         sprintsButton.setPreferredSize(buttonSize);
         sprintsButton.addActionListener(e -> new SprintListPane(player, selectedSimulationId).setVisible(true));
@@ -175,7 +170,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
         JButton backlogButton = new JButton("Product Backlog");
         backlogButton.setPreferredSize(buttonSize);
         backlogButton.addActionListener(e -> new UserStoryListPane(player, selectedSimulationId).setVisible(true));
-        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
+        if (player.getRole().getName().equals(Roles.SCRUM_MASTER.getDisplayName())) {
             backlogButton.setVisible(false);
         }
         buttonPanel.add(backlogButton);
@@ -194,20 +189,20 @@ public class SimulationUI extends JFrame implements BaseComponent {
         switchRoleButton.addActionListener(e -> selectUserRole());
         buttonPanel.add(switchRoleButton);
 
-        // Add the "List of Blockers" button with access only for Developer
+        // Add the "List of Blockers" button, accessible only for Developer
         JButton blockersButton = new JButton("List of Blockers");
         blockersButton.setPreferredSize(buttonSize);
-        blockersButton.addActionListener(e -> new BlockersListPane(player).setVisible(true));
-        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
+        blockersButton.addActionListener(e -> new BlockersListPane(player, selectedSimulationId).setVisible(true));
+        if (!player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
             blockersButton.setVisible(false);
         }
         buttonPanel.add(blockersButton);
 
-        // Add the "List of Solutions" button with access only for Developer
+        // Add the "List of Solutions" button, accessible only for Developer
         JButton solutionsButton = new JButton("List of Solutions");
         solutionsButton.setPreferredSize(buttonSize);
         solutionsButton.addActionListener(e -> new SolutionListPane(player).setVisible(true));
-        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
+        if (!player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
             solutionsButton.setVisible(false);
         }
         buttonPanel.add(solutionsButton);

@@ -2,34 +2,34 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.BlockerStore;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.BlockersListPane;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 import lombok.Getter;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JOptionPane;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BlockerWidget extends JPanel implements BaseComponent {
 
     JLabel id;
     JLabel name;
     JLabel description;
+    JLabel linkedUserStoriesLabel; // Label to show linked user stories
     JButton linkUserStoryButton;
     JButton resolveButton;
 
-    // Flag to ensure the headers are only added once
     private static boolean headersAdded = false;
 
     @Getter
     private Blocker blocker;
     private BlockersListPane parentPane;
-    private int sequenceNumber; // Sequence number for display as ID
+    private int sequenceNumber;
 
     public BlockerWidget(Blocker blocker, int sequenceNumber, BlockersListPane parentPane) {
         this.blocker = blocker;
@@ -41,26 +41,30 @@ public class BlockerWidget extends JPanel implements BaseComponent {
     public void init() {
         removeAll();
 
-        // Reset headers if no widgets exist in the parentPane
         if (parentPane.getWidgets().isEmpty()) {
             resetHeadersAddedFlag();
         }
 
-        // Add headers only once (when the first blocker widget is created)
         if (!headersAdded) {
             addHeaders();
             headersAdded = true;
         }
 
-        id = new JLabel(String.valueOf(sequenceNumber)); // Display sequence number as ID
+        id = new JLabel(String.valueOf(sequenceNumber));
         name = new JLabel(blocker.getName());
         description = new JLabel(blocker.getDescription());
+
+        // Create label to display linked user stories
+        String linkedUserStoryNames = blocker.getLinkedUserStories().stream()
+                .map(UserStory::getName)
+                .collect(Collectors.joining(", "));
+        linkedUserStoriesLabel = new JLabel(linkedUserStoryNames.isEmpty() ? "No Linked User Story" : linkedUserStoryNames);
 
         linkUserStoryButton = new JButton("Link User Story");
         linkUserStoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Logic for linking a user story
+                linkUserStoryToBlocker();
             }
         });
 
@@ -72,15 +76,14 @@ public class BlockerWidget extends JPanel implements BaseComponent {
             }
         });
 
-        GridBagLayout myGridBagLayout = new GridBagLayout();
-        setLayout(myGridBagLayout);
+        setLayout(new GridBagLayout());
 
-        // Add blocker details
         add(id, new CustomConstraints(0, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(name, new CustomConstraints(1, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(description, new CustomConstraints(2, 1, GridBagConstraints.WEST, 0.4, 0.0, GridBagConstraints.HORIZONTAL));
-        add(linkUserStoryButton, new CustomConstraints(3, 1, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
-        add(resolveButton, new CustomConstraints(4, 1, GridBagConstraints.WEST, 0.1, 0.1, GridBagConstraints.HORIZONTAL));
+        add(linkedUserStoriesLabel, new CustomConstraints(3, 1, GridBagConstraints.WEST, 0.3, 0.0, GridBagConstraints.HORIZONTAL));
+        add(linkUserStoryButton, new CustomConstraints(4, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(resolveButton, new CustomConstraints(5, 1, GridBagConstraints.WEST, 0.1, 0.1, GridBagConstraints.HORIZONTAL));
 
         revalidate();
         repaint();
@@ -90,10 +93,41 @@ public class BlockerWidget extends JPanel implements BaseComponent {
         JLabel idHeader = new JLabel("ID");
         JLabel nameHeader = new JLabel("Name");
         JLabel descHeader = new JLabel("Description");
+        JLabel linkedUserStoryHeader = new JLabel("Linked User Stories");
 
         add(idHeader, new CustomConstraints(0, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(nameHeader, new CustomConstraints(1, 0, GridBagConstraints.CENTER, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
         add(descHeader, new CustomConstraints(2, 0, GridBagConstraints.CENTER, 0.4, 0.0, GridBagConstraints.HORIZONTAL));
+        add(linkedUserStoryHeader, new CustomConstraints(3, 0, GridBagConstraints.CENTER, 0.3, 0.0, GridBagConstraints.HORIZONTAL));
+    }
+
+    private void linkUserStoryToBlocker() {
+        // Get list of available user stories
+        List<UserStory> userStories = UserStoryStore.getInstance(parentPane.getSimulationID()).getBacklogStories();
+
+        // Show a dialog to select a user story to link
+        UserStory selectedUserStory = (UserStory) JOptionPane.showInputDialog(
+                this,
+                "Select a user story to link:",
+                "Link User Story",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                userStories.toArray(),
+                null);
+
+        // Link the selected user story to the blocker
+        if (selectedUserStory != null) {
+            blocker.addLinkedUserStory(selectedUserStory);
+            selectedUserStory.addBlocker(blocker); // Link blocker to user story
+
+            // Update linked user stories label
+            String updatedLinkedUserStoryNames = blocker.getLinkedUserStories().stream()
+                    .map(UserStory::getName)
+                    .collect(Collectors.joining(", "));
+            linkedUserStoriesLabel.setText(updatedLinkedUserStoryNames);
+
+            JOptionPane.showMessageDialog(this, "User Story linked to Blocker successfully!");
+        }
     }
 
     private void resolveBlocker() {
@@ -109,7 +143,6 @@ public class BlockerWidget extends JPanel implements BaseComponent {
         }
     }
 
-    // Method to reset the headersAdded flag
     public static void resetHeadersAddedFlag() {
         headersAdded = false;
     }
