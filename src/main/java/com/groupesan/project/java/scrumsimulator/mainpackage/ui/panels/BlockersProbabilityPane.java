@@ -22,8 +22,8 @@ public class BlockersProbabilityPane extends JFrame implements BaseComponent {
     JPanel subPanel = new JPanel();
     private List<Float> probabilities = new ArrayList<>();
 
-    public BlockersProbabilityPane(){
-        this.availableBlockers = BlockerStore.getInstance().getAllBlockers();
+    public BlockersProbabilityPane(String simulationId){
+        this.availableBlockers = BlockerStore.getInstance(simulationId).getAllBlockers();
         for(int i=0;i<=10;i++){
             probabilities.add((float) i/10);
         }
