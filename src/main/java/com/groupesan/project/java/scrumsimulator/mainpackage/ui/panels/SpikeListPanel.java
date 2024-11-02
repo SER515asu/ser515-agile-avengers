@@ -18,13 +18,16 @@ import java.util.List;
 
 public class SpikeListPanel extends JFrame implements BaseComponent {
     private Player player;
+    @Getter
+    private String simulationID;
 
     @Getter
     private List<SpikeWidget> widgets = new ArrayList<>();
     private JPanel subPanel = new JPanel();
 
-    public SpikeListPanel(Player player) {
+    public SpikeListPanel(Player player, String simulationID) {
         this.player = player;
+        this.simulationID = simulationID;
         this.init();
     }
 
@@ -74,7 +77,7 @@ public class SpikeListPanel extends JFrame implements BaseComponent {
         add(myJpanel);
     }
 
-    private void refreshSpikes() {
+    public void refreshSpikes() {
         subPanel.removeAll();
         widgets.clear();
         System.out.println("Spike length"+ SpikeStore.getInstance().getAllSpikes().size());

@@ -2,12 +2,16 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Spike;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.SpikeStore;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.SpikeListPanel;
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.UserStorySelectionPanel;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -50,13 +54,25 @@ public class SpikeWidget extends JPanel implements BaseComponent {
         name = new JLabel(spike.getName());
         description = new JLabel(spike.getDescription());
 
+//        String linkedUserStoryNames = spike.getLinkedUserStories().stream()
+//                .map(UserStory::getName)
+//                .collect(Collectors.joining(", "));
+//        linkedUserStoriesLabel = new JLabel(linkedUserStoryNames.isEmpty() ? "No Linked User Story" : linkedUserStoryNames);
+
         linkUserStoryButton = new JButton("Link User Story");
         linkUserStoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Logic for linking a user story
+                String simulationID = parentPane.getSimulationID(); // Assuming this method exists in SpikeListPanel
+                UserStoryStore userStoryStore = UserStoryStore.getInstance(simulationID);
+                List<UserStory> sprintUserStories = userStoryStore.getUserStoriesInSprint(); // Get the sprint stories
+
+                UserStorySelectionPanel selectionPanel = new UserStorySelectionPanel((Frame) SwingUtilities.getWindowAncestor(SpikeWidget.this), spike, sprintUserStories, simulationID);
+                selectionPanel.setVisible(true);
+                parentPane.refreshSpikes(); // Refresh to reflect the updated state
             }
         });
+
 
         resolveButton = new JButton("Resolve");
         resolveButton.addActionListener(new ActionListener() {

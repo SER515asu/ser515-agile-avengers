@@ -292,6 +292,9 @@ public class SimulationStateManager {
                         case "Complete":
                             userStory.setState(new CompleteState(userStory));
                             break;
+                        case "Blocked":
+                            userStory.setState(new BlockedState(userStory));
+                            break;
                         default:
                             userStory.setState(new UnassignedState(userStory));
                             break;

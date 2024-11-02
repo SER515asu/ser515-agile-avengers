@@ -205,7 +205,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
 
         JButton spikeButton = new JButton("List of Spikes");
         spikeButton.setPreferredSize(buttonSize);
-        spikeButton.addActionListener(e -> new SpikeListPanel(player).setVisible(true));
+        spikeButton.addActionListener(e -> new SpikeListPanel(player,selectedSimulationId).setVisible(true));
 //        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) { // activate later
 //            blockersButton.setVisible(false);
 //        }
