@@ -87,8 +87,8 @@ public class BlockersProbabilityPane extends JFrame implements BaseComponent {
         JPanel probabilitySubPanel = new JPanel();
         probabilitySubPanel.setLayout(new GridBagLayout());
 
-        JLabel startLabel = new JLabel("Start:");
-        JLabel endLabel = new JLabel("End:");
+        JLabel startLabel = new JLabel("Minimum:");
+        JLabel endLabel = new JLabel("Maximum:");
         probabilitySubPanel.add(
                 startLabel,
                 new CustomConstraints(0, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
