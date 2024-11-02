@@ -17,7 +17,6 @@ public class BlockerForm extends JFrame implements BaseComponent {
     private JTextArea descArea;
     private Blocker blocker;
     private boolean isNewBlocker;
-    private boolean isSubmitted = false;
 
     public BlockerForm(Blocker blocker) {
         this.blocker = blocker;
@@ -78,26 +77,30 @@ public class BlockerForm extends JFrame implements BaseComponent {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        isSubmitted = false;
                         dispose();
                     }
                 });
 
         JButton submitButton = new JButton("Submit");
-        submitButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (isNewBlocker) {
-                            isSubmitted = true; // Mark as submitted
-                        } else {
+        if (this.isNewBlocker) {
+            submitButton.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            dispose();
+                        }
+                    });
+        } else {
+            submitButton.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
                             blocker.setName(nameField.getText());
                             blocker.setDescription(descArea.getText());
-                            isSubmitted = true; // Mark as submitted
+                            dispose();
                         }
-                        dispose();
-                    }
-                });
+                    });
+        }
 
         myJpanel.add(
                 cancelButton,
@@ -110,16 +113,13 @@ public class BlockerForm extends JFrame implements BaseComponent {
     }
 
     public Blocker getBlockerObject() {
-        if (isSubmitted) { // Only return a Blocker if the form was submitted
-            String name = nameField.getText();
-            String description = descArea.getText();
+        String name = nameField.getText();
+        String description = descArea.getText();
 
-            BlockerFactory blockerFactory = BlockerFactory.getInstance();
-            Blocker blocker = blockerFactory.createNewBlocker(name, description);
-            blocker.doRegister();
+        BlockerFactory blockerFactory = BlockerFactory.getInstance();
+        Blocker blocker = blockerFactory.createNewBlocker(name, description);
+        blocker.doRegister();
 
-            return blocker;
-        }
-        return null;
+        return blocker;
     }
 }
