@@ -2,6 +2,7 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Solution;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.SolutionStore;
+import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationStateManager;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 
@@ -21,9 +22,11 @@ public class SolutionsProbabilityPane extends JFrame implements BaseComponent {
     private JComboBox<String> solutionJComboBox = new JComboBox<>();
     JPanel subPanel = new JPanel();
     private List<Float> probabilities = new ArrayList<>();
+    private String simulationId;
 
     public SolutionsProbabilityPane(String simulationId){
         this.availableSolutions = SolutionStore.getInstance(simulationId).getSolutions();
+        this.simulationId = simulationId;
         for(int i=0;i<=10;i++){
             probabilities.add((float) i/10);
         }
@@ -170,6 +173,38 @@ public class SolutionsProbabilityPane extends JFrame implements BaseComponent {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         // Add logic to store probabilities of solution in the backend
+                        if(!selectedSolutions.isEmpty()) {
+                            float probabilityMinValue = Float.parseFloat(minValue.getSelectedItem().toString());
+                            float probabilityMaxValue = Float.parseFloat(maxValue.getSelectedItem().toString());
+                            for (Solution solution : selectedSolutions) {
+                                solution.setProbabilityRangeMinimum(probabilityMinValue);
+                                solution.setProbabilityRangeMaximum(probabilityMaxValue);
+                            }
+                            SimulationStateManager.updateSolutionsProbabilityInSimulation(simulationId, selectedSolutions);
+                            Object[] message = {
+                                    "Probability range set for selected solutions",
+                            };
+
+                            // Show a dialog with the JTextField containing the Simulation ID
+                            JOptionPane.showMessageDialog(
+                                    SolutionsProbabilityPane.this,
+                                    message,
+                                    "Success",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            dispose();
+                        }
+                        else{
+                            Object[] message = {
+                                    "Please select one or more solutions",
+                            };
+
+                            // Show a dialog with the JTextField containing the Simulation ID
+                            JOptionPane.showMessageDialog(
+                                    SolutionsProbabilityPane.this,
+                                    message,
+                                    "Error",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
                     }
                 }
         );
