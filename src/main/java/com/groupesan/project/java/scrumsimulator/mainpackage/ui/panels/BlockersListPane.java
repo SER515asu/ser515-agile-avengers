@@ -25,9 +25,11 @@ public class BlockersListPane extends JFrame implements BaseComponent {
     private Player player;
     private List<BlockerWidget> widgets = new ArrayList<>();
     private JPanel subPanel = new JPanel();
+    private String simulationId;
 
-    public BlockersListPane(Player player) {
+    public BlockersListPane(Player player, String simulationId) {
         this.player = player;
+        this.simulationId = simulationId;
         this.init();
     }
 
@@ -57,7 +59,7 @@ public class BlockersListPane extends JFrame implements BaseComponent {
             newBlockerButton.setEnabled(false);
         }
         newBlockerButton.addActionListener(e -> {
-            BlockerForm form = new BlockerForm();
+            BlockerForm form = new BlockerForm(simulationId);
             form.setVisible(true);
             form.addWindowListener(
                     new java.awt.event.WindowAdapter() {
@@ -101,8 +103,8 @@ public class BlockersListPane extends JFrame implements BaseComponent {
         widgets.clear();
 
         int i = 1; // Start sequence numbering from 1
-        for (Blocker blocker : BlockerStore.getInstance().getAllBlockers()) {
-            BlockerWidget widget = new BlockerWidget(blocker, i++, this); // Pass sequence number i
+        for (Blocker blocker : BlockerStore.getInstance(simulationId).getAllBlockers()) {
+            BlockerWidget widget = new BlockerWidget(simulationId, blocker, i++, this); // Pass sequence number i
             widgets.add(widget);
             subPanel.add(
                     widget,
@@ -121,7 +123,7 @@ public class BlockersListPane extends JFrame implements BaseComponent {
 
     public void addBlockerWidget(Blocker blocker) {
         int sequenceNumber = widgets.size() + 1;
-        BlockerWidget widget = new BlockerWidget(blocker, sequenceNumber, this);
+        BlockerWidget widget = new BlockerWidget(simulationId, blocker, sequenceNumber, this);
         widgets.add(widget);
         refreshBlockers();  // Ensure UI is refreshed after adding new blocker
     }

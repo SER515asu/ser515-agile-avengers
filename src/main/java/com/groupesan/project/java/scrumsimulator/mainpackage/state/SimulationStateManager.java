@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Sprint;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryIdentifier;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -254,7 +255,7 @@ public class SimulationStateManager {
         }
     }
 
-    public static List<UserStory> getUserStoriesForSimulation(String simulationID) {
+    public static List<UserStory> getUserStoriesForSimulation(String simulationID, boolean isProductBacklog) {
         JSONObject simulationData = getSimulationData();
         List<UserStory> userStoryList = new ArrayList<>();
 
@@ -265,7 +266,7 @@ public class SimulationStateManager {
         for (int i = 0; i < simulations.length(); i++) {
             JSONObject simulation = simulations.getJSONObject(i);
             if (simulation.getString("ID").equals(simulationID)) {
-                JSONArray userStories = simulation.optJSONArray("UserStories");
+                JSONArray userStories = simulation.optJSONArray(isProductBacklog?"UserStories":"UserStories");
 
                 for (int j = 0; j < userStories.length(); j++) {
                     JSONObject userStoryJson = userStories.getJSONObject(j);
@@ -326,6 +327,64 @@ public class SimulationStateManager {
                         return;
                     }
                 }
+            }
+        }
+    }
+
+    public static List<Blocker> getBlockersForSimulation(String simulationId){
+        List<Blocker> blockers = new ArrayList<>();
+
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return blockers;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i<simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray blockersInSimulation = simulation.optJSONArray("Blockers");
+                if(blockersInSimulation == null){
+                    return blockers;
+                }
+                for(int j=0;j<blockersInSimulation.length(); j++){
+                    JSONObject blockerObj = blockersInSimulation.getJSONObject(j);
+                    Blocker blocker = new Blocker(UUID.fromString(blockerObj.getString("ID")), blockerObj.getString("Name"), blockerObj.getString("Description"));
+                    blockers.add(blocker);
+                }
+                break;
+            }
+        }
+        return blockers;
+    }
+
+    public static void storeBlockerInSimulation(String simulationId, Blocker blocker){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i<simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray blockersInSimulation = simulation.optJSONArray("Blockers");
+
+                JSONObject newBlockerObj = new JSONObject();
+                newBlockerObj.put("ID", blocker.getId());
+                newBlockerObj.put("Name", blocker.getName());
+                newBlockerObj.put("Description", blocker.getDescription());
+
+                if(blockersInSimulation == null){
+                    blockersInSimulation = new JSONArray();
+                    simulation.put("Blockers", blockersInSimulation);
+                }
+
+                blockersInSimulation.put(newBlockerObj);
+                updateSimulationData(simulationData);
+                return;
             }
         }
     }

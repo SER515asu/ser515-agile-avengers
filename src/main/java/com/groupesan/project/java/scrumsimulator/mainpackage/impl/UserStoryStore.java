@@ -6,46 +6,112 @@ import java.util.List;
 
 public class UserStoryStore {
     private static UserStoryStore userStoryStore;
-    private List<UserStory> userStories;
+    private List<UserStory> backlogStories; // Stories in the backlog
+    private List<UserStory> sprintStories;  // Stories assigned to sprints
     private String simulationID;
 
     private UserStoryStore(String simulationID) {
         this.simulationID = simulationID;
-        userStories = new ArrayList<>();
-        loadUserStoriesFromJson();
+        backlogStories = new ArrayList<>();
+        sprintStories = new ArrayList<>();
+        loadProductBacklogFromJson();
     }
 
     public static UserStoryStore getInstance(String simulationID) {
-        if (userStoryStore == null) {
+        if (userStoryStore == null || !userStoryStore.simulationID.equals(simulationID)) {
             userStoryStore = new UserStoryStore(simulationID);
         }
         return userStoryStore;
     }
 
-    public void addUserStory(UserStory userStory) {
-        userStories.add(userStory);
-        SimulationStateManager.addUserStoryToSimulation(simulationID, userStory);
+    /**
+     * Adds a user story to the product backlog and updates the simulation state.
+     *
+     * @param userStory The user story to add.
+     */
+    public void addUserStoryToBacklog(UserStory userStory) {
+        if (!backlogStories.contains(userStory)) {
+            backlogStories.add(userStory);
+            SimulationStateManager.addUserStoryToSimulation(simulationID, userStory);
+        }
     }
 
-    public List<UserStory> getUserStories() {
-        return new ArrayList<>(userStories);
+    /**
+     * Returns a list of user stories in the product backlog.
+     *
+     * @return List of user stories in the backlog.
+     */
+    public List<UserStory> getBacklogStories() {
+        return new ArrayList<>(backlogStories);
     }
 
+    /**
+     * Removes a user story from the product backlog and updates the simulation state.
+     *
+     * @param userStory The user story to remove.
+     */
+    public void removeUserStoryFromBacklog(UserStory userStory) {
+        if (backlogStories.remove(userStory)) {
+            SimulationStateManager.removeUserStoryFromSimulation(simulationID, userStory.getName());
+            System.out.println("User Story removed from backlog: " + userStory.getName()); // For debugging
+        } else {
+            System.out.println("User Story not found in backlog for removal: " + userStory.getName()); // For debugging
+        }
+    }
+
+    /**
+     * Adds a user story to the sprint list, removing it from the backlog if present.
+     *
+     * @param userStory The user story to add to the sprint.
+     */
+    public void addUserStoryToSprint(UserStory userStory) {
+        if (backlogStories.contains(userStory)) {
+            backlogStories.remove(userStory); // Remove from backlog if present
+        }
+        if (!sprintStories.contains(userStory)) {
+            sprintStories.add(userStory); // Add to sprint stories
+        }
+    }
+
+    /**
+     * Removes a user story from the sprint list and restores it to the backlog.
+     *
+     * @param userStory The user story to remove from the sprint.
+     */
+    public void removeUserStoryFromSprint(UserStory userStory) {
+        if (sprintStories.remove(userStory)) { // Remove from sprint if present
+            backlogStories.add(userStory); // Restore to backlog
+        }
+    }
+
+    /**
+     * Returns a list of user stories currently in sprints.
+     *
+     * @return List of user stories in the sprint.
+     */
+    public List<UserStory> getUserStoriesInSprint() {
+        loadProductBacklogFromJson();
+        return new ArrayList<>(backlogStories);
+//        return new ArrayList<>(sprintStories); // switch it back
+    }
     public List<UserStory> getUserStoriesFromJson() {
-        loadUserStoriesFromJson();
-        return new ArrayList<>(userStories);
+        loadProductBacklogFromJson();
+        return new ArrayList<>(backlogStories);
     }
 
     public void removeUserStory(UserStory userStory) {
-        userStories.remove(userStory);
+        backlogStories.remove(userStory);
         SimulationStateManager.removeUserStoryFromSimulation(simulationID, userStory.getName());
     }
 
     /**
      * Loads user stories from JSON for a specific simulation ID and populates the UserStoryStore.
      */
-    public void loadUserStoriesFromJson() {
-        userStories.clear();  // Clear existing user stories
-        userStories.addAll(SimulationStateManager.getUserStoriesForSimulation(simulationID));
+    public void loadProductBacklogFromJson() {
+        backlogStories.clear();
+        sprintStories.clear();
+        backlogStories.addAll(SimulationStateManager.getUserStoriesForSimulation(simulationID,true)); // switch to false
+        sprintStories.addAll(SimulationStateManager.getUserStoriesForSimulation(simulationID,true));
     }
+
 }

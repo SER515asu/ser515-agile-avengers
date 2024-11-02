@@ -49,7 +49,13 @@ public class UpdateUserStoryPanel extends JFrame {
         userStoryLabel.setBounds(10, 20, 120, 25);
         panel.add(userStoryLabel);
 
+        // Fetch user stories from the backlog in UserStoryStore
+        List<UserStory> userStories = UserStoryStore.getInstance(simulationID).getUserStoriesInSprint();
         userStoryComboBox = new JComboBox<>();
+        statusComboBox = new JComboBox<>(UserStoryState.getStatusOptions());
+        for (UserStory userStory : userStories) {
+            userStoryComboBox.addItem(userStory.getName()); // Now showing User Story Name instead of Description
+        }
         userStoryComboBox.setBounds(150, 20, 200, 25);
         panel.add(userStoryComboBox);
 
@@ -57,7 +63,6 @@ public class UpdateUserStoryPanel extends JFrame {
         statusLabel.setBounds(10, 50, 120, 25);
         panel.add(statusLabel);
 
-        statusComboBox = new JComboBox<>(UserStoryState.getStatusOptions());
         statusComboBox.setBounds(150, 50, 200, 25);
         panel.add(statusComboBox);
 
@@ -97,7 +102,7 @@ public class UpdateUserStoryPanel extends JFrame {
 
     private void reloadData() {
         userStoryComboBox.removeAllItems();
-        List<UserStory> userStories = UserStoryStore.getInstance(simulationID).getUserStoriesFromJson();
+        List<UserStory> userStories = UserStoryStore.getInstance(simulationID).getUserStoriesInSprint();
 
         for (UserStory userStory : userStories) {
             userStoryComboBox.addItem(userStory.getName());
