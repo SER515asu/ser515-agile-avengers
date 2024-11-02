@@ -30,6 +30,7 @@ public class BlockerWidget extends JPanel implements BaseComponent {
     private Blocker blocker;
     private BlockersListPane parentPane;
     private int sequenceNumber;
+    private String simulationId;
 
     public BlockerWidget(Blocker blocker, int sequenceNumber, BlockersListPane parentPane) {
         this.blocker = blocker;

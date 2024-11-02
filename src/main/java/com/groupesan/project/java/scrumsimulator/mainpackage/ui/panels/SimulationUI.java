@@ -193,7 +193,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
         JButton blockersButton = new JButton("List of Blockers");
         blockersButton.setPreferredSize(buttonSize);
         blockersButton.addActionListener(e -> new BlockersListPane(player, selectedSimulationId).setVisible(true));
-        if (!player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
+        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
             blockersButton.setVisible(false);
         }
         buttonPanel.add(blockersButton);
