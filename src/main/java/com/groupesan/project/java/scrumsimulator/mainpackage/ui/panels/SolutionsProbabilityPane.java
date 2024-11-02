@@ -176,6 +176,10 @@ public class SolutionsProbabilityPane extends JFrame implements BaseComponent {
                         if(!selectedSolutions.isEmpty()) {
                             float probabilityMinValue = Float.parseFloat(minValue.getSelectedItem().toString());
                             float probabilityMaxValue = Float.parseFloat(maxValue.getSelectedItem().toString());
+                            if(randomizeProbability.isSelected()){
+                                probabilityMinValue = Float.parseFloat(String.format("%.1f", Math.random() * 0.9));
+                                probabilityMaxValue = Float.parseFloat(String.format("%.1f", (probabilityMinValue+0.1) + (0.9-probabilityMinValue)*Math.random()));
+                            }
                             for (Solution solution : selectedSolutions) {
                                 solution.setProbabilityRangeMinimum(probabilityMinValue);
                                 solution.setProbabilityRangeMaximum(probabilityMaxValue);
