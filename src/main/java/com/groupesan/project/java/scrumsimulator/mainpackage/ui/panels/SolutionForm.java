@@ -1,11 +1,12 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
+
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Solution;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.SolutionFactory;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.SolutionStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
+
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,20 +17,23 @@ import java.awt.event.ActionListener;
 public class SolutionForm extends JFrame implements BaseComponent {
 
     private boolean editMode;
+    private String simulationId;
+    private Solution solution;
 
-    public SolutionForm(){
+    public SolutionForm(Solution solution){
         this.editMode = false;
+        this.solution = solution;
         this.init();
     }
 
     // Constructor for edit mode
-    public SolutionForm(Solution solution){
+    public SolutionForm(String simulationId){
         this.editMode = true;
-        this.mySolution = solution;
+        this.simulationId = simulationId;
         this.init();
     }
 
-    private Solution mySolution;
+
 
     JTextField titleField = new JTextField();
     JTextArea descArea = new JTextArea();
@@ -87,8 +91,8 @@ public class SolutionForm extends JFrame implements BaseComponent {
                                     JOptionPane.INFORMATION_MESSAGE);
                         }
                         else{
-                            mySolution = SolutionFactory.getSolutionFactory().createNewSolution(title, desc);
-                            SolutionStore.getInstance().addSolution(mySolution);
+                            solution = SolutionFactory.getSolutionFactory().createNewSolution(title, desc);
+                            SolutionStore.getInstance(simulationId).addSolution(solution);
                             Object[] message = {
                                     " Solution added successfully",
                             };

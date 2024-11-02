@@ -26,7 +26,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
     private Player player;
     @Getter
     private String simulationID;
-    
+
     public UserStoryListPane(Player player, String simulationId) {
         this.player = player;
         this.simulationID = simulationId;
@@ -39,7 +39,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("User Story List");
-        setSize(500, 300);
+        setSize(700, 500); // Updated size as per modified code
 
         GridBagLayout myGridbagLayout = new GridBagLayout();
         JPanel myJpanel = new JPanel();

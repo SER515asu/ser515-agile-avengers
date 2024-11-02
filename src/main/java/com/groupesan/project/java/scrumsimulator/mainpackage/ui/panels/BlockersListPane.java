@@ -21,15 +21,20 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComp
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BlockerWidget;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 
+import lombok.Getter;
+
 public class BlockersListPane extends JFrame implements BaseComponent {
     private Player player;
     private List<BlockerWidget> widgets = new ArrayList<>();
     private JPanel subPanel = new JPanel();
+    
+    // Add simulationID to allow BlockerWidget to link with UserStory
+    @Getter
     private String simulationId;
 
     public BlockersListPane(Player player, String simulationId) {
         this.player = player;
-        this.simulationId = simulationId;
+        this.simulationId = simulationId; // Initialize simulationId
         this.init();
     }
 
@@ -59,7 +64,7 @@ public class BlockersListPane extends JFrame implements BaseComponent {
             newBlockerButton.setEnabled(false);
         }
         newBlockerButton.addActionListener(e -> {
-            BlockerForm form = new BlockerForm(simulationId);
+            BlockerForm form = new BlockerForm(simulationId); // Pass simulationId
             form.setVisible(true);
             form.addWindowListener(
                     new java.awt.event.WindowAdapter() {
