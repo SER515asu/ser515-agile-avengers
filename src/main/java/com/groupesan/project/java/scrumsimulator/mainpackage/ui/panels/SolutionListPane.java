@@ -4,7 +4,6 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Solution;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.SolutionStore;
-import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.SolutionWidget;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 
@@ -18,83 +17,85 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SolutionListPane extends JFrame implements BaseComponent {
+public class SolutionListPane extends JFrame {
     private Player player;
+    private JPanel subPanel = new JPanel();
+    private JPanel headerPanel = new JPanel();
+    private List<SolutionWidget> widgets = new ArrayList<>();
 
     public SolutionListPane(Player player) {
         this.player = player;
         this.init();
     }
-    private List<SolutionWidget> widgets = new ArrayList<>();
-    private JPanel subPanel = new JPanel();
 
     public void init(){
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("List of Solutions");
         setSize(500, 300);
 
-        GridBagLayout myGridbagLayout = new GridBagLayout();
-        JPanel myJpanel = new JPanel();
-        myJpanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        myJpanel.setLayout(myGridbagLayout);
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
+        // Create and add headers only once
+        headerPanel.setLayout(new GridBagLayout());
+        addHeaders();
+        mainPanel.add(headerPanel, BorderLayout.NORTH);
+
+        // Set up subPanel for solution list items
         subPanel.setLayout(new GridBagLayout());
-
         JScrollPane scrollPane = new JScrollPane(subPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         refreshSolutionList();
 
-        myJpanel.add(
-                scrollPane,
-                new CustomConstraints(0, 0, GridBagConstraints.WEST, 1.0, 0.8, GridBagConstraints.BOTH)
-        );
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
 
+        // Adding buttons
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
         JButton newSolutionButton = new JButton("Add solution");
-        newSolutionButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        SolutionForm form = new SolutionForm();
-                        form.setVisible(true);
-                        form.addWindowListener(
-                                new WindowAdapter() {
-                                    @Override
-                                    public void windowClosed(WindowEvent e) {
-                                        refreshSolutionList();
-                                    }
-                                }
-                        );
-                    }
+        newSolutionButton.addActionListener(e -> {
+            SolutionForm form = new SolutionForm();
+            form.setVisible(true);
+            form.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    refreshSolutionList();
                 }
-        );
+            });
+        });
+        buttonPanel.add(newSolutionButton, new CustomConstraints(0, 0, GridBagConstraints.WEST, 1.0, 0.2, GridBagConstraints.HORIZONTAL));
 
-        myJpanel.add(
-                newSolutionButton,
-                new CustomConstraints(0, 1, GridBagConstraints.WEST, 1.0, 0.2, GridBagConstraints.HORIZONTAL)
-        );
-
-        JButton probabilities_Button = new JButton("Fine-tune Probabilities");
+        JButton probabilitiesButton = new JButton("Fine-tune Probabilities");
         if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
-            probabilities_Button.setEnabled(false);
+            probabilitiesButton.setEnabled(false);
         }
-        probabilities_Button.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        SolutionsProbabilityPane form = new SolutionsProbabilityPane();
-                        form.setVisible(true);
-                    }
-                }
-        );
+        probabilitiesButton.addActionListener(e -> {
+            SolutionsProbabilityPane form = new SolutionsProbabilityPane();
+            form.setVisible(true);
+        });
+        buttonPanel.add(probabilitiesButton, new CustomConstraints(0, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
 
-        myJpanel.add(
-                probabilities_Button,
-                new CustomConstraints(0, 2, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
-        add(myJpanel);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+        add(mainPanel);
     }
 
-    private void refreshSolutionList(){
+    private void addHeaders() {
+        JLabel idHeader = new JLabel("ID");
+        JLabel titleHeader = new JLabel("Title");
+        JLabel descHeader = new JLabel("Description");
+
+
+        idHeader.setHorizontalAlignment(SwingConstants.CENTER);
+        titleHeader.setHorizontalAlignment(SwingConstants.CENTER);
+        descHeader.setHorizontalAlignment(SwingConstants.CENTER);
+
+
+        headerPanel.add(idHeader, new CustomConstraints(0, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        headerPanel.add(titleHeader, new CustomConstraints(1, 0, GridBagConstraints.CENTER, 0.3, 0.0, GridBagConstraints.HORIZONTAL));
+        headerPanel.add(descHeader, new CustomConstraints(2, 0, GridBagConstraints.CENTER, 0.4, 0.0, GridBagConstraints.HORIZONTAL));
+            }
+
+    private void refreshSolutionList() {
         subPanel.removeAll();
         widgets.clear();
 
@@ -110,7 +111,8 @@ public class SolutionListPane extends JFrame implements BaseComponent {
                             GridBagConstraints.WEST,
                             1.0,
                             0.1,
-                            GridBagConstraints.HORIZONTAL));
+                            GridBagConstraints.HORIZONTAL)
+            );
         }
 
         subPanel.revalidate();
