@@ -14,10 +14,12 @@ public class SolutionWidget extends JPanel implements BaseComponent {
     // Flag to ensure the headers are only added once
     private static boolean headersAdded = false;
     private Solution mySolution;
+    private String simulationId;
 
-    public SolutionWidget(Solution solution){
+    public SolutionWidget(Solution solution, String simulationId){
         this.mySolution = solution;
-        init();
+        this.simulationId = simulationId;
+        this.init();
     }
 
     public void init(){

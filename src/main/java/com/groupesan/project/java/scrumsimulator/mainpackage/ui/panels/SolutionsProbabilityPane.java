@@ -22,8 +22,8 @@ public class SolutionsProbabilityPane extends JFrame implements BaseComponent {
     JPanel subPanel = new JPanel();
     private List<Float> probabilities = new ArrayList<>();
 
-    public SolutionsProbabilityPane(){
-        this.availableSolutions = SolutionStore.getInstance().getSolutions();
+    public SolutionsProbabilityPane(String simulationId){
+        this.availableSolutions = SolutionStore.getInstance(simulationId).getSolutions();
         for(int i=0;i<=10;i++){
             probabilities.add((float) i/10);
         }

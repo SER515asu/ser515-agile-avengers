@@ -22,9 +22,11 @@ public class SolutionListPane extends JFrame {
     private JPanel subPanel = new JPanel();
     private JPanel headerPanel = new JPanel();
     private List<SolutionWidget> widgets = new ArrayList<>();
+    private String simulationId;
 
-    public SolutionListPane(Player player) {
+    public SolutionListPane(Player player, String simulationId) {
         this.player = player;
+        this.simulationId = simulationId;
         this.init();
     }
 
@@ -53,16 +55,24 @@ public class SolutionListPane extends JFrame {
         // Adding buttons
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         JButton newSolutionButton = new JButton("Add solution");
-        newSolutionButton.addActionListener(e -> {
-            SolutionForm form = new SolutionForm();
-            form.setVisible(true);
-            form.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    refreshSolutionList();
-                }
-            });
-        });
+
+        newSolutionButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        SolutionForm form = new SolutionForm(simulationId);
+                        form.setVisible(true);
+                        form.addWindowListener(
+                                new WindowAdapter() {
+                                    @Override
+                                    public void windowClosed(WindowEvent e) {
+                                        refreshSolutionList();
+                                    }
+                                }
+                        );
+                    }
+                });
+
         buttonPanel.add(newSolutionButton, new CustomConstraints(0, 0, GridBagConstraints.WEST, 1.0, 0.2, GridBagConstraints.HORIZONTAL));
 
         JButton probabilitiesButton = new JButton("Fine-tune Probabilities");
@@ -70,7 +80,7 @@ public class SolutionListPane extends JFrame {
             probabilitiesButton.setEnabled(false);
         }
         probabilitiesButton.addActionListener(e -> {
-            SolutionsProbabilityPane form = new SolutionsProbabilityPane();
+            SolutionsProbabilityPane form = new SolutionsProbabilityPane(simulationId);
             form.setVisible(true);
         });
         buttonPanel.add(probabilitiesButton, new CustomConstraints(0, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
@@ -99,9 +109,9 @@ public class SolutionListPane extends JFrame {
         subPanel.removeAll();
         widgets.clear();
 
-        List<Solution> solutions = SolutionStore.getInstance().getSolutions();
+        List<Solution> solutions = SolutionStore.getInstance(simulationId).getSolutions();
         for(int i=0; i<solutions.size(); i++){
-            SolutionWidget widget = new SolutionWidget(solutions.get(i));
+            SolutionWidget widget = new SolutionWidget(solutions.get(i), simulationId);
             widgets.add(widget);
             subPanel.add(
                     widget,

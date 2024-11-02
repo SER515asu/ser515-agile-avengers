@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.swing.JOptionPane;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Sprint;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryIdentifier;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
+
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -383,6 +381,67 @@ public class SimulationStateManager {
                 }
 
                 blockersInSimulation.put(newBlockerObj);
+                updateSimulationData(simulationData);
+                return;
+            }
+        }
+    }
+
+    public static List<Solution> getSolutionsForSimulation(String simulationId){
+        List<Solution> solutions = new ArrayList<>();
+
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return solutions;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i<simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray solutionsInSimulation = simulation.optJSONArray("Solutions");
+                if(solutionsInSimulation == null){
+                    return solutions;
+                }
+                for(int j=0;j<solutionsInSimulation.length(); j++){
+                    JSONObject solutionObj = solutionsInSimulation.getJSONObject(j);
+                    Solution solution = new Solution(solutionObj.getString("Name"), solutionObj.getString("Description"), solutionObj.getInt("ID"));
+                    solutions.add(solution);
+                    if(j == solutionsInSimulation.length()-1){
+                        SolutionFactory.getSolutionFactory().setNumSolutions(solution.getId());
+                    }
+                }
+                break;
+            }
+        }
+        return solutions;
+    }
+
+    public static void storeSolutionInSimulation(String simulationId, Solution solution){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i<simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray solutionsInSimulation = simulation.optJSONArray("Solutions");
+
+                JSONObject newSolutionObj = new JSONObject();
+                newSolutionObj.put("ID", solution.getId());
+                newSolutionObj.put("Name", solution.getTitle());
+                newSolutionObj.put("Description", solution.getDescription());
+
+                if(solutionsInSimulation == null){
+                    solutionsInSimulation = new JSONArray();
+                    simulation.put("Solutions", solutionsInSimulation);
+                }
+
+                solutionsInSimulation.put(newSolutionObj);
                 updateSimulationData(simulationData);
                 return;
             }
