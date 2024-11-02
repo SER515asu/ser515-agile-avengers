@@ -19,9 +19,11 @@ import java.util.List;
 
 public class SolutionListPane extends JFrame implements BaseComponent {
     private Player player;
+    private String simulationId;
 
-    public SolutionListPane(Player player) {
+    public SolutionListPane(Player player, String simulationId) {
         this.player = player;
+        this.simulationId = simulationId;
         this.init();
     }
     private List<SolutionWidget> widgets = new ArrayList<>();
@@ -54,7 +56,7 @@ public class SolutionListPane extends JFrame implements BaseComponent {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        SolutionForm form = new SolutionForm();
+                        SolutionForm form = new SolutionForm(simulationId);
                         form.setVisible(true);
                         form.addWindowListener(
                                 new WindowAdapter() {
@@ -80,9 +82,9 @@ public class SolutionListPane extends JFrame implements BaseComponent {
         subPanel.removeAll();
         widgets.clear();
 
-        List<Solution> solutions = SolutionStore.getInstance().getSolutions();
+        List<Solution> solutions = SolutionStore.getInstance(simulationId).getSolutions();
         for(int i=0; i<solutions.size(); i++){
-            SolutionWidget widget = new SolutionWidget(solutions.get(i));
+            SolutionWidget widget = new SolutionWidget(solutions.get(i), simulationId);
             widgets.add(widget);
             subPanel.add(
                     widget,

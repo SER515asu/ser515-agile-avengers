@@ -33,6 +33,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
     private JPanel panel;
     private Player player = new Player("bob", new ScrumRole("Scrum Master"));
 
+
     /** Constructor for SimulationUI. It initializes the role selection process. */
     public SimulationUI() {
         init();
@@ -206,7 +207,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
         // Add the "List of Solutions" button with access only for Developer
         JButton solutionsButton = new JButton("List of Solutions");
         solutionsButton.setPreferredSize(buttonSize);
-        solutionsButton.addActionListener(e -> new SolutionListPane(player).setVisible(true));
+        solutionsButton.addActionListener(e -> new SolutionListPane(player,selectedSimulationId).setVisible(true));
         if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
             solutionsButton.setVisible(false);
         }
