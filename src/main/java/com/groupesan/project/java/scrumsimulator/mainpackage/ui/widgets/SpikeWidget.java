@@ -74,12 +74,11 @@ public class SpikeWidget extends JPanel implements BaseComponent {
         });
 
 
-        resolveButton = new JButton("Resolve");
-        resolveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                resolveSpike();
-            }
+        JButton startSpikeButton;
+        startSpikeButton = new JButton("Start Spike");
+        startSpikeButton.addActionListener(e -> {
+            StartSpikePanel startSpikePanel = new StartSpikePanel(spike.getId());
+            startSpikePanel.setVisible(true);
         });
 
         GridBagLayout myGridBagLayout = new GridBagLayout();
@@ -89,7 +88,7 @@ public class SpikeWidget extends JPanel implements BaseComponent {
         add(name, new CustomConstraints(1, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(description, new CustomConstraints(2, 1, GridBagConstraints.WEST, 0.4, 0.0, GridBagConstraints.HORIZONTAL));
         add(linkUserStoryButton, new CustomConstraints(3, 1, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
-        add(resolveButton, new CustomConstraints(4, 1, GridBagConstraints.WEST, 0.1, 0.1, GridBagConstraints.HORIZONTAL));
+        add(startSpikeButton, new CustomConstraints(4, 1, GridBagConstraints.WEST, 0.1, 0.1, GridBagConstraints.HORIZONTAL));
 
         revalidate();
         repaint();
