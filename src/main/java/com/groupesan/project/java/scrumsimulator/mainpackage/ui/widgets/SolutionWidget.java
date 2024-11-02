@@ -13,9 +13,11 @@ public class SolutionWidget extends JPanel implements BaseComponent {
     JLabel blocker;
 
     private Solution mySolution;
+    private String simulationId;
 
-    public SolutionWidget(Solution solution){
+    public SolutionWidget(Solution solution, String simulationId){
         this.mySolution = solution;
+        this.simulationId = simulationId;
         this.init();
     }
 
