@@ -19,8 +19,8 @@ public class BlockersProbabilityPane extends JFrame implements BaseComponent {
     private JComboBox<String> blockerJComboBox = new JComboBox<>();
     JPanel subPanel = new JPanel();
 
-    public BlockersProbabilityPane(){
-        this.availableBlockers = BlockerStore.getInstance().getAllBlockers();
+    public BlockersProbabilityPane(String simulationId){
+        this.availableBlockers = BlockerStore.getInstance(simulationId).getAllBlockers();
         this.init();
     }
 

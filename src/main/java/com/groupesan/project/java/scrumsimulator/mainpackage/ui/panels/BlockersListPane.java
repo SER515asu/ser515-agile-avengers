@@ -85,7 +85,7 @@ public class BlockersListPane extends JFrame implements BaseComponent {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        BlockersProbabilityPane form = new BlockersProbabilityPane();
+                        BlockersProbabilityPane form = new BlockersProbabilityPane(simulationId);
                         form.setVisible(true);
                     }
                 }
