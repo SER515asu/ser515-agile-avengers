@@ -1,5 +1,6 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,11 +18,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileInputStream;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumRole;
@@ -81,10 +77,19 @@ public class SimulationUI extends JFrame implements BaseComponent {
             // Store the selected simulation ID (extract from selectedSimulation)
             if (selectedSimulation != null) {
                 this.selectedSimulationId = selectedSimulation.split(" - ")[1];
+                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                selectUserRole();
             }
-            selectUserRole();
+            else{
+                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                dispose();
+            }
         }
+        else {
+            JOptionPane.showMessageDialog(this, "No simulations available.", "Error", JOptionPane.ERROR_MESSAGE);
+            dispose();
     }
+}
 
     // Method to read simulations from JSON file
     private JSONArray getSimulations() {
@@ -100,16 +105,27 @@ public class SimulationUI extends JFrame implements BaseComponent {
 
     /** Opens the RoleSelectionPane for the user to select their role. */
     private void selectUserRole() {
-        RoleSelectionPane roleSelectionPane = new RoleSelectionPane(roleName -> setUserRole(new ScrumRole(roleName)));
-
-        // Set the SimulationUI as the parent of RoleSelectionPane
+        RoleSelectionPane roleSelectionPane = new RoleSelectionPane(roleName -> {
+            if (roleName != null) {
+                setUserRole(new ScrumRole(roleName));
+            }
+        });
+    
         roleSelectionPane.setLocationRelativeTo(this);
-
-        // Make the RoleSelectionPane stay on top
         roleSelectionPane.setAlwaysOnTop(true);
-
+    
+        roleSelectionPane.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (userRole == null) {
+                    dispose(); 
+                }
+            }
+        });
+    
         roleSelectionPane.setVisible(true);
     }
+    
 
     /**
      * Sets the user role for the simulation and initializes the UI accordingly.
@@ -122,7 +138,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
         updateUI();
     }
 
-    private void updateUI() {
+    public void updateUI() {
         panel.removeAll();
         GridBagConstraints constraints = new GridBagConstraints();
 
@@ -160,7 +176,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
         JButton backlogButton = new JButton("Product Backlog");
         backlogButton.setPreferredSize(buttonSize);
         backlogButton.addActionListener(e -> new UserStoryListPane(player, selectedSimulationId).setVisible(true));
-        if (player.getRole().getName().equals(Roles.SCRUM_MASTER.getDisplayName())) {
+        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
             backlogButton.setVisible(false);
         }
         buttonPanel.add(backlogButton);
@@ -182,7 +198,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
         // Add the "List of Blockers" button with access only for Developer
         JButton blockersButton = new JButton("List of Blockers");
         blockersButton.setPreferredSize(buttonSize);
-        blockersButton.addActionListener(e -> new BlockersListPane(player).setVisible(true));
+        blockersButton.addActionListener(e -> new BlockersListPane(player, selectedSimulationId).setVisible(true));
         if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
             blockersButton.setVisible(false);
         }
@@ -218,5 +234,14 @@ public class SimulationUI extends JFrame implements BaseComponent {
         constraints.insets = new Insets(0, 5, 0, 5);
         constraints.anchor = GridBagConstraints.CENTER;
         panel.add(button, constraints);
+    }
+
+    public boolean isButtonVisible(String buttonText) {
+        for (Component component : panel.getComponents()) {
+            if (component instanceof JButton && ((JButton) component).getText().equals(buttonText)) {
+                return component.isVisible();
+            }
+        }
+        return false;
     }
 }

@@ -22,24 +22,24 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.UserStor
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 import lombok.Getter;
 
-
 public class UserStoryListPane extends JFrame implements BaseComponent {
     private Player player;
     @Getter
     private String simulationID;
-    
+
     public UserStoryListPane(Player player, String simulationId) {
         this.player = player;
         this.simulationID = simulationId;
         this.init();
     }
+
     private List<UserStoryWidget> widgets = new ArrayList<>();
     private JPanel subPanel = new JPanel();
 
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setTitle("User Story list");
-        setSize(500, 300);
+        setTitle("User Story List");
+        setSize(700, 500); // Updated size as per modified code
 
         GridBagLayout myGridbagLayout = new GridBagLayout();
         JPanel myJpanel = new JPanel();
@@ -69,8 +69,10 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
                                     public void windowClosed(
                                             java.awt.event.WindowEvent windowEvent) {
                                         UserStory userStory = form.getUserStoryObject();
-                                        UserStoryStore.getInstance(simulationID).addUserStory(userStory);
-                                        addUserStoryWidget(new UserStoryWidget(userStory, UserStoryListPane.this));
+                                        if (userStory != null) {
+                                            UserStoryStore.getInstance(simulationID).addUserStoryToBacklog(userStory);
+                                            addUserStoryWidget(new UserStoryWidget(userStory, UserStoryListPane.this));
+                                        }
                                     }
                                 });
                     }
@@ -88,8 +90,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
         widgets.clear();
 
         int i = 0;
-        for (UserStory userStory : UserStoryStore.getInstance(simulationID).getUserStories()) {
-            System.out.println("User stores count it "+ UserStoryStore.getInstance(simulationID).getUserStories().size());
+        for (UserStory userStory : UserStoryStore.getInstance(simulationID).getBacklogStories()) {
             UserStoryWidget widget = new UserStoryWidget(userStory, this);
             widgets.add(widget);
             subPanel.add(
@@ -108,16 +109,22 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
     }
 
     public void removeUserStoryWidget(UserStoryWidget widget) {
-        widgets.remove(widget);
-        refreshUserStories();
+        UserStory userStory = widget.getUserStory();
+        UserStoryStore.getInstance(simulationID).removeUserStoryFromBacklog(userStory); // Remove from backlog
+        widgets.remove(widget); // Remove from widget list
+        refreshUserStories(); // Refresh UI
+        subPanel.revalidate();
+        subPanel.repaint();
     }
 
     public void addUserStoryWidget(UserStoryWidget widget) {
         widgets.add(widget);
         refreshUserStories();
+        subPanel.revalidate();
+        subPanel.repaint();
     }
 
-    // Add this method to access the list of widgets
+    // Method to access the list of widgets
     public List<UserStoryWidget> getWidgets() {
         return widgets;
     }
