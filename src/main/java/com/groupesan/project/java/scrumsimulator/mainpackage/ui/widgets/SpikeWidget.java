@@ -15,6 +15,7 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.StartSpikePanel;
 public class SpikeWidget extends JPanel implements BaseComponent {
 
     JLabel id;
