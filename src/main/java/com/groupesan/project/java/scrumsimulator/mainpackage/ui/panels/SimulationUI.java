@@ -5,9 +5,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.io.FileInputStream;
 import java.awt.event.ActionListener;
-
+import java.io.FileInputStream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;

@@ -140,7 +140,7 @@ public class BlockerWidget extends JPanel implements BaseComponent {
                 JOptionPane.YES_NO_OPTION);
 
         if (confirmation == JOptionPane.YES_OPTION) {
-            BlockerStore.getInstance(simulationId).removeBlocker(blocker.getId());
+            BlockerStore.getInstance().removeBlocker(blocker.getId());
             parentPane.removeBlockerWidget(this);
         }
     }

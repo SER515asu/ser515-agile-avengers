@@ -121,7 +121,7 @@ public class BlockerForm extends JFrame implements BaseComponent {
 
         BlockerFactory blockerFactory = BlockerFactory.getInstance();
         Blocker blocker = blockerFactory.createNewBlocker(name, description);
-        BlockerStore.getInstance(simulationId).addBlocker(blocker);
+        BlockerStore.getInstance().addBlocker(blocker);
 
         return blocker;
     }

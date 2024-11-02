@@ -4,8 +4,6 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumIdentifier;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumObject;
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.*;
-//import com.groupesan.project.java.scrumsimulator.mainpackage.state.UserStoryUnselectedState;
-
 import lombok.Getter;
 import lombok.Setter;
 
