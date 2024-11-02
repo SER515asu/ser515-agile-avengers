@@ -9,11 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.swing.JOptionPane;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Solution;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Sprint;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryIdentifier;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
+
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -411,6 +408,9 @@ public class SimulationStateManager {
                     JSONObject solutionObj = solutionsInSimulation.getJSONObject(j);
                     Solution solution = new Solution(solutionObj.getString("Name"), solutionObj.getString("Description"), solutionObj.getInt("ID"));
                     solutions.add(solution);
+                    if(j == solutionsInSimulation.length()-1){
+                        SolutionFactory.getSolutionFactory().setNumSolutions(solution.getId());
+                    }
                 }
                 break;
             }
