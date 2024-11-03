@@ -55,7 +55,7 @@ public class UserStory extends ScrumObject {
         this.pointValue = pointValue;
         this.businessValue = businessValue;
         this.state = new UnassignedState(this);
-        this.register();
+        this.doRegister();
     }
 
     public UserStory(String name, String description, double pointValue, double businessValue, UserStoryIdentifier id) {
@@ -65,11 +65,13 @@ public class UserStory extends ScrumObject {
         this.businessValue = businessValue;
         this.state = new UnassignedState(this);
         this.id = id;
-        this.register();
+        this.doRegister();
     }
 
     protected void register() {
-        this.id = new UserStoryIdentifier(ScrumIdentifierStoreSingleton.get().getNextId());
+        if(this.id == null){
+            this.id = new UserStoryIdentifier(ScrumIdentifierStoreSingleton.get().getNextId());
+        }
     }
 
     /**
@@ -80,10 +82,10 @@ public class UserStory extends ScrumObject {
      */
     public ScrumIdentifier getId() {
         // To be uncommented again, will correct in bug ticket
-//        if (!isRegistered()) {
-//            throw new IllegalStateException(
-//                    "This UserStory has not been registered and does not have an ID yet!");
-//        }
+        if (!isRegistered()) {
+            throw new IllegalStateException(
+                    "This UserStory has not been registered and does not have an ID yet!");
+        }
         return id;
     }
 
