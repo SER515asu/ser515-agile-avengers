@@ -4,6 +4,7 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.BlockerStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
+import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationStateManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,6 +15,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BlockersProbabilityPane extends JFrame implements BaseComponent {
     private List<Blocker> availableBlockers = new ArrayList<>();
@@ -21,9 +23,11 @@ public class BlockersProbabilityPane extends JFrame implements BaseComponent {
     private JComboBox<String> blockerJComboBox = new JComboBox<>();
     JPanel subPanel = new JPanel();
     private List<Float> probabilities = new ArrayList<>();
+    private String simulationId;
 
     public BlockersProbabilityPane(String simulationId){
         this.availableBlockers = BlockerStore.getInstance(simulationId).getAllBlockers();
+        this.simulationId = simulationId;
         for(int i=0;i<=10;i++){
             probabilities.add((float) i/10);
         }
@@ -169,7 +173,43 @@ public class BlockersProbabilityPane extends JFrame implements BaseComponent {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        // Add logic to store probabilities in the backend
+                        // Add logic to store probabilities pf blockers in the backend
+                        if(!selectedBlockers.isEmpty()) {
+                            float probabilityStartValue = Float.parseFloat(Objects.requireNonNull(startValue.getSelectedItem()).toString());
+                            float probabilityEndValue = Float.parseFloat(Objects.requireNonNull(endValue.getSelectedItem()).toString());
+                            if(randomizeProbability.isSelected()){
+                                probabilityStartValue = Float.parseFloat(String.format("%.1f", Math.random() * 0.9));
+                                probabilityEndValue = Float.parseFloat(String.format("%.1f", (probabilityStartValue+0.1) + (0.9-probabilityStartValue)*Math.random()));
+                            }
+                            for (Blocker blocker : selectedBlockers) {
+                                blocker.setProbabilityRangeStart(probabilityStartValue);
+                                blocker.setProbabilityRangeEnd(probabilityEndValue);
+                            }
+                            SimulationStateManager.updateBlockersProbabilityInSimulation(simulationId, selectedBlockers);
+                            Object[] message = {
+                                    "Probability range set for selected Blockers",
+                            };
+
+                            JOptionPane.showMessageDialog(
+                                    BlockersProbabilityPane.this,
+                                    message,
+                                    "Success",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            dispose();
+                        }
+
+                        else{
+                            Object[] message = {
+                                    "Please select one or more blockers",
+                            };
+
+                            JOptionPane.showMessageDialog(
+                                    BlockersProbabilityPane.this,
+                                    message,
+                                    "Error",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
+
                     }
                 }
         );
