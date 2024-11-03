@@ -74,13 +74,16 @@ public class SpikeWidget extends JPanel implements BaseComponent {
             }
         });
 
-
-        JButton startSpikeButton;
-        startSpikeButton = new JButton("Start Spike");
+        JButton startSpikeButton = new JButton("Start Spike");
         startSpikeButton.addActionListener(e -> {
             StartSpikePanel startSpikePanel = new StartSpikePanel(spike.getId());
             startSpikePanel.setVisible(true);
         });
+
+        if (spike.isResolved()) {
+            linkUserStoryButton.setEnabled(false);
+            startSpikeButton.setEnabled(false);
+        }
 
         GridBagLayout myGridBagLayout = new GridBagLayout();
         setLayout(myGridBagLayout);

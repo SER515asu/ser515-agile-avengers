@@ -17,6 +17,7 @@ public class Spike {
     @Setter
     @Getter
     private String description;
+    @Getter
     private boolean resolved;
 
     public Spike(UUID spikeId, String name, String description) {
@@ -38,10 +39,6 @@ public class Spike {
         linkedUserStories.remove(userStory);
     }
 
-
-    public boolean isResolved() {
-        return resolved;
-    }
 
     public void resolve() {
         this.resolved = true;
