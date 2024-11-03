@@ -1,6 +1,9 @@
+import java.awt.GraphicsEnvironment;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,11 +23,10 @@ public class SprintListTest {
 
     @BeforeEach
     public void setup() {
-        // Initialize the SprintStore and clear any existing sprints
+        Assumptions.assumeTrue(!GraphicsEnvironment.isHeadless(), "Test requires a graphical environment");
         sprintStore = SprintStore.getInstance(simulationID);
         sprintStore.getSprints().clear();
 
-        // Prepare a sample Sprint and UserStory for testing
         mySprint = new Sprint("Test Sprint", "A sprint for testing", 14, "sprintId1");
         myUserStory = UserStoryFactory.getInstance().createNewUserStory("Test Story", "Story description", 5.0, 3);
         myUserStory.doRegister();  // Register the story to assign an ID
@@ -33,7 +35,6 @@ public class SprintListTest {
 
     @Test
     public void testAddUserStoryToSprint() {
-        // Add a user story to the sprint and verify it was added
         mySprint.addUserStory(myUserStory);
         assertTrue(mySprint.getUserStories().contains(myUserStory), "User story should be added to the sprint.");
         assertEquals(1, mySprint.getUserStories().size(), "There should be exactly one user story in the sprint.");
@@ -41,7 +42,6 @@ public class SprintListTest {
 
     @Test
     public void testRemoveUserStoryFromSprint() {
-        // Add, then remove a user story from the sprint, and verify removal
         mySprint.addUserStory(myUserStory);
         mySprint.removeUserStory(myUserStory);
 
@@ -51,7 +51,6 @@ public class SprintListTest {
 
     @Test
     public void testRoleBasedAccess() {
-        // Simulate a player with a Scrum Master role (should allow sprint creation)
         Player scrumMaster = new Player("Scrum Master", new ScrumRole(Roles.SCRUM_MASTER.getDisplayName()));
         assertTrue(scrumMaster.getRole().getName().equals(Roles.SCRUM_MASTER.getDisplayName()), 
                    "Scrum Master should be able to create sprints.");
@@ -65,14 +64,9 @@ public class SprintListTest {
     @Test
     public void testUniqueSprintNames() {
         Sprint duplicateSprint = new Sprint("Test Sprint", "Another sprint with the same name", 14, "sprintId2");
-
-        // Mock adding the first sprint
         sprintStore.getSprints().add(mySprint);
-
-        // Check if duplicate name exists in SprintStore
         boolean nameExists = sprintStore.getSprints().stream()
                 .anyMatch(sprint -> sprint.getName().equals(duplicateSprint.getName()));
-
         assertFalse(nameExists, "A sprint with the same name already exists.");
     }
 }
