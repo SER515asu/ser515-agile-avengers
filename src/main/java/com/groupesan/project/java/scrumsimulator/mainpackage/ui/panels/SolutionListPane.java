@@ -1,21 +1,29 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
-import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
-import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Solution;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.SolutionStore;
-import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.SolutionWidget;
-import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Solution;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.SolutionStore;
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.SolutionWidget;
+import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 
 public class SolutionListPane extends JFrame {
     private Player player;
@@ -55,6 +63,9 @@ public class SolutionListPane extends JFrame {
         // Adding buttons
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         JButton newSolutionButton = new JButton("Add solution");
+        if (player.getRole().getName().equals(Roles.SCRUM_ADMINISTRATOR.getDisplayName())) {
+            newSolutionButton.setEnabled(false);
+        }
 
         newSolutionButton.addActionListener(
                 new ActionListener() {
@@ -76,8 +87,9 @@ public class SolutionListPane extends JFrame {
         buttonPanel.add(newSolutionButton, new CustomConstraints(0, 0, GridBagConstraints.WEST, 1.0, 0.2, GridBagConstraints.HORIZONTAL));
 
         JButton probabilitiesButton = new JButton("Fine-tune Probabilities");
-        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
-            probabilitiesButton.setEnabled(false);
+        probabilitiesButton.setEnabled(false);
+        if (player.getRole().getName().equals(Roles.SCRUM_ADMINISTRATOR.getDisplayName())) {
+            probabilitiesButton.setEnabled(true);
         }
         probabilitiesButton.addActionListener(e -> {
             SolutionsProbabilityPane form = new SolutionsProbabilityPane(simulationId);
