@@ -39,14 +39,17 @@ public class RoleSelectionPane extends JFrame implements BaseComponent {
         JButton pigButton = new JButton("Developer");
         JButton productOwnerButton = new JButton("Product Owner");
         JButton scrumMasterButton = new JButton("Scrum Master");
+        JButton scrumAdminButton = new JButton("Scrum Administrator");
 
         pigButton.addActionListener(e -> selectRole("Developer"));
         productOwnerButton.addActionListener(e -> selectRole("Product Owner"));
         scrumMasterButton.addActionListener(e -> selectRole("Scrum Master"));
+        scrumAdminButton.addActionListener(e -> selectRole("Scrum Administrator"));
 
         add(pigButton);
         add(productOwnerButton);
         add(scrumMasterButton);
+        add(scrumAdminButton);
     }
 
     /**

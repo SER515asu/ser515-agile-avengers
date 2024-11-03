@@ -18,6 +18,7 @@ public class SimulationSwitchRolePane extends JFrame {
     private JRadioButton developerRadioButton;
     private JRadioButton scrumMasterRadioButton;
     private JRadioButton productOwnerRadioButton;
+    private JRadioButton scrumAdminRadioButton;
     private ButtonGroup roleButtonGroup;
     private JButton switchButton;
     private final Consumer<ScrumRole> roleSwitchCallback;
@@ -34,29 +35,36 @@ public class SimulationSwitchRolePane extends JFrame {
     }
 
     private void initComponents() {
-        JPanel panel = new JPanel(new GridLayout(4, 1));
-
+        JPanel mainPanel = new JPanel(new BorderLayout());
+    
         JLabel label = new JLabel("Select Role:");
-        panel.add(label);
-
+        mainPanel.add(label, BorderLayout.NORTH);
+    
+        JPanel radioPanel = new JPanel(new GridLayout(4, 1));
+    
         developerRadioButton = new JRadioButton("Developer");
         scrumMasterRadioButton = new JRadioButton("Scrum Master");
         productOwnerRadioButton = new JRadioButton("Product Owner");
-
+        scrumAdminRadioButton = new JRadioButton("Scrum Administrator");
+    
         roleButtonGroup = new ButtonGroup();
         roleButtonGroup.add(developerRadioButton);
         roleButtonGroup.add(scrumMasterRadioButton);
         roleButtonGroup.add(productOwnerRadioButton);
-
-        panel.add(developerRadioButton);
-        panel.add(scrumMasterRadioButton);
-        panel.add(productOwnerRadioButton);
-
+        roleButtonGroup.add(scrumAdminRadioButton);
+    
+        radioPanel.add(developerRadioButton);
+        radioPanel.add(scrumMasterRadioButton);
+        radioPanel.add(productOwnerRadioButton);
+        radioPanel.add(scrumAdminRadioButton);
+    
+        mainPanel.add(radioPanel, BorderLayout.CENTER);
+    
         switchButton = new JButton("Switch Role");
         switchButton.addActionListener(e -> onSwitchButtonClicked());
-
-        setLayout(new BorderLayout());
-        add(panel, BorderLayout.CENTER);
+    
+        // Add components to the main panel
+        add(mainPanel);
         add(switchButton, BorderLayout.SOUTH);
     }
 
@@ -69,6 +77,8 @@ public class SimulationSwitchRolePane extends JFrame {
             selectedRole = new ScrumRole("Scrum Master");
         } else if (productOwnerRadioButton.isSelected()) {
             selectedRole = new ScrumRole("Product Owner");
+        }  else if (scrumAdminRadioButton.isSelected()) {
+            selectedRole = new ScrumRole("Scrum Administrator");
         }
 
         if (selectedRole != null) {
@@ -79,6 +89,6 @@ public class SimulationSwitchRolePane extends JFrame {
             JOptionPane.showMessageDialog(this, "Please select a role.",
                                           "Role Switching Error", JOptionPane.ERROR_MESSAGE);
         }
-        dispose();
-    }
+        dispose();  
+    }   
 }
