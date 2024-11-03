@@ -475,4 +475,32 @@ public class SimulationStateManager {
             }
         }
     }
+
+    public static void updateSolutionsProbabilityInSimulation(String simulationId, List<Solution> updatedSolutions){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i< simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray solutions = simulation.optJSONArray("Solutions");
+                for(Solution updatedSolution: updatedSolutions){
+                    for(int j=0; j<solutions.length(); j++){
+                        JSONObject solution = solutions.getJSONObject(j);
+                        if(solution.getInt("ID") == updatedSolution.getId()){
+                            solution.put("ProbabilityRangeMinimum", updatedSolution.getProbabilityRangeMinimum());
+                            solution.put("ProbabilityRangeMaximum", updatedSolution.getProbabilityRangeMaximum());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        updateSimulationData(simulationData);
+    }
 }
