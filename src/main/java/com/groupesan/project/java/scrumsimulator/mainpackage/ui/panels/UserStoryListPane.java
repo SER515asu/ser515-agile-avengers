@@ -52,7 +52,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
         myJpanel.add(
                 new JScrollPane(subPanel),
                 new CustomConstraints(
-                        0, 0, GridBagConstraints.WEST, 1.0, 0.8, GridBagConstraints.HORIZONTAL));
+                        0, 0, GridBagConstraints.WEST, 1.0, 0.8, GridBagConstraints.BOTH));
 
         JButton newSprintButton = new JButton("New User Story");
         if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
