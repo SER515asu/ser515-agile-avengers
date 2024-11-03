@@ -1,9 +1,11 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationStateManager;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class SolutionListTest {
 
     @BeforeEach
     public void setup(){
+        Assumptions.assumeTrue(!GraphicsEnvironment.isHeadless(), "Test requires a graphical environment");
         mySolution = SolutionFactory.getSolutionFactory().createNewSolution("Solution1","Solution1 description");
         mySimulationId = "random_test_id";
     }

@@ -1,7 +1,10 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
 
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.awt.*;
 import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,6 +14,7 @@ public class BlockerListTest {
 
     @BeforeEach
     public void setup() {
+        Assumptions.assumeTrue(!GraphicsEnvironment.isHeadless(), "Test requires a graphical environment");
         // Create a new blocker for testing
         myBlocker =
                 BlockerFactory.getInstance()
