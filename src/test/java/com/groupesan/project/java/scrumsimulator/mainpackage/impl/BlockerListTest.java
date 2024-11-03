@@ -43,4 +43,20 @@ public class BlockerListTest {
         assertEquals("Blocker1description", blockerDescription);
     }
 
+    @Test
+    public void testInitialProbabilityValues(){
+        // Initially no probabilities are set, so the expected value is 0.0
+        assertEquals(0.0, myBlocker.getProbabilityRangeStart());
+        assertEquals(0.0, myBlocker.getProbabilityRangeEnd());
+    }
+
+    @Test
+    public void testUpdatedProbabilityValues(){
+        myBlocker.setProbabilityRangeStart((float) 0.3);
+        myBlocker.setProbabilityRangeEnd((float) 0.5);
+
+        assertEquals((float)0.3, myBlocker.getProbabilityRangeStart());
+        assertEquals((float) 0.5, myBlocker.getProbabilityRangeEnd());
+    }
+
 }

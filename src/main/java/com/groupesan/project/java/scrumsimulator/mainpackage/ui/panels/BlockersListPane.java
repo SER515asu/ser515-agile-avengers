@@ -2,6 +2,8 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +80,25 @@ public class BlockersListPane extends JFrame implements BaseComponent {
         myJpanel.add(
                 newBlockerButton,
                 new CustomConstraints(
-                        0, 1, GridBagConstraints.WEST, 1.0, 0.2, GridBagConstraints.HORIZONTAL));
+                        0, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+
+        JButton probabilitiesButton = new JButton("Fine-tune Probabilities");
+        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
+            probabilitiesButton.setEnabled(false);
+        }
+        probabilitiesButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        BlockersProbabilityPane form = new BlockersProbabilityPane(simulationId);
+                        form.setVisible(true);
+                    }
+                }
+        );
+
+        myJpanel.add(
+                probabilitiesButton,
+                new CustomConstraints(0, 2, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
 
         add(myJpanel);
     }
