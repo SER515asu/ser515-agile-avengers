@@ -65,7 +65,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
             String selectedSimulation =
                     (String)
                             JOptionPane.showInputDialog(
-                                    null,
+                                    this,
                                     "Select a Simulation:",
                                     "Simulation Selection",
                                     JOptionPane.QUESTION_MESSAGE,
@@ -76,11 +76,9 @@ public class SimulationUI extends JFrame implements BaseComponent {
             // Store the selected simulation ID (extract from selectedSimulation)
             if (selectedSimulation != null) {
                 this.selectedSimulationId = selectedSimulation.split(" - ")[1];
-                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 selectUserRole();
             }
             else{
-                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 dispose();
             }
         }
