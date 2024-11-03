@@ -1,20 +1,25 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.BlockerStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
-import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.UserStoryListPane;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.StoryForm;
+import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.UserStoryListPane;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
 
 import lombok.Getter;
