@@ -39,7 +39,7 @@ public class BlockersListPane extends JFrame implements BaseComponent {
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Blocker List");
-        setSize(500, 300);
+        setSize(700, 500);
 
         JPanel myJpanel = new JPanel(new GridBagLayout());
         myJpanel.setBorder(new EmptyBorder(10, 10, 10, 10));

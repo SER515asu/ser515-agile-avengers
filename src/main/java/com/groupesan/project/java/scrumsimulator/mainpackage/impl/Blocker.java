@@ -14,6 +14,7 @@ public class Blocker {
     private String name;
     private String description;
     private boolean resolved;
+    private Solution solution; // Added Solution to hold the linked solution
 
     // List to store linked user stories
     private List<UserStory> linkedUserStories = new ArrayList<>();
@@ -23,6 +24,7 @@ public class Blocker {
         this.name = name;
         this.description = description;
         this.resolved = false;
+        this.solution = null; // Initialize solution as null
     }
 
     public UUID getId() {
@@ -59,15 +61,24 @@ public class Blocker {
         linkedUserStories.remove(userStory);
     }
 
-    /**
-     * Resolves the blocker.
+     /**
+     * Resolves the blocker by linking a solution to it.
+     * @param solution The solution to link with the blocker.
      */
-    public void resolve() {
+    public void resolve(Solution solution) {
         this.resolved = true;
+        this.solution = solution;
+    }
+
+    /**
+     * Returns the title of the linked solution if available.
+     * @return the solution title, or null if no solution is linked
+     */
+    public String getSolutionTitle() {
+        return solution != null ? solution.getTitle() : "No Solution Linked";
     }
 
     // Method to register the blocker in the BlockerStore
-    // This method is kept commented as in the original code
 //    public void doRegister() {
 //        BlockerStore.getInstance().addBlocker(this); // Register this blocker in the store
 //    }

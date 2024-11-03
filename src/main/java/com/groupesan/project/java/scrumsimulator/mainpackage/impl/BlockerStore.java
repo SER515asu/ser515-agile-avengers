@@ -54,11 +54,11 @@ public class BlockerStore {
                 .orElse(null);
     }
 
-    // Method to resolve a blocker by its UUID
-    public boolean resolveBlocker(UUID id) {
+    // Method to resolve a blocker by its UUID with a given Solution
+    public boolean resolveBlocker(UUID id, Solution solution) {
         Blocker blocker = getBlockerById(id);
         if (blocker != null && !blocker.isResolved()) {
-            blocker.resolve();
+            blocker.resolve(solution); // Pass the solution to resolve method
             return true;
         }
         return false;
