@@ -34,10 +34,10 @@ public class SolutionListPane extends JFrame implements BaseComponent {
         setTitle("List of Solutions");
         setSize(500, 300);
 
-        GridBagLayout layout = new GridBagLayout();
-        JPanel mainPanel = new JPanel();
-        mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        mainPanel.setLayout(layout);
+        GridBagLayout myGridbagLayout = new GridBagLayout();
+        JPanel myJpanel = new JPanel();
+        myJpanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        myJpanel.setLayout(myGridbagLayout);
 
         subPanel.setLayout(new GridBagLayout());
 
