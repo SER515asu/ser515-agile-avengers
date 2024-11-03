@@ -14,16 +14,16 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
-import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.UserStoryWidget;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
+
 import lombok.Getter;
 
 public class UserStoryListPane extends JFrame implements BaseComponent {
-    private Player player;
+    private final Player player;
     @Getter
     private String simulationID;
 
@@ -55,9 +55,6 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
                         0, 0, GridBagConstraints.WEST, 1.0, 0.8, GridBagConstraints.HORIZONTAL));
 
         JButton newSprintButton = new JButton("New User Story");
-        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
-            newSprintButton.setEnabled(false); 
-        }
         newSprintButton.addActionListener(
                 new ActionListener() {
                     @Override
@@ -71,7 +68,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
                                         UserStory userStory = form.getUserStoryObject();
                                         if (userStory != null) {
                                             UserStoryStore.getInstance(simulationID).addUserStoryToBacklog(userStory);
-                                            addUserStoryWidget(new UserStoryWidget(userStory, UserStoryListPane.this));
+                                            addUserStoryWidget(new UserStoryWidget(userStory, player, UserStoryListPane.this));
                                         }
                                     }
                                 });
@@ -91,7 +88,7 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
 
         int i = 0;
         for (UserStory userStory : UserStoryStore.getInstance(simulationID).getBacklogStories()) {
-            UserStoryWidget widget = new UserStoryWidget(userStory, this);
+            UserStoryWidget widget = new UserStoryWidget(userStory, player, this);
             widgets.add(widget);
             subPanel.add(
                     widget,
