@@ -10,11 +10,19 @@ import java.util.UUID;
 @Getter
 @Setter
 public class Blocker {
+    @Getter
     private UUID id;
+    @Getter
     private String name;
+    @Getter
     private String description;
+    @Getter
     private boolean resolved;
+
     private Solution solution; // Added Solution to hold the linked solution
+    private float probabilityRangeStart;
+    private float probabilityRangeEnd;
+
 
     // List to store linked user stories
     private List<UserStory> linkedUserStories = new ArrayList<>();
@@ -25,22 +33,6 @@ public class Blocker {
         this.description = description;
         this.resolved = false;
         this.solution = null; // Initialize solution as null
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public boolean isResolved() {
-        return resolved;
     }
 
     /**

@@ -12,6 +12,10 @@ public class Solution {
 
     private String description;
 
+    private float probabilityRangeMinimum;
+
+    private float probabilityRangeMaximum;
+
     public Solution(String title, String description, int id){
         this.id = id;
         this.title = title;

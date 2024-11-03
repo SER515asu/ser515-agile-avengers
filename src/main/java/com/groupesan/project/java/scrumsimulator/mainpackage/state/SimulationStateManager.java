@@ -387,6 +387,34 @@ public class SimulationStateManager {
         }
     }
 
+    public static void updateBlockersProbabilityInSimulation(String simulationId, List<Blocker> updatedBlockers){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i< simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray blockers = simulation.optJSONArray("Blockers");
+                for(Blocker updatedBlocker: updatedBlockers){
+                    for(int j=0; j<blockers.length(); j++){
+                        JSONObject blocker = blockers.getJSONObject(j);
+                        if(blocker.getString("ID").equals(updatedBlocker.getId().toString())){
+                            blocker.put("ProbabilityRangeStart", updatedBlocker.getProbabilityRangeStart());
+                            blocker.put("ProbabilityRangeEnd", updatedBlocker.getProbabilityRangeEnd());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        updateSimulationData(simulationData);
+    }
+
     public static List<Solution> getSolutionsForSimulation(String simulationId){
         List<Solution> solutions = new ArrayList<>();
 
@@ -446,5 +474,33 @@ public class SimulationStateManager {
                 return;
             }
         }
+    }
+
+    public static void updateSolutionsProbabilityInSimulation(String simulationId, List<Solution> updatedSolutions){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i< simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray solutions = simulation.optJSONArray("Solutions");
+                for(Solution updatedSolution: updatedSolutions){
+                    for(int j=0; j<solutions.length(); j++){
+                        JSONObject solution = solutions.getJSONObject(j);
+                        if(solution.getInt("ID") == updatedSolution.getId()){
+                            solution.put("ProbabilityRangeMinimum", updatedSolution.getProbabilityRangeMinimum());
+                            solution.put("ProbabilityRangeMaximum", updatedSolution.getProbabilityRangeMaximum());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        updateSimulationData(simulationData);
     }
 }
