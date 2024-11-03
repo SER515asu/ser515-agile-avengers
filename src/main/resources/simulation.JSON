@@ -3,245 +3,376 @@
         "Status": "New",
         "Sprints": [
             {
-                "Description": "Initial sprint with core tasks",
-                "ID": "3bd5e9e5-b197-40b7-8266-b2e70bfe1dewr",
-                "Name": "Jan Sprint"
-            },
-            {
-                "Description": "Refinement and testing",
-                "ID": "3bd5e9e5-b197-40b7-8266-b2e70bfe342fr",
-                "Name": "Feb Sprint"
-            },
-            {
-                "Description": "sdad",
+                "Description": "Agile Development Simulation sprint1",
                 "Length": 2,
                 "RemainingDays": 2,
-                "ID": "69300b45-eafd-499e-b9f2-139be39dd7d5",
-                "Name": "dsasd"
-            }
-        ],
-        "UserStories": [{
-            "Description": "werwerwerwerw",
-            "BusinessValue": 1,
-            "PointValue": 1,
-            "Name": "erwr"
-        }],
-        "Events": [],
-        "LengthOfSprint": "2",
-        "NumberOfSprints": "5",
-        "ID": "ff2a037f-1411-43e7-9442-0455912612a5",
-        "Users": [],
-        "Name": "Project Alpha"
-    },
-    {
-        "Status": "New",
-        "Sprints": [
+                "ID": "2c8744eb-991f-4296-a7e9-140a95e3ef66",
+                "Name": "Sprint 1"
+            },
             {
-                "Description": "fsdfdsf",
+                "Description": "Agile Development sprint2",
                 "Length": 2,
                 "RemainingDays": 2,
-                "ID": "f3e6fe9d-5a2e-4aa7-878d-e9c0f1316cad",
-                "Name": "Jan first half"
+                "ID": "a3855cb2-6dc9-4247-80ea-67199942444b",
+                "Name": "Sprint 2"
             },
             {
-                "Description": "dfsfdfsf",
+                "Description": "Agile Development sprint3",
                 "Length": 2,
                 "RemainingDays": 2,
-                "ID": "986b85b1-4e1c-421d-bd53-e887ecc598bf",
-                "Name": "Jan second half"
+                "ID": "83fb7a1f-856c-4bfa-b899-33f489af67b9",
+                "Name": "Sprint 3"
             }
         ],
-        "Events": [],
-        "LengthOfSprint": "2",
-        "NumberOfSprints": "3",
-        "ID": "5eb686c6-1290-4bf7-b35a-08e0e74e443a",
-        "Users": [],
-        "Name": "Map project"
-    },
-    {
-        "Status": "New",
-        "Sprints": [{
-            "Description": "",
-            "Length": 2,
-            "RemainingDays": 2,
-            "ID": "bea17a70-9f1b-4f20-ad60-435d7fe2dcd0",
-            "Name": "First sprint"
-        }],
         "UserStories": [
             {
-                "Description": "dsfsdf",
-                "BusinessValue": 1,
-                "PointValue": 1,
-                "Name": "dsasf"
-            },
-            {
-                "Description": "sfsdfsdf",
-                "BusinessValue": 1,
-                "PointValue": 1,
-                "Name": "sdfdsf"
-            },
-            {
-                "Description": "ewrwerew",
-                "BusinessValue": 1,
-                "PointValue": 1,
-                "Name": "reerwe"
-            }
-        ],
-        "Events": [],
-        "LengthOfSprint": "3",
-        "NumberOfSprints": "4",
-        "ID": "75f71216-4e97-45df-afdc-a0007d167bec",
-        "Users": [],
-        "Name": "Test simulation"
-    },
-    {
-        "Status": "New",
-        "Sprints": [{
-            "Description": "sdfdf",
-            "Length": 2,
-            "RemainingDays": 2,
-            "ID": "c142649d-909b-45ac-81fb-c8c2bf5d064a",
-            "Name": "sdfsd"
-        }],
-        "UserStories": [
-            {
-                "Description": "sdfsdfdsfsf",
-                "BusinessValue": 1,
-                "PointValue": 1,
-                "Name": "fsdfsdf"
-            },
-            {
-                "Description": "dfgdfgdg",
-                "BusinessValue": 1,
-                "PointValue": 1,
-                "Name": "fgddf"
-            },
-            {
-                "Description": "dfgdfg",
-                "BusinessValue": 1,
-                "PointValue": 1,
-                "Name": "dfgdfg"
-            }
-        ],
-        "Events": [],
-        "LengthOfSprint": "1",
-        "NumberOfSprints": "1",
-        "ID": "f8ad1f67-91f9-47d1-a8a7-b64b73de37ca",
-        "Users": [],
-        "Name": "sfs"
-    },
-    {
-        "Status": "New",
-        "Sprints": [
-            {
-                "Description": "sdfsdfsf",
-                "Length": 3,
-                "RemainingDays": 3,
-                "ID": "sdadsad",
-                "Name": "fdfsdfdsf"
-            },
-            {
-                "Description": "sdfsd",
-                "Length": 2,
-                "RemainingDays": 2,
-                "ID": "9f7b4159-ce98-4055-8f8f-47f488f729c6",
-                "Name": "sdfsdf"
-            }
-        ],
-        "UserStories": [{
-            "Description": "sdfsdf",
-            "BusinessValue": 1,
-            "PointValue": 1,
-            "Name": "fdsf"
-        }],
-        "Events": [],
-        "LengthOfSprint": "3",
-        "NumberOfSprints": "3",
-        "ID": "503331d0-eebc-496b-a848-be776e22600c",
-        "Users": [],
-        "Name": "lalalal"
-    },
-    {
-        "Status": "New",
-        "Sprints": [
-            {
-                "Description": "A sprint for testing",
-                "Length": 14,
-                "RemainingDays": 14,
-                "ID": "20e58f81-26c6-4b4a-9801-f8ba19244d44",
-                "Name": "Test Sprint"
-            }
-        ],
-        "UserStories": [],
-        "Events": [],
-        "LengthOfSprint": "1",
-        "NumberOfSprints": "1",
-        "ID": "test",
-        "Users": [],
-        "Name": "papapa"
-    },
-    {
-        "Status": "New",
-        "Sprints": [{
-            "Description": "sdfsfs",
-            "Length": 2,
-            "RemainingDays": 2,
-            "ID": "a7d22ca8-a855-4185-b4ed-61c368505a11",
-            "Name": "dsfsf"
-        }],
-        "UserStories": [
-            {
-                "Description": "sdfsdfsdf",
-                "BusinessValue": 1,
-                "PointValue": 1,
-                "Id": "US #12",
-                "Name": "dsfsdf"
-            },
-            {
-                "Description": "fsdf",
-                "BusinessValue": 1,
-                "PointValue": 1,
-                "Id": "US #15",
-                "Name": "sdfsdfsd"
-            }
-        ],
-        "Events": [],
-        "LengthOfSprint": "1",
-        "NumberOfSprints": "3",
-        "ID": "32293a8a-06e6-420e-9dd5-08fcd925fb37",
-        "Users": [],
-        "Name": "jajaja"
-    },
-    {
-        "Status": "New",
-        "Sprints": [{
-            "Description": "sfsdfdf",
-            "Length": 2,
-            "RemainingDays": 2,
-            "ID": "82baabd5-fe7a-433b-b569-90c102eed5f3",
-            "Name": "sdfsdfds"
-        }],
-        "UserStories": [
-            {
-                "Description": "sdfsdfs",
-                "BusinessValue": 1,
-                "PointValue": 1,
+                "Description": "Create a login interface and backend authentication.",
+                "BusinessValue": 30,
+                "PointValue": 3,
+                "State": "Unassigned",
                 "Id": "US #3",
-                "Name": "dsfsdf"
+                "Name": "Implement Login Feature"
             },
             {
-                "Description": "sfsdfdsfs",
+                "Description": "Initialize and configure the primary database for the application.",
+                "BusinessValue": 19,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #5",
+                "Name": "Setup Database"
+            },
+            {
+                "Description": "Implement user registration functionality including form validation.",
+                "BusinessValue": 19,
+                "PointValue": 5,
+                "State": "Unassigned",
+                "Id": "US #7",
+                "Name": "Create Registration Page"
+            },
+            {
+                "Description": "Implement a system for handling and logging errors in the app.",
+                "BusinessValue": 8,
+                "PointValue": 3,
+                "State": "Unassigned",
+                "Id": "US #9",
+                "Name": "Develop Error Handling Mechanism"
+            },
+            {
+                "Description": "Set up the frontend framework and configure initial dependencies.",
+                "BusinessValue": 19,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #11",
+                "Name": "Setup Initial Frontend Framework"
+            },
+            {
+                "Description": "",
                 "BusinessValue": 1,
                 "PointValue": 1,
-                "Id": "US #5",
-                "Name": "fdsfdsf"
+                "State": "Unassigned",
+                "Id": "US #53",
+                "Name": ""
+            },
+            {
+                "Description": "Develop user profile creation and editing features.",
+                "BusinessValue": 19,
+                "PointValue": 5,
+                "State": "Unassigned",
+                "Id": "US #62",
+                "Name": "Implement User Profile"
+            },
+            {
+                "Description": "Implement CI/CD pipeline for automatic builds and deployments.",
+                "BusinessValue": 30,
+                "PointValue": 3,
+                "State": "Unassigned",
+                "Id": "US #64",
+                "Name": "Setup Continuous Integration"
+            },
+            {
+                "Description": "Add a logout feature to end user sessions securely.",
+                "BusinessValue": 5,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #66",
+                "Name": "Create Logout Functionality"
+            },
+            {
+                "Description": "Add two-factor authentication for increased login security.",
+                "BusinessValue": 19,
+                "PointValue": 5,
+                "State": "Unassigned",
+                "Id": "US #68",
+                "Name": "Enhance Security with 2FA"
+            },
+            {
+                "Description": "Create a UI design for user notifications",
+                "BusinessValue": 5,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #70",
+                "Name": "Design Notifications UI"
+            },
+            {
+                "Description": "Add notifications functionality for user actions.",
+                "BusinessValue": 19,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #84",
+                "Name": "Implement Notifications System"
+            },
+            {
+                "Description": "Optimize database queries and front-end rendering for better performance",
+                "BusinessValue": 11,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #86",
+                "Name": "Optimize Performance"
+            },
+            {
+                "Description": "Develop a dashboard interface for administrators",
+                "BusinessValue": 8,
+                "PointValue": 1,
+                "State": "Unassigned",
+                "Id": "US #88",
+                "Name": "Create Admin Dashboard"
+            },
+            {
+                "Description": "Implement tracking and reporting of user behavior within the app.",
+                "BusinessValue": 3,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #90",
+                "Name": "User Analytics"
+            },
+            {
+                "Description": "Implement a logging system for app performance and errors.",
+                "BusinessValue": 5,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #92",
+                "Name": "Setup Logging Mechanism"
+            }
+        ],
+        "Blockers": [
+            {
+                "ProbabilityRangeStart": 0.2,
+                "Description": "Unable to connect to the remote database server.",
+                "ProbabilityRangeEnd": 0.5,
+                "ID": "1023a55a-4248-455f-adeb-c2ca45d4dde1",
+                "Name": "Database Connection Issue"
+            },
+            {
+                "ProbabilityRangeStart": 0.2,
+                "Description": "Errors in pipeline setup due to incorrect configuration.",
+                "ProbabilityRangeEnd": 0.4,
+                "ID": "f77032f8-fcdb-4004-9ad0-bedd5f97ceb5",
+                "Name": "CI/CD Configuration Issue"
+            },
+            {
+                "ProbabilityRangeStart": 0.4,
+                "Description": "Application performance is below acceptable thresholds due to inefficient code.Application performance is below acceptable thresholds due to inefficient code.",
+                "ProbabilityRangeEnd": 0.7,
+                "ID": "5e55510f-3efd-4fff-a81b-fe51da2df651",
+                "Name": "Performance Bottleneck"
+            }
+        ],
+        "Solutions": [
+            {
+                "Description": "Ensure that the database server is accessible from the network.",
+                "ProbabilityRangeMinimum": 0.2,
+                "ProbabilityRangeMaximum": 0.8,
+                "ID": 1,
+                "Name": "Check Network Settings"
+            },
+            {
+                "Description": "Verify and update the database credentials used in the configuration.",
+                "ProbabilityRangeMinimum": 0.2,
+                "ProbabilityRangeMaximum": 0.8,
+                "ID": 2,
+                "Name": "Update Database Credentials"
+            },
+            {
+                "Description": "Check the pipeline setup and correct configuration errors.",
+                "ProbabilityRangeMinimum": 0.3,
+                "ProbabilityRangeMaximum": 0.6,
+                "ID": 3,
+                "Name": "Review Pipeline Configuration"
+            },
+            {
+                "Description": "Reach out to DevOps team to assist with advanced configurations.",
+                "ProbabilityRangeMinimum": 0.3,
+                "ProbabilityRangeMaximum": 0.6,
+                "ID": 4,
+                "Name": "Consult with DevOps Team"
+            },
+            {
+                "Description": "Refactor inefficient parts of the codebase for optimization.",
+                "ProbabilityRangeMinimum": 0.3,
+                "ProbabilityRangeMaximum": 0.8,
+                "ID": 5,
+                "Name": "Refactor Code"
             }
         ],
         "Events": [],
         "LengthOfSprint": "2",
         "NumberOfSprints": "3",
-        "ID": "729838f0-e19b-4708-bec2-3e82de2753f1",
+        "ID": "32b57783-81f2-458a-ab00-4fffd25536a9",
         "Users": [],
-        "Name": "fdsfdsff"
+        "Name": "Agile Development Simulation"
+    },
+    {
+        "Status": "New",
+        "Sprints": [
+            {
+                "Description": "Initial Setup & Vulnerability Assessment",
+                "Length": 2,
+                "RemainingDays": 2,
+                "ID": "e5d615ad-6405-4c51-bb8e-597ad72c7fb6",
+                "Name": "Sprint1"
+            },
+            {
+                "Description": "Threat Detection and Mitigation",
+                "Length": 2,
+                "RemainingDays": 2,
+                "ID": "99045c20-26b0-4211-9a98-66921510cca6",
+                "Name": "Sprint2"
+            }
+        ],
+        "UserStories": [
+            {
+                "Description": "Map the entire network structure to understand asset locations and connectivity.",
+                "BusinessValue": 30,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #5",
+                "Name": "Network Mapping"
+            },
+            {
+                "Description": "Perform scans on all network devices to detect potential vulnerabilities.",
+                "BusinessValue": 11,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #7",
+                "Name": "Run Vulnerability Scans"
+            },
+            {
+                "Description": "Configure firewalls for boundary security within the network.",
+                "BusinessValue": 11,
+                "PointValue": 1,
+                "State": "Unassigned",
+                "Id": "US #9",
+                "Name": "Setup Firewalls"
+            },
+            {
+                "Description": "Document the network infrastructure and security policies.",
+                "BusinessValue": 8,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #11",
+                "Name": "Update Network Documentation"
+            },
+            {
+                "Description": "Identify and prioritize network assets based on sensitivity.",
+                "BusinessValue": 5,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #13",
+                "Name": "Identify Critical Assets"
+            },
+            {
+                "Description": "Set up IDS to monitor network traffic for suspicious activities.",
+                "BusinessValue": 30,
+                "PointValue": 3,
+                "State": "Unassigned",
+                "Id": "US #15",
+                "Name": "Implement Intrusion Detection System (IDS)"
+            },
+            {
+                "Description": "Simulate a phishing attack and evaluate team response.",
+                "BusinessValue": 11,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #17",
+                "Name": "Test Response to Phishing Attack"
+            },
+            {
+                "Description": "Simulate a phishing attack and evaluate team response",
+                "BusinessValue": 3,
+                "PointValue": 1,
+                "State": "Unassigned",
+                "Id": "US #19",
+                "Name": "Test Response to Phishing Attack"
+            },
+            {
+                "Description": "Divide the network into segments to limit access and increase security.",
+                "BusinessValue": 8,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #21",
+                "Name": "Configure Network Segmentation"
+            },
+            {
+                "Description": "Implement security policies and software for endpoint devices.",
+                "BusinessValue": 3,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #23",
+                "Name": "Enhance Endpoint Security"
+            },
+            {
+                "Description": "Create a dashboard to display real-time network security events.",
+                "BusinessValue": 5,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #25",
+                "Name": "Develop Security Monitoring Dashboard"
+            }
+        ],
+        "Blockers": [
+            {
+                "ProbabilityRangeStart": 0.9,
+                "Description": "Legacy software with known vulnerabilities due to unpatched updates.",
+                "ProbabilityRangeEnd": 1,
+                "ID": "b5836495-30c5-43a2-bd04-b60ca19d4bc5",
+                "Name": "Unpatched Software Vulnerability"
+            },
+            {
+                "ProbabilityRangeStart": 0.1,
+                "Description": "Emails containing malicious links or attachments targeting network users",
+                "ProbabilityRangeEnd": 0.4,
+                "ID": "8b4e11a5-8930-44f6-98fe-d6d70fc23be5",
+                "Name": "Phishing Attempt"
+            }
+        ],
+        "Solutions": [
+            {
+                "Description": "Replace outdated software with secure, up-to-date alternatives.",
+                "ProbabilityRangeMinimum": 0.2,
+                "ProbabilityRangeMaximum": 0.9,
+                "ID": 1,
+                "Name": "Upgrade Legacy Software"
+            },
+            {
+                "Description": "Conduct training on recognizing and reporting phishing attempts.",
+                "ProbabilityRangeMinimum": 0.1,
+                "ProbabilityRangeMaximum": 0.6,
+                "ID": 2,
+                "Name": "Employee Training"
+            },
+            {
+                "Description": "Implement filters to block phishing emails before they reach users.",
+                "ProbabilityRangeMinimum": 0.1,
+                "ProbabilityRangeMaximum": 0.6,
+                "ID": 3,
+                "Name": "Email Filtering"
+            }
+        ],
+        "Events": [],
+        "LengthOfSprint": "3",
+        "NumberOfSprints": "3",
+        "ID": "41f4b783-baa5-462f-b318-9e4de075686e",
+        "Users": [],
+        "Name": "Network Security Simulation"
     }
 ]}
