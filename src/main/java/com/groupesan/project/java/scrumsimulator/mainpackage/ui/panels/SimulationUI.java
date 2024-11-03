@@ -175,7 +175,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
         JButton backlogButton = new JButton("Product Backlog");
         backlogButton.setPreferredSize(buttonSize);
         backlogButton.addActionListener(e -> new UserStoryListPane(player, selectedSimulationId).setVisible(true));
-        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName()) || player.getRole().getName().equals(Roles.SCRUM_ADMINISTRATOR.getDisplayName())) {
+        if (player.getRole().getName().equals(Roles.SCRUM_ADMINISTRATOR.getDisplayName())) {
             backlogButton.setVisible(false);
         }
         buttonPanel.add(backlogButton);
