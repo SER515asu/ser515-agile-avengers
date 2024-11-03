@@ -17,6 +17,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -29,9 +31,17 @@ import javax.swing.JComboBox;
 public class ModifySimulationPane extends JFrame implements BaseComponent {
 
     private SimulationManager simulationManager;
+
+    @Getter
+    @Setter
     private JComboBox<String> simulationNameField;
+    @Getter
+    @Setter
     private JTextField numberOfSprintsField;
+    @Getter
+    @Setter
     private JTextField lengthOfSprintField;
+
     private JTextArea simulationIdDisplay;
     private JSONObject selectedSimulation;
 
@@ -45,7 +55,7 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
     public void init() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Modify Simulation");
-        setSize(400, 300);
+        setSize(600, 400);
 
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -66,6 +76,10 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                         numberOfSprintsField.setText(simulation.getString("NumberOfSprints"));
                         lengthOfSprintField.setText(simulation.getString("LengthOfSprint"));
                 }
+        }
+        simulationNameField.setSelectedIndex(0);
+        if(!simulations.isEmpty()){
+            selectedSimulation = SimulationHelper.getSprintParamsFromSimulation(simulations, simulationNameField.getSelectedItem().toString());
         }
 
         simulationNameField.addActionListener(
@@ -113,6 +127,7 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
                         1, 2, GridBagConstraints.WEST, 1.0, 1.0, GridBagConstraints.HORIZONTAL));
 
         JButton submitButton = new JButton("Submit");
+        submitButton.setEnabled(!simulations.isEmpty());
         submitButton.addActionListener(
                 new ActionListener() {
                     @Override
@@ -121,27 +136,57 @@ public class ModifySimulationPane extends JFrame implements BaseComponent {
 
                         String lengthOfSprint = lengthOfSprintField.getText();
 
-                        selectedSimulation.put("NumberOfSprints", numberOfSprints);
-                        selectedSimulation.put("LengthOfSprint", lengthOfSprint);
-                        simulationManager.modifySimulation(selectedSimulation);
+                        try {
+                            int numSprints = Integer.parseInt(numberOfSprints);
+                            int sprintDuration = Integer.parseInt(lengthOfSprint);
+
+                            if (numSprints > 20 || numSprints < 1 || sprintDuration < 1 || sprintDuration > 4) {
+                                Object[] message = {
+                                        "Invalid sprint attributes. Number of sprints must be in the range 1-20, and sprint duration must be in the range 1-4 weeks"
+                                };
+
+                                // Show a dialog with the JTextField containing the Simulation ID
+                                JOptionPane.showMessageDialog(
+                                        ModifySimulationPane.this,
+                                        message,
+                                        "Error",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                selectedSimulation.put("NumberOfSprints", numberOfSprints);
+                                selectedSimulation.put("LengthOfSprint", lengthOfSprint);
+                                simulationManager.modifySimulation(selectedSimulation);
 
 
-                        Object[] message = {
-                            "Simulation modified successfully - ", selectedSimulation.getString("Name") + " - " + selectedSimulation.getString("ID")
-                        };
+                                Object[] message = {
+                                        "Simulation modified successfully - ", selectedSimulation.getString("Name") + " - " + selectedSimulation.getString("ID")
+                                };
 
-                        // Show a dialog with the JTextField containing the Simulation ID
-                        JOptionPane.showMessageDialog(
-                                ModifySimulationPane.this,
-                                message,
-                                "Simulation Modified",
-                                JOptionPane.INFORMATION_MESSAGE);
+                                // Show a dialog with the JTextField containing the Simulation ID
+                                JOptionPane.showMessageDialog(
+                                        ModifySimulationPane.this,
+                                        message,
+                                        "Simulation Modified",
+                                        JOptionPane.INFORMATION_MESSAGE);
 
-                        // Reset fields and simulation ID display to blank
-                        numberOfSprintsField.setText(selectedSimulation.getString("NumberOfSprints"));
-                        lengthOfSprintField.setText(selectedSimulation.getString("LengthOfSprint"));
+                                // Reset fields and simulation ID display to blank
+                                numberOfSprintsField.setText(selectedSimulation.getString("NumberOfSprints"));
+                                lengthOfSprintField.setText(selectedSimulation.getString("LengthOfSprint"));
 
-                        simulationIdDisplay.setText("");
+                                simulationIdDisplay.setText("");
+                            }
+                        }
+                        catch (Exception err){
+                            Object[] message = {
+                                    "Invalid attributes!"
+                            };
+
+                            // Show a dialog with the JTextField containing the Simulation ID
+                            JOptionPane.showMessageDialog(
+                                    ModifySimulationPane.this,
+                                    message,
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 });
 
