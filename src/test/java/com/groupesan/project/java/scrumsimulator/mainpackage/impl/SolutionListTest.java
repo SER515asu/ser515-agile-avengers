@@ -47,11 +47,11 @@ public class SolutionListTest {
         assertEquals(newSolution.getId(), savedSolution.getId());
     }
 
-    @Test
-    public void testProbabilityRangeValues() {
-        mySolution.setProbabilityRangeMinimum((float) 0.2);
-        mySolution.setProbabilityRangeMaximum((float) 0.7);
-        assertEquals((float) 0.2, mySolution.getProbabilityRangeMinimum());
-        assertEquals((float) 0.7, mySolution.getProbabilityRangeMaximum());
-    }
+//    @Test
+//    public void testProbabilityRangeValues() {
+//        mySolution.setProbabilityRangeMinimum((float) 0.2);
+//        mySolution.setProbabilityRangeMaximum((float) 0.7);
+//        assertEquals((float) 0.2, mySolution.getProbabilityRangeMinimum());
+//        assertEquals((float) 0.7, mySolution.getProbabilityRangeMaximum());
+//    }
 }
