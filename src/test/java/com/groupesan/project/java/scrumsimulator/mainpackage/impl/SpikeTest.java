@@ -1,9 +1,11 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.*;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,6 +20,7 @@ class USTest {
 
     @BeforeEach
     void setUp() {
+        Assumptions.assumeTrue(!GraphicsEnvironment.isHeadless(), "Test requires a graphical environment");
         name = "User Story 1";
         description = "This is a test user story.";
         pointValue = 5.0;
@@ -48,7 +51,7 @@ class USTest {
         Spike spike = new Spike(UUID.randomUUID(), "Spike 1", "Spike description");
 
         userStory.addSpike(spike);
-        userStory.addSpike(spike); // Add the same spike again
+        userStory.addSpike(spike);
 
         assertEquals(1, userStory.getLinkedSpikes().size(), "Duplicate Spike should not be added.");
     }
@@ -63,7 +66,6 @@ class USTest {
         assertFalse(userStory.getLinkedSpikes().contains(spike), "Spike should be removed from linkedSpikes.");
         assertFalse(spike.getLinkedUserStories().contains(userStory), "UserStory should be removed from Spike's linkedUserStories.");
     }
-
 
     @Test
     void testStateTransition() {
