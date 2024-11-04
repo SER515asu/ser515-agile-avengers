@@ -113,7 +113,21 @@ public class SimulationStateManager {
                 newSprint.put("Description", sprint.getDescription());
                 newSprint.put("Length", sprint.getLength());
                 newSprint.put("RemainingDays", sprint.getDaysRemaining());
-                newSprint.put("ID", UUID.randomUUID().toString());
+                newSprint.put("ID", sprint.getId());
+
+                JSONArray userStories = new JSONArray();
+                for(UserStory userStory: sprint.getUserStories()){
+                    JSONObject newUserStory = new JSONObject();
+                    newUserStory.put("Name", userStory.getName());
+                    newUserStory.put("Description", userStory.getDescription());
+                    newUserStory.put("PointValue", userStory.getPointValue());
+                    newUserStory.put("BusinessValue", userStory.getBusinessValue());
+                    newUserStory.put("Id", userStory.getId());
+                    newUserStory.put("State", userStory.getState());
+
+                    userStories.put(newUserStory);
+                }
+                newSprint.put("UserStories", userStories);
 
                 sprints.put(newSprint);  // Add sprint to the array
 
@@ -144,8 +158,26 @@ public class SimulationStateManager {
                     String name = sprintJson.optString("Name");
                     String description = sprintJson.optString("Description", "No description");
                     int length = Integer.parseInt(simulation.optString("LengthOfSprint", "1"));
+                    JSONArray userStoriesJson = sprintJson.optJSONArray("UserStories");
+
+                    List<UserStory> userStories = new ArrayList<>();
+                    if(userStoriesJson != null) {
+                        for (int k = 0; k < userStoriesJson.length(); k++) {
+                            JSONObject usObj = userStoriesJson.getJSONObject(k);
+                            UserStory userStory = new UserStory(
+                                    usObj.getString("Name"),
+                                    usObj.getString("Description"),
+                                    usObj.getDouble("PointValue"),
+                                    usObj.getDouble("BusinessValue"),
+                                    new UserStoryIdentifier(Integer.parseInt(usObj.getString("Id").substring(4)))
+                            );
+                            userStory.setStateFromString(usObj.getString("State"));
+                            userStories.add(userStory);
+                        }
+                    }
 
                     Sprint sprint = new Sprint(name, description, length, id);
+                    sprint.setUserStories(new ArrayList<>(userStories));
                     sprintsList.add(sprint);
                 }
                 break;
@@ -502,5 +534,77 @@ public class SimulationStateManager {
         }
 
         updateSimulationData(simulationData);
+    }
+
+    public static void addUserStoryToSprintBacklog(String simulationId, String sprintId, UserStory userStory){
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationId)) {
+
+                JSONArray sprints = simulation.optJSONArray("Sprints");
+                if(sprints == null) return;
+
+                for(int j=0; j<sprints.length(); j++){
+                    JSONObject sprintObj = sprints.getJSONObject(j);
+                    if(sprintObj.getString("ID").equals(sprintId)){
+                        JSONArray userStories = sprintObj.optJSONArray("UserStories");
+                        if (userStories == null) {
+                            userStories = new JSONArray();
+                            sprintObj.put("UserStories", userStories);
+                        }
+
+                        JSONObject newUserStory = new JSONObject();
+                        newUserStory.put("Name", userStory.getName());
+                        newUserStory.put("Description", userStory.getDescription());
+                        newUserStory.put("PointValue", userStory.getPointValue());
+                        newUserStory.put("BusinessValue", userStory.getBusinessValue());
+                        newUserStory.put("Id", userStory.getId());
+                        newUserStory.put("State", userStory.getState());
+
+                        userStories.put(newUserStory);  // Add user story to JSON array
+                        updateSimulationData(simulationData);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    public static void removeUserStoryFromSprintBacklog(String simulationId, String sprintId, UserStory userStory){
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationId)) {
+
+                JSONArray sprints = simulation.optJSONArray("Sprints");
+                if(sprints == null) return;
+
+                for(int j=0; j<sprints.length(); j++){
+                    JSONObject sprintObj = sprints.getJSONObject(j);
+                    if(sprintObj.getString("ID").equals(sprintId)){
+
+                        JSONArray userStories = sprintObj.optJSONArray("UserStories");
+
+                        for(int k=0; k<userStories.length(); k++){
+                            JSONObject usObj = userStories.getJSONObject(k);
+                            if(usObj.getString("Id").equals(userStory.getId().toString())){
+                                userStories.remove(k);
+                                updateSimulationData(simulationData);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -52,8 +52,7 @@ public class RemoveUserStoryFromSprintForm extends JFrame {
                     public void actionPerformed(ActionEvent e) {
                         UserStory selectedUserStory = (UserStory) userStoryComboBox.getSelectedItem();
                         if (selectedUserStory != null) {
-                            sprint.removeUserStory(selectedUserStory);
-                            UserStoryStore.getInstance(simulationID).removeUserStoryFromSprint(selectedUserStory); // Move back to backlog
+                            sprint.removeUserStory(simulationID, selectedUserStory);
                             JOptionPane.showMessageDialog(RemoveUserStoryFromSprintForm.this,
                                     "User story removed successfully.",
                                     "Success",

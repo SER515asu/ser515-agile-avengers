@@ -50,7 +50,7 @@ public class UpdateUserStoryPanel extends JFrame {
         panel.add(userStoryLabel);
 
         // Fetch user stories from the backlog in UserStoryStore
-        List<UserStory> userStories = UserStoryStore.getInstance(simulationID).getUserStoriesInSprint();
+        List<UserStory> userStories = UserStoryStore.getInstance(simulationID).getAllUserStories();
         userStoryComboBox = new JComboBox<>();
         statusComboBox = new JComboBox<>(UserStoryState.getStatusOptions());
         for (UserStory userStory : userStories) {
@@ -102,7 +102,7 @@ public class UpdateUserStoryPanel extends JFrame {
 
     private void reloadData() {
         userStoryComboBox.removeAllItems();
-        List<UserStory> userStories = UserStoryStore.getInstance(simulationID).getUserStoriesInSprint();
+        List<UserStory> userStories = UserStoryStore.getInstance(simulationID).getBacklogStories();
 
         for (UserStory userStory : userStories) {
             userStoryComboBox.addItem(userStory.getName());

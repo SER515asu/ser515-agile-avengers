@@ -156,4 +156,22 @@ public class UserStory extends ScrumObject {
         if (state instanceof CompleteState) return "Complete";
         return "Unknown";
     }
+
+    public void setStateFromString(String newState) {
+        if (newState.equals("Unassigned")) {
+            setState(new UnassignedState(this));
+        }
+        if (newState.equals("InProgress")) {
+            setState(new InProgressState(this));
+        }
+        if (newState.equals("New")) {
+            setState(new NewState(this));
+        }
+        if (newState.equals("Complete")) {
+            setState(new CompleteState(this));
+        }
+        if (newState.equals("ReadyToTest")) {
+            setState(new ReadyToTestState(this));
+        }
+    }
 }

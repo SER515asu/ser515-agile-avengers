@@ -1,8 +1,14 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
 
+import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationStateManager;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class Sprint {
     private ArrayList<UserStory> userStories = new ArrayList<>();
     private String name;
@@ -24,12 +30,16 @@ public class Sprint {
         this.userStories = new ArrayList<>();
     }
 
-    public void addUserStory(UserStory us) {
+    public void addUserStory(String simulationId, UserStory us) {
         userStories.add(us);
+        SimulationStateManager.addUserStoryToSprintBacklog(simulationId, getId(), us);
+        UserStoryStore.getInstance(simulationId).removeUserStoryFromBacklog(us);
     }
 
-    public void removeUserStory(UserStory us) {
+    public void removeUserStory(String simulationId, UserStory us) {
         userStories.remove(us);
+        SimulationStateManager.removeUserStoryFromSprintBacklog(simulationId, getId(), us);
+        UserStoryStore.getInstance(simulationId).addUserStoryToBacklog(us);
     }
 
     public List<UserStory> getUserStories() {
