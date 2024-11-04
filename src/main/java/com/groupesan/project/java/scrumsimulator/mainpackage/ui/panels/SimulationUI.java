@@ -186,12 +186,6 @@ public class SimulationUI extends JFrame implements BaseComponent {
         }
         buttonPanel.add(updateStoryButton);
 
-        // Add the "Switch Role" button, which is always visible
-        JButton switchRoleButton = new JButton("Switch Role");
-        switchRoleButton.setPreferredSize(buttonSize);
-        switchRoleButton.addActionListener(e -> selectUserRole());
-        buttonPanel.add(switchRoleButton);
-
         // Add the "List of Blockers" button with access only for Developer
         JButton blockersButton = new JButton("List of Blockers");
         blockersButton.setPreferredSize(buttonSize);
@@ -201,9 +195,9 @@ public class SimulationUI extends JFrame implements BaseComponent {
         JButton spikeButton = new JButton("List of Spikes");
         spikeButton.setPreferredSize(buttonSize);
         spikeButton.addActionListener(e -> new SpikeListPanel(player,selectedSimulationId).setVisible(true));
-//        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) { // activate later
-//            blockersButton.setVisible(false);
-//        }
+        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())  || player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
+            spikeButton.setVisible(false);
+        }
         buttonPanel.add(spikeButton);
 
         // Add the "List of Solutions" button with access only for Developer
@@ -211,6 +205,12 @@ public class SimulationUI extends JFrame implements BaseComponent {
         solutionsButton.setPreferredSize(buttonSize);
         solutionsButton.addActionListener(e -> new SolutionListPane(player,selectedSimulationId).setVisible(true));
         buttonPanel.add(solutionsButton);
+
+        // Add the "Switch Role" button, which is always visible
+        JButton switchRoleButton = new JButton("Switch Role");
+        switchRoleButton.setPreferredSize(buttonSize);
+        switchRoleButton.addActionListener(e -> selectUserRole());
+        buttonPanel.add(switchRoleButton);
 
         // Add the button panel to the main panel
         constraints.gridx = 0;
