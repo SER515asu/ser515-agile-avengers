@@ -66,14 +66,6 @@
                 "Name": "Setup Initial Frontend Framework"
             },
             {
-                "Description": "",
-                "BusinessValue": 1,
-                "PointValue": 1,
-                "State": "Unassigned",
-                "Id": "US #53",
-                "Name": ""
-            },
-            {
                 "Description": "Develop user profile creation and editing features.",
                 "BusinessValue": 19,
                 "PointValue": 5,
@@ -289,14 +281,6 @@
                 "Name": "Implement Intrusion Detection System (IDS)"
             },
             {
-                "Description": "Simulate a phishing attack and evaluate team response.",
-                "BusinessValue": 11,
-                "PointValue": 2,
-                "State": "Unassigned",
-                "Id": "US #17",
-                "Name": "Test Response to Phishing Attack"
-            },
-            {
                 "Description": "Simulate a phishing attack and evaluate team response",
                 "BusinessValue": 3,
                 "PointValue": 1,
@@ -338,10 +322,8 @@
                 "Name": "Unpatched Software Vulnerability"
             },
             {
-                "ProbabilityRangeStart": 0.1,
                 "Description": "Emails containing malicious links or attachments targeting network users",
-                "ProbabilityRangeEnd": 0.4,
-                "ID": "8b4e11a5-8930-44f6-98fe-d6d70fc23be5",
+                "ID": "02787091-6e29-4613-9ca1-9d9a0bd5c37d",
                 "Name": "Phishing Attempt"
             }
         ],
@@ -374,5 +356,220 @@
         "ID": "41f4b783-baa5-462f-b318-9e4de075686e",
         "Users": [],
         "Name": "Network Security Simulation"
+    },
+    {
+        "Status": "New",
+        "Sprints": [
+            {
+                "Description": "Data Collection and Preprocessing",
+                "Length": 2,
+                "RemainingDays": 2,
+                "ID": "de94e2b4-807e-4b8e-98ad-7c6ad45767ac",
+                "Name": "Sprint1"
+            },
+            {
+                "Description": "Model Development and Training",
+                "Length": 2,
+                "RemainingDays": 2,
+                "ID": "80339c22-cc7c-4c33-b59e-ec1661a4459a",
+                "Name": "Sprint 2"
+            },
+            {
+                "Description": "Model Deployment and Monitoring",
+                "Length": 2,
+                "RemainingDays": 2,
+                "ID": "8755289f-fe2f-4c04-989e-89cc40c6d379",
+                "Name": "Sprint 3"
+            }
+        ],
+        "UserStories": [
+            {
+                "Description": "Research and select suitable data sources for model training.",
+                "BusinessValue": 30,
+                "PointValue": 1,
+                "State": "Unassigned",
+                "Id": "US #2",
+                "Name": "Identify Data Sources"
+            },
+            {
+                "Description": "Gather raw data from identified sources and store it securely.",
+                "BusinessValue": 8,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #3",
+                "Name": "Collect Raw Data"
+            },
+            {
+                "Description": "Remove duplicate entries and fill missing values in raw data.",
+                "BusinessValue": 11,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #4",
+                "Name": "Clean Data"
+            },
+            {
+                "Description": "Create new features from existing data to improve model accuracy.",
+                "BusinessValue": 11,
+                "PointValue": 3,
+                "State": "Unassigned",
+                "Id": "US #5",
+                "Name": "Feature Engineering"
+            },
+            {
+                "Description": "Establish a data pipeline to automate data collection and preprocessing.",
+                "BusinessValue": 30,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #6",
+                "Name": "Define Data Pipeline"
+            },
+            {
+                "Description": "Choose a suitable model architecture based on data and project requirements",
+                "BusinessValue": 19,
+                "PointValue": 3,
+                "State": "Unassigned",
+                "Id": "US #7",
+                "Name": "Select Model Architecture"
+            },
+            {
+                "Description": "Train the model with the cleaned data and initial parameters.",
+                "BusinessValue": 8,
+                "PointValue": 3,
+                "State": "Unassigned",
+                "Id": "US #8",
+                "Name": "Train Initial Model"
+            },
+            {
+                "Description": "Measure model accuracy, precision, recall, and other metrics.",
+                "BusinessValue": 11,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #9",
+                "Name": "Evaluate Model Performance"
+            },
+            {
+                "Description": "Adjust model parameters to optimize performance.",
+                "BusinessValue": 11,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #10",
+                "Name": "Hyperparameter Tuning"
+            },
+            {
+                "Description": "Set up version control for models to track changes and improvements",
+                "BusinessValue": 8,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #11",
+                "Name": "Establish Model Versioning"
+            },
+            {
+                "Description": "Package the model and its dependencies for deployment.",
+                "BusinessValue": 8,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #12",
+                "Name": "Prepare Model for Deployment"
+            },
+            {
+                "Description": "Deploy the model to a production environment for live inference.",
+                "BusinessValue": 11,
+                "PointValue": 1,
+                "State": "Unassigned",
+                "Id": "US #13",
+                "Name": "Deploy Model to Production"
+            },
+            {
+                "Description": "Monitor model predictions and performance in production.",
+                "BusinessValue": 19,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #14",
+                "Name": "Set Up Monitoring for Model Performance"
+            },
+            {
+                "Description": "Create a pipeline for automated model retraining with new data.",
+                "BusinessValue": 8,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #15",
+                "Name": "Implement Model Retraining Pipeline"
+            },
+            {
+                "Description": "Set up alerts for unusual predictions or significant model drift.",
+                "BusinessValue": 19,
+                "PointValue": 1,
+                "State": "Unassigned",
+                "Id": "US #16",
+                "Name": "Develop Alerting System for Anomalies"
+            }
+        ],
+        "Blockers": [
+            {
+                "ProbabilityRangeStart": 0,
+                "Description": "Data acquisition from external sources is delayed due to access restrictions.",
+                "ProbabilityRangeEnd": 0.1,
+                "ID": "c0f5f098-66f4-4695-ac6f-f25fc7808eeb",
+                "Name": "Data Collection Delays"
+            },
+            {
+                "ProbabilityRangeStart": 0,
+                "Description": "Insufficient computing resources for model training, leading to delays.",
+                "ProbabilityRangeEnd": 0.1,
+                "ID": "068da283-a7a9-478e-9300-6f9a0df5ccc9",
+                "Name": "Training Infrastructure Issue"
+            },
+            {
+                "Description": "Compatibility issues with the production environment prevent successful deployment.",
+                "ID": "91ef8726-6bd3-4888-a3db-f150c4fc41ed",
+                "Name": "Deployment Environment Issue"
+            }
+        ],
+        "Solutions": [
+            {
+                "Description": "Coordinate with data providers to secure temporary access for faster collection",
+                "ProbabilityRangeMinimum": 0.5,
+                "ProbabilityRangeMaximum": 0.6,
+                "ID": 1,
+                "Name": "Request Temporary Access"
+            },
+            {
+                "Description": "Identify alternative data sources to gather sufficient data within timelines.",
+                "ProbabilityRangeMinimum": 0.5,
+                "ProbabilityRangeMaximum": 0.6,
+                "ID": 2,
+                "Name": "Use Alternative Sources"
+            },
+            {
+                "Description": "Leverage cloud-based GPUs or TPUs for scalable model training.",
+                "ID": 3,
+                "Name": "Use Cloud Resources"
+            },
+            {
+                "Description": "Reduce the batch size to accommodate limited resources and train efficiently.",
+                "ID": 4,
+                "Name": "Optimize Data Batch Size"
+            },
+            {
+                "Description": "Modify configurations to ensure compatibility with the production environment.",
+                "ProbabilityRangeMinimum": 0,
+                "ProbabilityRangeMaximum": 0.8,
+                "ID": 6,
+                "Name": "Adjust Deployment Configuration"
+            },
+            {
+                "Description": "Engage with DevOps team to troubleshoot and resolve deployment issues.",
+                "ProbabilityRangeMinimum": 0,
+                "ProbabilityRangeMaximum": 0.8,
+                "ID": 7,
+                "Name": "Consult with DevOps Team"
+            }
+        ],
+        "Events": [],
+        "LengthOfSprint": "2",
+        "NumberOfSprints": "3",
+        "ID": "c88c63e6-f2ce-4cbb-a614-ca41edeed4f9",
+        "Users": [],
+        "Name": "Machine Learning Model Development Simulation"
     }
 ]}
