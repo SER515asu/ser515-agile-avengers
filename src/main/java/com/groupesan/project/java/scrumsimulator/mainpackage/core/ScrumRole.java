@@ -38,7 +38,7 @@ public class ScrumRole extends ScrumObject {
         if (isRegistered()) {
             return getName() + " (" + this.getId().toString() + ")";
         }
-        return getName() + " (unregistered)";
+        return getName();
     }
 
     public int hashCode() {
