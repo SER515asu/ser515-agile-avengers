@@ -48,4 +48,13 @@ public class SpikeStore {
         }
         return false;
     }
+
+    public boolean failSpike(UUID id) {
+        Spike spike = getSpikeById(id);
+        if (spike != null && !spike.isFailed()) {
+            spike.setFailed(true);
+            return true;
+        }
+        return false;
+    }
 }

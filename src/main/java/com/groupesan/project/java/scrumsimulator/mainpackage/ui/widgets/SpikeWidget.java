@@ -23,6 +23,7 @@ public class SpikeWidget extends JPanel implements BaseComponent {
     JLabel description;
     JButton linkUserStoryButton;
     JButton resolveButton;
+    JLabel status;
 
     // Flag to ensure the headers are only added once
     private static boolean headersAdded = false;
@@ -55,10 +56,14 @@ public class SpikeWidget extends JPanel implements BaseComponent {
         name = new JLabel(spike.getName());
         description = new JLabel(spike.getDescription());
 
-//        String linkedUserStoryNames = spike.getLinkedUserStories().stream()
-//                .map(UserStory::getName)
-//                .collect(Collectors.joining(", "));
-//        linkedUserStoriesLabel = new JLabel(linkedUserStoryNames.isEmpty() ? "No Linked User Story" : linkedUserStoryNames);
+        status = new JLabel();
+        if (spike.isResolved()) {
+            status.setText("Resolved");
+        } else if (spike.isFailed()) {
+            status.setText("Failed");
+        } else {
+            status.setText("Active");
+        }
 
         linkUserStoryButton = new JButton("Link User Story");
         linkUserStoryButton.addActionListener(new ActionListener() {
@@ -76,11 +81,12 @@ public class SpikeWidget extends JPanel implements BaseComponent {
 
         JButton startSpikeButton = new JButton("Start Spike");
         startSpikeButton.addActionListener(e -> {
-            StartSpikePanel startSpikePanel = new StartSpikePanel(spike.getId());
+            StartSpikePanel startSpikePanel = new StartSpikePanel(spike.getId(), parentPane);
             startSpikePanel.setVisible(true);
         });
 
-        if (spike.isResolved()) {
+
+        if (spike.isResolved() || spike.isFailed()) {
             linkUserStoryButton.setEnabled(false);
             startSpikeButton.setEnabled(false);
         }
@@ -91,8 +97,9 @@ public class SpikeWidget extends JPanel implements BaseComponent {
         add(id, new CustomConstraints(0, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(name, new CustomConstraints(1, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(description, new CustomConstraints(2, 1, GridBagConstraints.WEST, 0.4, 0.0, GridBagConstraints.HORIZONTAL));
-        add(linkUserStoryButton, new CustomConstraints(3, 1, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
-        add(startSpikeButton, new CustomConstraints(4, 1, GridBagConstraints.WEST, 0.1, 0.1, GridBagConstraints.HORIZONTAL));
+        add(status, new CustomConstraints(3, 1, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+        add(linkUserStoryButton, new CustomConstraints(4, 1, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+        add(startSpikeButton, new CustomConstraints(5, 1, GridBagConstraints.WEST, 0.1, 0.1, GridBagConstraints.HORIZONTAL));
 
         revalidate();
         repaint();
@@ -102,10 +109,12 @@ public class SpikeWidget extends JPanel implements BaseComponent {
         JLabel idHeader = new JLabel("ID");
         JLabel nameHeader = new JLabel("Name");
         JLabel descHeader = new JLabel("Description");
+        JLabel statusHeader = new JLabel("Status");
 
         add(idHeader, new CustomConstraints(0, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
         add(nameHeader, new CustomConstraints(1, 0, GridBagConstraints.CENTER, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
         add(descHeader, new CustomConstraints(2, 0, GridBagConstraints.CENTER, 0.4, 0.0, GridBagConstraints.HORIZONTAL));
+        add(statusHeader, new CustomConstraints(3, 0, GridBagConstraints.CENTER, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
     }
 
     private void resolveSpike() {

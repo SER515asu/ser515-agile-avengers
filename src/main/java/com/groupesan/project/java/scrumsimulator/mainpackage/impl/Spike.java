@@ -19,12 +19,16 @@ public class Spike {
     private String description;
     @Getter
     private boolean resolved;
+    @Getter
+    @Setter
+    private boolean failed;
 
     public Spike(UUID spikeId, String name, String description) {
         this.id = spikeId;
         this.name = name;
         this.description = description;
         this.resolved = false;
+        this.failed = false;
     }
 
     private List<UserStory> linkedUserStories = new ArrayList<>();
@@ -43,6 +47,7 @@ public class Spike {
     public void resolve() {
         this.resolved = true;
     }
+
 
     public void doRegister() {
         SpikeStore.getInstance().addSpike(this);

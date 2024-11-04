@@ -80,18 +80,15 @@ public class SpikeListPanel extends JFrame implements BaseComponent {
     public void refreshSpikes() {
         subPanel.removeAll();
         widgets.clear();
-        System.out.println("Spike length"+ SpikeStore.getInstance().getAllSpikes().size());
 
         int i = 1; // Start sequence numbering from 1
         for (Spike spike : SpikeStore.getInstance().getAllSpikes()) {
-            if(!spike.isResolved()){
                 SpikeWidget widget = new SpikeWidget(spike, i++, this); // Pass sequence number i
                 widgets.add(widget);
                 subPanel.add(
                         widget,
                         new CustomConstraints(
                                 0, i - 1, GridBagConstraints.WEST, 1.0, 0.1, GridBagConstraints.HORIZONTAL));
-            }
 
         }
 

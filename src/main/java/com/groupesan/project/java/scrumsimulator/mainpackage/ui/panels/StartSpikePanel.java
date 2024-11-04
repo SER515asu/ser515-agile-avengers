@@ -18,9 +18,11 @@ public class StartSpikePanel extends JFrame {
     private JTextField resourceCounter;
     private JTextArea resolutionSteps;
     private final UUID spikeId;
+    private SpikeListPanel parentPane;
 
-    public StartSpikePanel(UUID spikeID) {
+    public StartSpikePanel(UUID spikeID, SpikeListPanel parentPane) {
         this.spikeId = spikeID;
+        this.parentPane = parentPane;
         setTitle("Start Spike");
         setSize(400, 300);
         setLayout(new GridBagLayout());
@@ -92,7 +94,8 @@ public class StartSpikePanel extends JFrame {
     }
 
     private void handleSpikeFailed() {
-        JOptionPane.showMessageDialog(this, "The spike has failed.", "Spike Failure", JOptionPane.WARNING_MESSAGE);
+//        JOptionPane.showMessageDialog(this, "The spike has failed.", "Spike Failure", JOptionPane.WARNING_MESSAGE);
+        failSpike();
         dispose(); 
     }
 
@@ -110,6 +113,20 @@ public class StartSpikePanel extends JFrame {
 
         if (confirmation == JOptionPane.YES_OPTION) {
             SpikeStore.getInstance().resolveSpike(spikeId);
+            parentPane.refreshSpikes();
+        }
+    }
+
+    private void failSpike() {
+        int confirmation = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to fail the Spike?",
+                "Failure Confirmation",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmation == JOptionPane.YES_OPTION) {
+            SpikeStore.getInstance().failSpike(spikeId);
+            parentPane.refreshSpikes();
         }
     }
 }
