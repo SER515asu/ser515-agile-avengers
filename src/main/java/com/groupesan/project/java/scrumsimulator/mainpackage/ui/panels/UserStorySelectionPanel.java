@@ -46,11 +46,12 @@ public class UserStorySelectionPanel extends JDialog {
 
     private void linkSelectedUserStories() {
         for (Component component : userStoryPanel.getComponents()) {
-            if (component instanceof JCheckBox checkBox) {
+            if (component instanceof JCheckBox) {
+                JCheckBox checkBox = (JCheckBox) component;
                 if (checkBox.isSelected()) {
                     UserStory userStory = (UserStory) checkBox.getClientProperty("userStory");
                     spike.addLinkedUserStory(userStory);
-
+    
                     userStory.blockStory(spike, simulationID);
                 }
             }

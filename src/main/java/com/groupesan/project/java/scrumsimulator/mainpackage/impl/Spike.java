@@ -1,11 +1,11 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class Spike {
     @Setter
