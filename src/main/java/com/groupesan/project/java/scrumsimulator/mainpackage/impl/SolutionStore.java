@@ -40,4 +40,13 @@ public class SolutionStore {
     public void removeSolution(Solution solution){
         solutions.remove(solution);
     }
+
+    public Solution getSolutionByTitle(String title) {
+        for (Solution solution : solutions) {
+            if (solution.getTitle().equals(title)) {
+                return solution;
+            }
+        }
+        return null;
+    }
 }

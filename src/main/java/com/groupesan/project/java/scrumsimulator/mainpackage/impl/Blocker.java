@@ -20,6 +20,7 @@ public class Blocker {
     private boolean resolved;
     private float probabilityRangeStart;
     private float probabilityRangeEnd;
+    private Solution solution;
 
     // List to store linked user stories
     private List<UserStory> linkedUserStories = new ArrayList<>();
@@ -29,6 +30,7 @@ public class Blocker {
         this.name = name;
         this.description = description;
         this.resolved = false;
+        this.solution = null; 
     }
 
     /**
@@ -52,9 +54,15 @@ public class Blocker {
     /**
      * Resolves the blocker.
      */
-    public void resolve() {
+    public void resolve(Solution solution) {
         this.resolved = true;
+        this.solution = solution;
     }
+
+    public String getSolutionTitle() {
+        return solution != null ? solution.getTitle() : "No Solution Linked";
+    }
+
 
     // Method to register the blocker in the BlockerStore
     // This method is kept commented as in the original code
