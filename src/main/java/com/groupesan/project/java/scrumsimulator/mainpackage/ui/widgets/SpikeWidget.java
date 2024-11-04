@@ -71,7 +71,7 @@ public class SpikeWidget extends JPanel implements BaseComponent {
             public void actionPerformed(ActionEvent e) {
                 String simulationID = parentPane.getSimulationID(); // Assuming this method exists in SpikeListPanel
                 UserStoryStore userStoryStore = UserStoryStore.getInstance(simulationID);
-                List<UserStory> sprintUserStories = userStoryStore.getUserStoriesInSprint(); // Get the sprint stories
+                List<UserStory> sprintUserStories = userStoryStore.getUserStoriesFromAllSprints(); // Get the sprint stories
 
                 UserStorySelectionPanel selectionPanel = new UserStorySelectionPanel((Frame) SwingUtilities.getWindowAncestor(SpikeWidget.this), spike, sprintUserStories, simulationID);
                 selectionPanel.setVisible(true);
