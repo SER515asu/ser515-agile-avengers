@@ -104,7 +104,7 @@ public class BlockerWidget extends JPanel implements BaseComponent {
     }
 
     private void linkUserStoryToBlocker() {
-        List<UserStory> userStories = UserStoryStore.getInstance(simulationId).getBacklogStories();
+        List<UserStory> userStories = UserStoryStore.getInstance(simulationId).getUserStoriesFromAllSprints();
 
         UserStory selectedUserStory = (UserStory) JOptionPane.showInputDialog(
                 this,

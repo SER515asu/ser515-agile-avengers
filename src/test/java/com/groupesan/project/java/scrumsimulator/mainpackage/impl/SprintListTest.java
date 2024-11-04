@@ -35,15 +35,15 @@ public class SprintListTest {
 
     @Test
     public void testAddUserStoryToSprint() {
-        mySprint.addUserStory(myUserStory);
+        mySprint.addUserStory(simulationID, myUserStory);
         assertTrue(mySprint.getUserStories().contains(myUserStory), "User story should be added to the sprint.");
         assertEquals(1, mySprint.getUserStories().size(), "There should be exactly one user story in the sprint.");
     }
 
     @Test
     public void testRemoveUserStoryFromSprint() {
-        mySprint.addUserStory(myUserStory);
-        mySprint.removeUserStory(myUserStory);
+        mySprint.addUserStory(simulationID, myUserStory);
+        mySprint.removeUserStory(simulationID, myUserStory);
 
         assertFalse(mySprint.getUserStories().contains(myUserStory), "User story should be removed from the sprint.");
         assertEquals(0, mySprint.getUserStories().size(), "There should be no user stories left in the sprint.");

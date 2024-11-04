@@ -32,7 +32,7 @@ public class NewSprintForm extends JFrame implements BaseComponent {
 
     public void init() {
         setTitle("New Sprint");
-        setSize(400, 300);
+        setSize(500, 300);
 
         JPanel myJpanel = new JPanel(new GridBagLayout());
         myJpanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -68,7 +68,7 @@ public class NewSprintForm extends JFrame implements BaseComponent {
 
         JLabel userStoriesLabel = new JLabel("User Stories:");
         myJpanel.add(userStoriesLabel, new CustomConstraints(0, 3, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL));
-        myJpanel.add(scrollPane, new CustomConstraints(1, 3, GridBagConstraints.WEST, 1.0, 0.0, GridBagConstraints.NONE));
+        myJpanel.add(scrollPane, new CustomConstraints(1, 3, GridBagConstraints.WEST, 1.0, 0.0, GridBagConstraints.BOTH));
 
         myJpanel.add(cancelButton, new CustomConstraints(0, 4, GridBagConstraints.EAST, GridBagConstraints.NONE));
         myJpanel.add(submitButton, new CustomConstraints(1, 4, GridBagConstraints.WEST, GridBagConstraints.NONE));
@@ -105,8 +105,7 @@ public class NewSprintForm extends JFrame implements BaseComponent {
             String stringIdentifier = listModel.getElementAt(idx);
             for (UserStory userStory : UserStoryStore.getInstance(simulationID).getBacklogStories()) {
                 if (stringIdentifier.equals(userStory.toString())) {
-                    mySprint.addUserStory(userStory);
-                    UserStoryStore.getInstance(simulationID).addUserStoryToSprint(userStory); // Move user story to sprint
+                    mySprint.addUserStory(simulationID, userStory);
                     break;
                 }
             }
