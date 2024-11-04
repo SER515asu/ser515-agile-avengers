@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets.BaseComponent;
@@ -55,6 +56,10 @@ public class UserStoryListPane extends JFrame implements BaseComponent {
                         0, 0, GridBagConstraints.WEST, 1.0, 0.8, GridBagConstraints.BOTH));
 
         JButton newSprintButton = new JButton("New User Story");
+        if (!player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName()))
+        {
+            newSprintButton.setEnabled(false);
+        }
         newSprintButton.addActionListener(
                 new ActionListener() {
                     @Override

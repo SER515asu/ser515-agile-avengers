@@ -49,7 +49,7 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     // Check if the role is not Product Owner
-                    if (!player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
+                    if (!player.getRole().getName().equals(Roles.SCRUM_ADMINISTRATOR.getDisplayName())) {
                         StoryForm form = new StoryForm(userStory);
                         form.setVisible(true);
 
