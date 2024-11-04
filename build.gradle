@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat
 plugins {
     id "com.github.spotbugs" version "4.8.0"
     id "checkstyle"
+    id "application"
 }
 
 apply plugin: 'application'
@@ -17,6 +18,11 @@ sourceCompatibility = '21'
 targetCompatibility = '21'
 
 mainClassName = 'com.groupesan.project.java.scrumsimulator.mainpackage.StartSimulator' //TODO: this is a bit much, we should probably simplify it at some point
+
+application {
+    applicationName = 'ser515-agile-avengers'
+    mainClass = mainClassName
+}
 
 compileJava.options.encoding = 'UTF-8'
 
@@ -108,3 +114,4 @@ test {
     useJUnitPlatform()
     systemProperty 'java.awt.headless', 'true' // headless for gui
 }
+

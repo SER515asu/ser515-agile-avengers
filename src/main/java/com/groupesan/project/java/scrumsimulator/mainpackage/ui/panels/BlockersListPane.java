@@ -2,11 +2,14 @@ package com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -23,9 +26,10 @@ public class BlockersListPane extends JFrame implements BaseComponent {
     private Player player;
     private List<BlockerWidget> widgets = new ArrayList<>();
     private JPanel subPanel = new JPanel();
-
-    public BlockersListPane(Player player) {
+    private String simulationId;
+    public BlockersListPane(Player player, String simulationId) {
         this.player = player;
+        this.simulationId = simulationId;
         this.init();
     }
 
@@ -51,18 +55,18 @@ public class BlockersListPane extends JFrame implements BaseComponent {
                         0, 0, GridBagConstraints.WEST, 1.0, 0.8, GridBagConstraints.BOTH)); // Use BOTH to expand
 
         JButton newBlockerButton = new JButton("New Blocker");
-        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
+        if (player.getRole().getName().equals(Roles.SCRUM_ADMINISTRATOR.getDisplayName())) {
             newBlockerButton.setEnabled(false);
         }
         newBlockerButton.addActionListener(e -> {
-            BlockerForm form = new BlockerForm();
+            BlockerForm form = new BlockerForm(simulationId);
             form.setVisible(true);
             form.addWindowListener(
                     new java.awt.event.WindowAdapter() {
                         public void windowClosed(java.awt.event.WindowEvent windowEvent) {
                             Blocker blocker = form.getBlockerObject();
                             if (blocker != null) {  // Ensure blocker is valid
-                                addBlockerWidget(blocker); // Use the new addBlockerWidget method
+                                addBlockerWidget(blocker);
                             }
                         }
                     });
@@ -71,7 +75,26 @@ public class BlockersListPane extends JFrame implements BaseComponent {
         myJpanel.add(
                 newBlockerButton,
                 new CustomConstraints(
-                        0, 1, GridBagConstraints.WEST, 1.0, 0.2, GridBagConstraints.HORIZONTAL));
+                        0, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+
+        JButton probabilitiesButton = new JButton("Fine-tune Probabilities");
+        probabilitiesButton.setEnabled(false);
+        if (player.getRole().getName().equals(Roles.SCRUM_ADMINISTRATOR.getDisplayName())) {
+            probabilitiesButton.setEnabled(true);
+        }
+        probabilitiesButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        BlockersProbabilityPane form = new BlockersProbabilityPane(simulationId);
+                        form.setVisible(true);
+                    }
+                }
+        );
+
+        myJpanel.add(
+                probabilitiesButton,
+                new CustomConstraints(0, 2, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
 
         add(myJpanel);
     }
@@ -81,13 +104,13 @@ public class BlockersListPane extends JFrame implements BaseComponent {
         widgets.clear();
 
         int i = 1; // Start sequence numbering from 1
-        for (Blocker blocker : BlockerStore.getInstance().getAllBlockers()) {
-            BlockerWidget widget = new BlockerWidget(blocker, i++, this); // Pass sequence number i
+        for (Blocker blocker : BlockerStore.getInstance(simulationId).getAllBlockers()) {
+            BlockerWidget widget = new BlockerWidget(simulationId, blocker, i++, this);
             widgets.add(widget);
             subPanel.add(
                     widget,
                     new CustomConstraints(
-                            0, i - 1, GridBagConstraints.WEST, 1.0, 0.1, GridBagConstraints.HORIZONTAL));
+                        0, i - 1, GridBagConstraints.WEST, 1.0, 0.1, GridBagConstraints.HORIZONTAL));
         }
 
         subPanel.revalidate();
@@ -101,7 +124,7 @@ public class BlockersListPane extends JFrame implements BaseComponent {
 
     public void addBlockerWidget(Blocker blocker) {
         int sequenceNumber = widgets.size() + 1;
-        BlockerWidget widget = new BlockerWidget(blocker, sequenceNumber, this);
+        BlockerWidget widget = new BlockerWidget(simulationId, blocker, sequenceNumber, this);
         widgets.add(widget);
         refreshBlockers();  // Ensure UI is refreshed after adding new blocker
     }

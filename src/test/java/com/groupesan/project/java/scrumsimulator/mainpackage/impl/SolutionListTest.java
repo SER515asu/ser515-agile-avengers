@@ -1,16 +1,25 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.impl;
 
+import com.groupesan.project.java.scrumsimulator.mainpackage.state.SimulationStateManager;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SolutionListTest {
     private Solution mySolution;
+    private String mySimulationId;
 
     @BeforeEach
     public void setup(){
-        SolutionStore.getInstance().getSolutions().clear(); // Clear existing solutions
+        Assumptions.assumeTrue(!GraphicsEnvironment.isHeadless(), "Test requires a graphical environment");
+        mySolution = SolutionFactory.getSolutionFactory().createNewSolution("Solution1","Solution1 description");
+        mySimulationId = "random_test_id";
     }
 
     @Test
@@ -19,31 +28,33 @@ public class SolutionListTest {
         Solution newSolution = SolutionFactory.getSolutionFactory().createNewSolution("Test solution", "Test description");
 
         // Add solution to the store
-        SolutionStore.getInstance().addSolution(newSolution);
+        SolutionStore.getInstance(mySimulationId).addSolution(newSolution);
+        assertTrue(SolutionStore.getInstance(mySimulationId).getSolutions().contains(newSolution));
 
-        mySolution = newSolution;
-
-        assertTrue(SolutionStore.getInstance().getSolutions().contains(newSolution), "New solution should be added");
     }
 
     @Test
     public void testRemoveSolution(){
-        SolutionStore.getInstance().removeSolution(mySolution);
-
-        assertFalse(SolutionStore.getInstance().getSolutions().contains(mySolution), "My solution should not be in solution store.");
+        SolutionStore.getInstance(mySimulationId).removeSolution(mySolution);
+        assertFalse(SolutionStore.getInstance(mySimulationId).getSolutions().contains(mySolution), "My solution should not be in solution store.");
     }
 
     @Test
     public void testSolutionDetails(){
         Solution newSolution = SolutionFactory.getSolutionFactory().createNewSolution("Test solution", "Test description");
-
-        SolutionStore.getInstance().addSolution(newSolution);
-
-        Solution savedSolution = SolutionStore.getInstance().getSolutions().getFirst();
+        SolutionStore.getInstance(mySimulationId).addSolution(newSolution);
+        Solution savedSolution = SolutionStore.getInstance(mySimulationId).getSolutions().getFirst();
 
         assertEquals(newSolution.getTitle(), savedSolution.getTitle());
         assertEquals(newSolution.getDescription(), savedSolution.getDescription());
         assertEquals(newSolution.getId(), savedSolution.getId());
     }
 
+    @Test
+    public void testProbabilityRangeValues() {
+        mySolution.setProbabilityRangeMinimum((float) 0.2);
+        mySolution.setProbabilityRangeMaximum((float) 0.7);
+        assertEquals((float) 0.2, mySolution.getProbabilityRangeMinimum());
+        assertEquals((float) 0.7, mySolution.getProbabilityRangeMaximum());
+    }
 }

@@ -165,7 +165,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
         JButton sprintsButton = new JButton("Sprints");
         sprintsButton.setPreferredSize(buttonSize);
         sprintsButton.addActionListener(e -> new SprintListPane(player, selectedSimulationId).setVisible(true));
-        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
+        if (player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName()) || player.getRole().getName().equals(Roles.SCRUM_ADMINISTRATOR.getDisplayName())) {
             sprintsButton.setVisible(false);
         }
         buttonPanel.add(sprintsButton);
@@ -173,7 +173,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
         JButton backlogButton = new JButton("Product Backlog");
         backlogButton.setPreferredSize(buttonSize);
         backlogButton.addActionListener(e -> new UserStoryListPane(player, selectedSimulationId).setVisible(true));
-        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
+        if (player.getRole().getName().equals(Roles.SCRUM_ADMINISTRATOR.getDisplayName())) {
             backlogButton.setVisible(false);
         }
         buttonPanel.add(backlogButton);
@@ -181,7 +181,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
         JButton updateStoryButton = new JButton("Update User Story Status");
         updateStoryButton.setPreferredSize(buttonSize);
         updateStoryButton.addActionListener(e -> new UpdateUserStoryPanel(player, selectedSimulationId).setVisible(true));
-        if (player.getRole().getName().equals(Roles.SCRUM_MASTER.getDisplayName())  || player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
+        if (player.getRole().getName().equals(Roles.SCRUM_MASTER.getDisplayName())  || player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName()) || player.getRole().getName().equals(Roles.SCRUM_ADMINISTRATOR.getDisplayName())) {
             updateStoryButton.setVisible(false);
         }
         buttonPanel.add(updateStoryButton);
@@ -195,10 +195,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
         // Add the "List of Blockers" button with access only for Developer
         JButton blockersButton = new JButton("List of Blockers");
         blockersButton.setPreferredSize(buttonSize);
-        blockersButton.addActionListener(e -> new BlockersListPane(player).setVisible(true));
-        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
-            blockersButton.setVisible(false);
-        }
+        blockersButton.addActionListener(e -> new BlockersListPane(player, selectedSimulationId).setVisible(true));
         buttonPanel.add(blockersButton);
 
         JButton spikeButton = new JButton("List of Spikes");
@@ -212,10 +209,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
         // Add the "List of Solutions" button with access only for Developer
         JButton solutionsButton = new JButton("List of Solutions");
         solutionsButton.setPreferredSize(buttonSize);
-        solutionsButton.addActionListener(e -> new SolutionListPane(player).setVisible(true));
-        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) {
-            solutionsButton.setVisible(false);
-        }
+        solutionsButton.addActionListener(e -> new SolutionListPane(player,selectedSimulationId).setVisible(true));
         buttonPanel.add(solutionsButton);
 
         // Add the button panel to the main panel

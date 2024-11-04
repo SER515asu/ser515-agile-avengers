@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.swing.JOptionPane;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Sprint;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
-import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryIdentifier;
+
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -331,5 +330,180 @@ public class SimulationStateManager {
                 }
             }
         }
+    }
+
+    public static List<Blocker> getBlockersForSimulation(String simulationId){
+        List<Blocker> blockers = new ArrayList<>();
+
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return blockers;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i<simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray blockersInSimulation = simulation.optJSONArray("Blockers");
+                if(blockersInSimulation == null){
+                    return blockers;
+                }
+                for(int j=0;j<blockersInSimulation.length(); j++){
+                    JSONObject blockerObj = blockersInSimulation.getJSONObject(j);
+                    Blocker blocker = new Blocker(UUID.fromString(blockerObj.getString("ID")), blockerObj.getString("Name"), blockerObj.getString("Description"));
+                    blockers.add(blocker);
+                }
+                break;
+            }
+        }
+        return blockers;
+    }
+
+    public static void storeBlockerInSimulation(String simulationId, Blocker blocker){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i<simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray blockersInSimulation = simulation.optJSONArray("Blockers");
+
+                JSONObject newBlockerObj = new JSONObject();
+                newBlockerObj.put("ID", blocker.getId());
+                newBlockerObj.put("Name", blocker.getName());
+                newBlockerObj.put("Description", blocker.getDescription());
+
+                if(blockersInSimulation == null){
+                    blockersInSimulation = new JSONArray();
+                    simulation.put("Blockers", blockersInSimulation);
+                }
+
+                blockersInSimulation.put(newBlockerObj);
+                updateSimulationData(simulationData);
+                return;
+            }
+        }
+    }
+
+    public static void updateBlockersProbabilityInSimulation(String simulationId, List<Blocker> updatedBlockers){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i< simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray blockers = simulation.optJSONArray("Blockers");
+                for(Blocker updatedBlocker: updatedBlockers){
+                    for(int j=0; j<blockers.length(); j++){
+                        JSONObject blocker = blockers.getJSONObject(j);
+                        if(blocker.getString("ID").equals(updatedBlocker.getId().toString())){
+                            blocker.put("ProbabilityRangeStart", updatedBlocker.getProbabilityRangeStart());
+                            blocker.put("ProbabilityRangeEnd", updatedBlocker.getProbabilityRangeEnd());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        updateSimulationData(simulationData);
+    }
+
+    public static List<Solution> getSolutionsForSimulation(String simulationId){
+        List<Solution> solutions = new ArrayList<>();
+
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return solutions;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i<simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray solutionsInSimulation = simulation.optJSONArray("Solutions");
+                if(solutionsInSimulation == null){
+                    return solutions;
+                }
+                for(int j=0;j<solutionsInSimulation.length(); j++){
+                    JSONObject solutionObj = solutionsInSimulation.getJSONObject(j);
+                    Solution solution = new Solution(solutionObj.getString("Name"), solutionObj.getString("Description"), solutionObj.getInt("ID"));
+                    solutions.add(solution);
+                    if(j == solutionsInSimulation.length()-1){
+                        SolutionFactory.getSolutionFactory().setNumSolutions(solution.getId());
+                    }
+                }
+                break;
+            }
+        }
+        return solutions;
+    }
+
+    public static void storeSolutionInSimulation(String simulationId, Solution solution){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i<simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray solutionsInSimulation = simulation.optJSONArray("Solutions");
+
+                JSONObject newSolutionObj = new JSONObject();
+                newSolutionObj.put("ID", solution.getId());
+                newSolutionObj.put("Name", solution.getTitle());
+                newSolutionObj.put("Description", solution.getDescription());
+
+                if(solutionsInSimulation == null){
+                    solutionsInSimulation = new JSONArray();
+                    simulation.put("Solutions", solutionsInSimulation);
+                }
+
+                solutionsInSimulation.put(newSolutionObj);
+                updateSimulationData(simulationData);
+                return;
+            }
+        }
+    }
+
+    public static void updateSolutionsProbabilityInSimulation(String simulationId, List<Solution> updatedSolutions){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i< simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray solutions = simulation.optJSONArray("Solutions");
+                for(Solution updatedSolution: updatedSolutions){
+                    for(int j=0; j<solutions.length(); j++){
+                        JSONObject solution = solutions.getJSONObject(j);
+                        if(solution.getInt("ID") == updatedSolution.getId()){
+                            solution.put("ProbabilityRangeMinimum", updatedSolution.getProbabilityRangeMinimum());
+                            solution.put("ProbabilityRangeMaximum", updatedSolution.getProbabilityRangeMaximum());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        updateSimulationData(simulationData);
     }
 }

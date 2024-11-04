@@ -27,6 +27,7 @@ public class StoryForm extends JFrame implements BaseComponent {
     private JTextArea descArea;
     private JComboBox<Double> pointsCombo;
     private JComboBox<Double> bvCombo;
+    private boolean isValidForm;
 
     public StoryForm(UserStory userStory) {
         this.userStory = userStory;
@@ -35,6 +36,7 @@ public class StoryForm extends JFrame implements BaseComponent {
     }
     public StoryForm() {
         this.isNewStory = true;
+        this.isValidForm = false;
         this.init();
     }
 
@@ -123,6 +125,9 @@ public class StoryForm extends JFrame implements BaseComponent {
                     new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                            String name = nameField.getText();
+                            String description = descArea.getText();
+                            isValidForm = (!name.isBlank() && !description.isBlank());
                             dispose();
                         }
                     });
@@ -151,6 +156,9 @@ public class StoryForm extends JFrame implements BaseComponent {
     }
 
     public UserStory getUserStoryObject() {
+        if(!isValidForm){
+            return null;
+        }
         String name = nameField.getText();
         String description = descArea.getText();
         Double points = (Double) pointsCombo.getSelectedItem();
