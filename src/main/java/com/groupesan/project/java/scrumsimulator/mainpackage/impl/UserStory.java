@@ -4,6 +4,8 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumIdentifier;
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumObject;
 import com.groupesan.project.java.scrumsimulator.mainpackage.state.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,8 +24,13 @@ public class UserStory extends ScrumObject {
     private double businessValue;
     private String sprint;
 
+    private List<Spike> linkedSpikes = new ArrayList<>();
+
+    private boolean isSpiked;
+  
     // List to store linked blockers
     private List<Blocker> linkedBlockers = new ArrayList<>();
+
 
     // private ArrayList<Task> tasks;  TODO: implement tasks
 
@@ -38,6 +45,7 @@ public class UserStory extends ScrumObject {
         this.description = "";
         this.pointValue = pointValue;
         this.state = new UnassignedState(this);
+        this.isSpiked = false;
     }
 
     /**
@@ -55,6 +63,8 @@ public class UserStory extends ScrumObject {
         this.pointValue = pointValue;
         this.businessValue = businessValue;
         this.state = new UnassignedState(this);
+        this.isSpiked = false;
+//         this.register();
         this.doRegister();
     }
 
@@ -65,6 +75,8 @@ public class UserStory extends ScrumObject {
         this.businessValue = businessValue;
         this.state = new UnassignedState(this);
         this.id = id;
+        this.isSpiked = false;
+//         this.register();
         this.doRegister();
     }
 
@@ -154,6 +166,31 @@ public class UserStory extends ScrumObject {
         if (state instanceof InProgressState) return "InProgress";
         if (state instanceof ReadyToTestState) return "ReadyToTest";
         if (state instanceof CompleteState) return "Complete";
+        if (state instanceof BlockedState) return "Blocked";
         return "Unknown";
+    }
+
+    public void addSpike(Spike spike) {
+        if (!linkedSpikes.contains(spike)) {
+            linkedSpikes.add(spike);
+            spike.addLinkedUserStory(this);
+        }
+    }
+
+    public void removeSpike(Spike spike) {
+        if (linkedSpikes.remove(spike)) {
+            spike.removeLinkedUserStory(this);
+        }
+    }
+
+    public List<Spike> getLinkedSpikes() {
+        return new ArrayList<>(linkedSpikes);
+    }
+
+    public void blockStory(Spike spike, String simulationId) {
+        this.isSpiked = true;
+        this.addSpike(spike);
+        this.state = new BlockedState(this);
+        SimulationStateManager.changeUserStoryState(simulationId, this.getName(), "Blocked");
     }
 }
