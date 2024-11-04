@@ -63,4 +63,14 @@ public class BlockerListTest {
         assertEquals((float) 0.5, myBlocker.getProbabilityRangeEnd());
     }
 
+    @Test
+    public void testResolveBlocker(){
+        Solution solution = new Solution("Sample solution", "This resolves my blocker", 1);
+
+        myBlocker.resolve(solution);
+
+        assertEquals(solution, myBlocker.getSolution());
+        assertTrue(myBlocker.isResolved(), "Blocker should be resolved!");
+        assertEquals("Sample solution", myBlocker.getSolutionTitle());
+    }
 }
