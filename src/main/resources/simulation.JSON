@@ -1,42 +1,558 @@
 {"Simulations": [
     {
         "Status": "New",
-        "Sprints": [],
+        "Sprints": [
+            {
+                "Description": "Agile Development Simulation sprint1",
+                "Length": 2,
+                "RemainingDays": 2,
+                "ID": "2c8744eb-991f-4296-a7e9-140a95e3ef66",
+                "Name": "Sprint 1"
+            },
+            {
+                "Description": "Agile Development sprint2",
+                "Length": 2,
+                "RemainingDays": 2,
+                "ID": "a3855cb2-6dc9-4247-80ea-67199942444b",
+                "Name": "Sprint 2"
+            },
+            {
+                "Description": "Agile Development sprint3",
+                "Length": 2,
+                "RemainingDays": 2,
+                "ID": "83fb7a1f-856c-4bfa-b899-33f489af67b9",
+                "Name": "Sprint 3"
+            }
+        ],
+        "UserStories": [
+            {
+                "Description": "Create a login interface and backend authentication.",
+                "BusinessValue": 30,
+                "PointValue": 3,
+                "State": "Unassigned",
+                "Id": "US #3",
+                "Name": "Implement Login Feature"
+            },
+            {
+                "Description": "Initialize and configure the primary database for the application.",
+                "BusinessValue": 19,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #5",
+                "Name": "Setup Database"
+            },
+            {
+                "Description": "Implement user registration functionality including form validation.",
+                "BusinessValue": 19,
+                "PointValue": 5,
+                "State": "Unassigned",
+                "Id": "US #7",
+                "Name": "Create Registration Page"
+            },
+            {
+                "Description": "Implement a system for handling and logging errors in the app.",
+                "BusinessValue": 8,
+                "PointValue": 3,
+                "State": "Unassigned",
+                "Id": "US #9",
+                "Name": "Develop Error Handling Mechanism"
+            },
+            {
+                "Description": "Set up the frontend framework and configure initial dependencies.",
+                "BusinessValue": 19,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #11",
+                "Name": "Setup Initial Frontend Framework"
+            },
+            {
+                "Description": "Develop user profile creation and editing features.",
+                "BusinessValue": 19,
+                "PointValue": 5,
+                "State": "Unassigned",
+                "Id": "US #62",
+                "Name": "Implement User Profile"
+            },
+            {
+                "Description": "Implement CI/CD pipeline for automatic builds and deployments.",
+                "BusinessValue": 30,
+                "PointValue": 3,
+                "State": "Unassigned",
+                "Id": "US #64",
+                "Name": "Setup Continuous Integration"
+            },
+            {
+                "Description": "Add a logout feature to end user sessions securely.",
+                "BusinessValue": 5,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #66",
+                "Name": "Create Logout Functionality"
+            },
+            {
+                "Description": "Add two-factor authentication for increased login security.",
+                "BusinessValue": 19,
+                "PointValue": 5,
+                "State": "Unassigned",
+                "Id": "US #68",
+                "Name": "Enhance Security with 2FA"
+            },
+            {
+                "Description": "Create a UI design for user notifications",
+                "BusinessValue": 5,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #70",
+                "Name": "Design Notifications UI"
+            },
+            {
+                "Description": "Add notifications functionality for user actions.",
+                "BusinessValue": 19,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #84",
+                "Name": "Implement Notifications System"
+            },
+            {
+                "Description": "Optimize database queries and front-end rendering for better performance",
+                "BusinessValue": 11,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #86",
+                "Name": "Optimize Performance"
+            },
+            {
+                "Description": "Develop a dashboard interface for administrators",
+                "BusinessValue": 8,
+                "PointValue": 1,
+                "State": "Unassigned",
+                "Id": "US #88",
+                "Name": "Create Admin Dashboard"
+            },
+            {
+                "Description": "Implement tracking and reporting of user behavior within the app.",
+                "BusinessValue": 3,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #90",
+                "Name": "User Analytics"
+            },
+            {
+                "Description": "Implement a logging system for app performance and errors.",
+                "BusinessValue": 5,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #92",
+                "Name": "Setup Logging Mechanism"
+            }
+        ],
+        "Blockers": [
+            {
+                "ProbabilityRangeStart": 0.2,
+                "Description": "Unable to connect to the remote database server.",
+                "ProbabilityRangeEnd": 0.5,
+                "ID": "1023a55a-4248-455f-adeb-c2ca45d4dde1",
+                "Name": "Database Connection Issue"
+            },
+            {
+                "ProbabilityRangeStart": 0.2,
+                "Description": "Errors in pipeline setup due to incorrect configuration.",
+                "ProbabilityRangeEnd": 0.4,
+                "ID": "f77032f8-fcdb-4004-9ad0-bedd5f97ceb5",
+                "Name": "CI/CD Configuration Issue"
+            },
+            {
+                "ProbabilityRangeStart": 0.4,
+                "Description": "Application performance is below acceptable thresholds due to inefficient code.Application performance is below acceptable thresholds due to inefficient code.",
+                "ProbabilityRangeEnd": 0.7,
+                "ID": "5e55510f-3efd-4fff-a81b-fe51da2df651",
+                "Name": "Performance Bottleneck"
+            }
+        ],
+        "Solutions": [
+            {
+                "Description": "Ensure that the database server is accessible from the network.",
+                "ProbabilityRangeMinimum": 0.2,
+                "ProbabilityRangeMaximum": 0.8,
+                "ID": 1,
+                "Name": "Check Network Settings"
+            },
+            {
+                "Description": "Verify and update the database credentials used in the configuration.",
+                "ProbabilityRangeMinimum": 0.2,
+                "ProbabilityRangeMaximum": 0.8,
+                "ID": 2,
+                "Name": "Update Database Credentials"
+            },
+            {
+                "Description": "Check the pipeline setup and correct configuration errors.",
+                "ProbabilityRangeMinimum": 0.3,
+                "ProbabilityRangeMaximum": 0.6,
+                "ID": 3,
+                "Name": "Review Pipeline Configuration"
+            },
+            {
+                "Description": "Reach out to DevOps team to assist with advanced configurations.",
+                "ProbabilityRangeMinimum": 0.3,
+                "ProbabilityRangeMaximum": 0.6,
+                "ID": 4,
+                "Name": "Consult with DevOps Team"
+            },
+            {
+                "Description": "Refactor inefficient parts of the codebase for optimization.",
+                "ProbabilityRangeMinimum": 0.3,
+                "ProbabilityRangeMaximum": 0.8,
+                "ID": 5,
+                "Name": "Refactor Code"
+            }
+        ],
         "Events": [],
-        "LengthOfSprint": "1",
-        "NumberOfSprints": "12",
-        "ID": "ff2a037f-1411-43e7-9442-0455912612a5",
-        "Users": [],
-        "Name": "bar"
-    },
-    {
-        "Status": "New",
-        "Sprints": [],
-        "Events": [],
-        "LengthOfSprint": "4",
-        "NumberOfSprints": "12",
-        "ID": "7e68e55e-d739-492f-8195-439d6e175633",
-        "Users": [],
-        "Name": "foo"
-    },
-    {
-        "Status": "New",
-        "Sprints": [],
-        "Events": [],
-        "LengthOfSprint": "1",
-        "NumberOfSprints": "1",
-        "ID": "3881ebd4-cd31-4987-8d88-f1bf55a70302",
-        "Users": [],
-        "Name": "test"
-    },
-    {
-        "Status": "New",
-        "Sprints": [],
-        "Events": [],
-        "LengthOfSprint": "4",
+        "LengthOfSprint": "2",
         "NumberOfSprints": "3",
-        "ID": "3bd5e9e5-b197-40b7-8266-b2e70bfe1d93",
+        "ID": "32b57783-81f2-458a-ab00-4fffd25536a9",
         "Users": [],
-        "Name": "Hello"
+        "Name": "Agile Development Simulation"
+    },
+    {
+        "Status": "New",
+        "Sprints": [
+            {
+                "Description": "Initial Setup & Vulnerability Assessment",
+                "Length": 2,
+                "RemainingDays": 2,
+                "ID": "e5d615ad-6405-4c51-bb8e-597ad72c7fb6",
+                "Name": "Sprint1"
+            },
+            {
+                "Description": "Threat Detection and Mitigation",
+                "Length": 2,
+                "RemainingDays": 2,
+                "ID": "99045c20-26b0-4211-9a98-66921510cca6",
+                "Name": "Sprint2"
+            }
+        ],
+        "UserStories": [
+            {
+                "Description": "Map the entire network structure to understand asset locations and connectivity.",
+                "BusinessValue": 30,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #5",
+                "Name": "Network Mapping"
+            },
+            {
+                "Description": "Perform scans on all network devices to detect potential vulnerabilities.",
+                "BusinessValue": 11,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #7",
+                "Name": "Run Vulnerability Scans"
+            },
+            {
+                "Description": "Configure firewalls for boundary security within the network.",
+                "BusinessValue": 11,
+                "PointValue": 1,
+                "State": "Unassigned",
+                "Id": "US #9",
+                "Name": "Setup Firewalls"
+            },
+            {
+                "Description": "Document the network infrastructure and security policies.",
+                "BusinessValue": 8,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #11",
+                "Name": "Update Network Documentation"
+            },
+            {
+                "Description": "Identify and prioritize network assets based on sensitivity.",
+                "BusinessValue": 5,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #13",
+                "Name": "Identify Critical Assets"
+            },
+            {
+                "Description": "Set up IDS to monitor network traffic for suspicious activities.",
+                "BusinessValue": 30,
+                "PointValue": 3,
+                "State": "Unassigned",
+                "Id": "US #15",
+                "Name": "Implement Intrusion Detection System (IDS)"
+            },
+            {
+                "Description": "Simulate a phishing attack and evaluate team response",
+                "BusinessValue": 3,
+                "PointValue": 1,
+                "State": "Unassigned",
+                "Id": "US #19",
+                "Name": "Test Response to Phishing Attack"
+            },
+            {
+                "Description": "Divide the network into segments to limit access and increase security.",
+                "BusinessValue": 8,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #21",
+                "Name": "Configure Network Segmentation"
+            },
+            {
+                "Description": "Implement security policies and software for endpoint devices.",
+                "BusinessValue": 3,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #23",
+                "Name": "Enhance Endpoint Security"
+            },
+            {
+                "Description": "Create a dashboard to display real-time network security events.",
+                "BusinessValue": 5,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #25",
+                "Name": "Develop Security Monitoring Dashboard"
+            }
+        ],
+        "Blockers": [
+            {
+                "ProbabilityRangeStart": 0.9,
+                "Description": "Legacy software with known vulnerabilities due to unpatched updates.",
+                "ProbabilityRangeEnd": 1,
+                "ID": "b5836495-30c5-43a2-bd04-b60ca19d4bc5",
+                "Name": "Unpatched Software Vulnerability"
+            },
+            {
+                "Description": "Emails containing malicious links or attachments targeting network users",
+                "ID": "02787091-6e29-4613-9ca1-9d9a0bd5c37d",
+                "Name": "Phishing Attempt"
+            }
+        ],
+        "Solutions": [
+            {
+                "Description": "Replace outdated software with secure, up-to-date alternatives.",
+                "ProbabilityRangeMinimum": 0.2,
+                "ProbabilityRangeMaximum": 0.9,
+                "ID": 1,
+                "Name": "Upgrade Legacy Software"
+            },
+            {
+                "Description": "Conduct training on recognizing and reporting phishing attempts.",
+                "ProbabilityRangeMinimum": 0.1,
+                "ProbabilityRangeMaximum": 0.6,
+                "ID": 2,
+                "Name": "Employee Training"
+            },
+            {
+                "Description": "Implement filters to block phishing emails before they reach users.",
+                "ProbabilityRangeMinimum": 0.1,
+                "ProbabilityRangeMaximum": 0.6,
+                "ID": 3,
+                "Name": "Email Filtering"
+            }
+        ],
+        "Events": [],
+        "LengthOfSprint": "3",
+        "NumberOfSprints": "3",
+        "ID": "41f4b783-baa5-462f-b318-9e4de075686e",
+        "Users": [],
+        "Name": "Network Security Simulation"
+    },
+    {
+        "Status": "New",
+        "Sprints": [
+            {
+                "Description": "Data Collection and Preprocessing",
+                "Length": 2,
+                "RemainingDays": 2,
+                "ID": "de94e2b4-807e-4b8e-98ad-7c6ad45767ac",
+                "Name": "Sprint1"
+            },
+            {
+                "Description": "Model Development and Training",
+                "Length": 2,
+                "RemainingDays": 2,
+                "ID": "80339c22-cc7c-4c33-b59e-ec1661a4459a",
+                "Name": "Sprint 2"
+            },
+            {
+                "Description": "Model Deployment and Monitoring",
+                "Length": 2,
+                "RemainingDays": 2,
+                "ID": "8755289f-fe2f-4c04-989e-89cc40c6d379",
+                "Name": "Sprint 3"
+            }
+        ],
+        "UserStories": [
+            {
+                "Description": "Research and select suitable data sources for model training.",
+                "BusinessValue": 30,
+                "PointValue": 1,
+                "State": "Unassigned",
+                "Id": "US #2",
+                "Name": "Identify Data Sources"
+            },
+            {
+                "Description": "Gather raw data from identified sources and store it securely.",
+                "BusinessValue": 8,
+                "PointValue": 2,
+                "State": "Blocked",
+                "Id": "US #3",
+                "Name": "Collect Raw Data"
+            },
+            {
+                "Description": "Remove duplicate entries and fill missing values in raw data.",
+                "BusinessValue": 11,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #4",
+                "Name": "Clean Data"
+            },
+            {
+                "Description": "Create new features from existing data to improve model accuracy.",
+                "BusinessValue": 11,
+                "PointValue": 3,
+                "State": "Unassigned",
+                "Id": "US #5",
+                "Name": "Feature Engineering"
+            },
+            {
+                "Description": "Establish a data pipeline to automate data collection and preprocessing.",
+                "BusinessValue": 30,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #6",
+                "Name": "Define Data Pipeline"
+            },
+            {
+                "Description": "Choose a suitable model architecture based on data and project requirements",
+                "BusinessValue": 19,
+                "PointValue": 3,
+                "State": "Unassigned",
+                "Id": "US #7",
+                "Name": "Select Model Architecture"
+            },
+            {
+                "Description": "Train the model with the cleaned data and initial parameters.",
+                "BusinessValue": 8,
+                "PointValue": 3,
+                "State": "Unassigned",
+                "Id": "US #8",
+                "Name": "Train Initial Model"
+            },
+            {
+                "Description": "Measure model accuracy, precision, recall, and other metrics.",
+                "BusinessValue": 11,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #9",
+                "Name": "Evaluate Model Performance"
+            },
+            {
+                "Description": "Adjust model parameters to optimize performance.",
+                "BusinessValue": 11,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #10",
+                "Name": "Hyperparameter Tuning"
+            },
+            {
+                "Description": "Set up version control for models to track changes and improvements",
+                "BusinessValue": 8,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #11",
+                "Name": "Establish Model Versioning"
+            },
+            {
+                "Description": "Package the model and its dependencies for deployment.",
+                "BusinessValue": 8,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #12",
+                "Name": "Prepare Model for Deployment"
+            },
+            {
+                "Description": "Deploy the model to a production environment for live inference.",
+                "BusinessValue": 11,
+                "PointValue": 1,
+                "State": "Unassigned",
+                "Id": "US #13",
+                "Name": "Deploy Model to Production"
+            },
+            {
+                "Description": "Monitor model predictions and performance in production.",
+                "BusinessValue": 19,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #14",
+                "Name": "Set Up Monitoring for Model Performance"
+            },
+            {
+                "Description": "Create a pipeline for automated model retraining with new data.",
+                "BusinessValue": 8,
+                "PointValue": 2,
+                "State": "Unassigned",
+                "Id": "US #15",
+                "Name": "Implement Model Retraining Pipeline"
+            },
+            {
+                "Description": "Set up alerts for unusual predictions or significant model drift.",
+                "BusinessValue": 19,
+                "PointValue": 1,
+                "State": "Unassigned",
+                "Id": "US #16",
+                "Name": "Develop Alerting System for Anomalies"
+            }
+        ],
+        "Blockers": [
+            {
+                "ProbabilityRangeStart": 0,
+                "Description": "Data acquisition from external sources is delayed due to access restrictions.",
+                "ProbabilityRangeEnd": 0.1,
+                "ID": "c0f5f098-66f4-4695-ac6f-f25fc7808eeb",
+                "Name": "Data Collection Delays"
+            },
+            {
+                "Description": "Compatibility issues with the production environment prevent successful deployment.",
+                "ID": "5dff85da-6798-4a79-8e72-f03775756e21",
+                "Name": "Deployment Environment Issue"
+            }
+        ],
+        "Solutions": [
+            {
+                "Description": "Coordinate with data providers to secure temporary access for faster collection",
+                "ProbabilityRangeMinimum": 0.5,
+                "ProbabilityRangeMaximum": 0.6,
+                "ID": 1,
+                "Name": "Request Temporary Access"
+            },
+            {
+                "Description": "Identify alternative data sources to gather sufficient data within timelines.",
+                "ProbabilityRangeMinimum": 0.5,
+                "ProbabilityRangeMaximum": 0.6,
+                "ID": 2,
+                "Name": "Use Alternative Sources"
+            },
+            {
+                "Description": "Modify configurations to ensure compatibility with the production environment.",
+                "ProbabilityRangeMinimum": 0,
+                "ProbabilityRangeMaximum": 0.8,
+                "ID": 3,
+                "Name": "Adjust Deployment Configuration"
+            },
+            {
+                "Description": "Engage with DevOps team to troubleshoot and resolve deployment issues.",
+                "ProbabilityRangeMinimum": 0,
+                "ProbabilityRangeMaximum": 0.8,
+                "ID": 4,
+                "Name": "Consult with DevOps Team"
+            }
+        ],
+        "Events": [],
+        "LengthOfSprint": "2",
+        "NumberOfSprints": "3",
+        "ID": "c88c63e6-f2ce-4cbb-a614-ca41edeed4f9",
+        "Users": [],
+        "Name": "Machine Learning Model Development Simulation"
     }
 ]}

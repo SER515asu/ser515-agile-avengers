@@ -1,19 +1,28 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.BlockerStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.StoryForm;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.UserStoryListPane;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
-import lombok.Getter;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.*;
-import java.awt.event.ActionEvent;
+import lombok.Getter;
 
 public class UserStoryWidget extends JPanel implements BaseComponent {
 
@@ -22,45 +31,65 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
     JLabel bv;
     JLabel name;
     JLabel desc;
+    JLabel linkedBlockersLabel;  // Display linked blockers
     JButton deleteButton;
+    JButton linkBlockerButton;  // Button to link a blocker to this user story
 
-    // TODO: This is a non transient field and this class is supposed to be serializable. this needs
-    // to be dealt with before this object can be serialized
+    // Flag to ensure the headers are only added once
+    private static boolean headersAdded = false;
+    private Player player;
+
     @Getter
     private UserStory userStory;
 
-    ActionListener actionListener = e -> {};
     private UserStoryListPane parentPane;
 
     MouseAdapter openEditDialog =
             new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    StoryForm form = new StoryForm(userStory);
-                    form.setVisible(true);
+                    // Check if the role is not Product Owner
+                    if (!player.getRole().getName().equals(Roles.SCRUM_ADMINISTRATOR.getDisplayName())) {
+                        StoryForm form = new StoryForm(userStory);
+                        form.setVisible(true);
 
-                    form.addWindowListener(
-                            new java.awt.event.WindowAdapter() {
-                                public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                                    init();
-                                }
-                            });
+                        form.addWindowListener(
+                                new java.awt.event.WindowAdapter() {
+                                    public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+                                        init();
+                                    }
+                                });
+                    } else {
+                        JOptionPane.showMessageDialog(
+                                UserStoryWidget.this,
+                                "Product Owner cannot edit user stories.",
+                                "Access Denied",
+                                JOptionPane.WARNING_MESSAGE
+                        );
+                    }
                 }
             };
 
-    public UserStoryWidget(UserStory userStory) {
+    public UserStoryWidget(UserStory userStory, Player player, UserStoryListPane parentPane) {
         this.userStory = userStory;
-        this.init();
-    }
-
-    public UserStoryWidget(UserStory userStory, UserStoryListPane parentPane) {
-        this.userStory = userStory;
+        this.player = player;
         this.parentPane = parentPane;
         this.init();
     }
 
     public void init() {
         removeAll();
+
+        // Reset headers if no widgets exist in the parentPane
+        if (parentPane.getWidgets().isEmpty()) {
+            resetHeadersAddedFlag();
+        }
+
+        // Add headers only once (when the first user story widget is created)
+        if (!headersAdded) {
+            addHeaders();
+            headersAdded = true;
+        }
 
         id = new JLabel(userStory.getId().toString());
         id.addMouseListener(openEditDialog);
@@ -72,45 +101,53 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
         name.addMouseListener(openEditDialog);
         desc = new JLabel(userStory.getDescription());
         desc.addMouseListener(openEditDialog);
+
+        // Display linked blockers
+        linkedBlockersLabel = new JLabel(getLinkedBlockersText());
+
+        // Delete button setup
         deleteButton = new JButton("Delete");
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteUserStory();
-            }
-        });
+        deleteButton.addActionListener(e -> deleteUserStory());
+
+        // Link Blocker button setup
+        linkBlockerButton = new JButton("Link Blocker");
+        linkBlockerButton.addActionListener(e -> linkBlockerToUserStory());
 
         GridBagLayout myGridBagLayout = new GridBagLayout();
-
         setLayout(myGridBagLayout);
 
-        add(
-                id,
-                new CustomConstraints(
-                        0, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                points,
-                new CustomConstraints(
-                        1, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                bv,
-                new CustomConstraints(
-                        2, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                name,
-                new CustomConstraints(
-                        3, 0, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                desc,
-                new CustomConstraints(
-                        4, 0, GridBagConstraints.WEST, 0.4, 0.0, GridBagConstraints.HORIZONTAL));
-        add(
-                deleteButton,
-                new CustomConstraints(
-                        5, 0, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        // Add user story details and buttons below the header
+        add(id, new CustomConstraints(0, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(points, new CustomConstraints(1, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(bv, new CustomConstraints(2, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(name, new CustomConstraints(3, 1, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+        add(desc, new CustomConstraints(4, 1, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+        add(linkedBlockersLabel, new CustomConstraints(5, 1, GridBagConstraints.WEST, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+        add(deleteButton, new CustomConstraints(6, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(linkBlockerButton, new CustomConstraints(7, 1, GridBagConstraints.WEST, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
 
         revalidate();
         repaint();
+    }
+
+    private void addHeaders() {
+        JLabel idHeader = new JLabel("ID");
+        JLabel pointsHeader = new JLabel("Points");
+        JLabel bvHeader = new JLabel("BV");
+        JLabel nameHeader = new JLabel("Name");
+        JLabel descHeader = new JLabel("Description");
+        JLabel blockersHeader = new JLabel("Linked Blockers");
+        JLabel actionHeader = new JLabel("Action");
+        JLabel linkBlockerHeader = new JLabel("Link Blocker");
+
+        add(idHeader, new CustomConstraints(0, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(pointsHeader, new CustomConstraints(1, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(bvHeader, new CustomConstraints(2, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(nameHeader, new CustomConstraints(3, 0, GridBagConstraints.CENTER, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+        add(descHeader, new CustomConstraints(4, 0, GridBagConstraints.CENTER, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+        add(blockersHeader, new CustomConstraints(5, 0, GridBagConstraints.CENTER, 0.2, 0.0, GridBagConstraints.HORIZONTAL));
+        add(actionHeader, new CustomConstraints(6, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
+        add(linkBlockerHeader, new CustomConstraints(7, 0, GridBagConstraints.CENTER, 0.1, 0.0, GridBagConstraints.HORIZONTAL));
     }
 
     private void deleteUserStory() {
@@ -121,10 +158,43 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
                 JOptionPane.YES_NO_OPTION);
 
         if (confirmation == JOptionPane.YES_OPTION) {
-            UserStoryStore.getInstance().removeUserStory(userStory);
-
+            UserStoryStore.getInstance(parentPane.getSimulationID()).removeUserStoryFromBacklog(userStory);
             parentPane.removeUserStoryWidget(this);
         }
     }
 
+    private void linkBlockerToUserStory() {
+        // Show a dialog with a list of blockers to choose from
+        List<Blocker> blockers = BlockerStore.getInstance(parentPane.getSimulationID()).getAllBlockers();
+        Blocker selectedBlocker = (Blocker) JOptionPane.showInputDialog(
+                this,
+                "Select a blocker to link:",
+                "Link Blocker",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                blockers.toArray(),
+                null);
+
+        if (selectedBlocker != null) {
+            userStory.addBlocker(selectedBlocker); // Link the selected blocker
+            linkedBlockersLabel.setText(getLinkedBlockersText()); // Update the linked blockers display
+            JOptionPane.showMessageDialog(this, "Blocker linked to User Story successfully!");
+        }
+    }
+
+    private String getLinkedBlockersText() {
+        List<Blocker> linkedBlockers = userStory.getLinkedBlockers();
+        if (linkedBlockers.isEmpty()) {
+            return "No blockers linked";
+        } else {
+            return linkedBlockers.stream()
+                    .map(Blocker::getName)
+                    .collect(Collectors.joining(", "));
+        }
+    }
+
+    // Reset the static flag if needed (e.g., when refreshing the UI)
+    public static void resetHeadersAddedFlag() {
+        headersAdded = false;
+    }
 }

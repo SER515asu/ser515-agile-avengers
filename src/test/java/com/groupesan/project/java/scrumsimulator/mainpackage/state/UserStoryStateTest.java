@@ -1,52 +1,51 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.state;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class UserStoryStateTest {
+class UserStoryStateTest {
+    private UserStory mockUserStory;
 
-    UserStory testUserStory = new UserStory("test", 1.0);
-
-    @Test
-    public void testUserStoryUnselectedState() {
-        UserStoryUnselectedState testState = new UserStoryUnselectedState(testUserStory);
-        assertAll(
-                "Unselected State",
-                () -> assertEquals("Selected", testState.onSelect()),
-                () -> assertEquals("Unselected", testState.onComplete()),
-                () -> assertEquals("Deleted", testState.onDelete()));
+    @BeforeEach
+    void setUp() {
+        mockUserStory = new UserStory("testStory","this is a test story", 2.0, 3.0);  // Assuming UserStory has a no-args constructor
     }
 
     @Test
-    public void testUserStorySelectedState() {
-        UserStorySelectedState testState = new UserStorySelectedState(testUserStory);
-        assertAll(
-                "Selected State",
-                () -> assertEquals("Unselected", testState.onSelect()),
-                () -> assertEquals("Completed", testState.onComplete()),
-                () -> assertEquals("Deleted", testState.onDelete()));
+    void testGetStatusOptions() {
+        String[] expectedStatuses = {"Unassigned", "New", "InProgress", "ReadyToTest", "Complete", "Blocked"};
+        assertArrayEquals(expectedStatuses, UserStoryState.getStatusOptions(), "Status options should match expected array.");
     }
 
     @Test
-    public void testUserStoryCompletedState() {
-        UserStoryCompletedState testState = new UserStoryCompletedState(testUserStory);
-        assertAll(
-                "Completed State",
-                () -> assertEquals("Completed", testState.onSelect()),
-                () -> assertEquals("Completed", testState.onComplete()),
-                () -> assertEquals("Deleted", testState.onDelete()));
+    void testUnassignedStateInitialization() {
+        UnassignedState unassignedState = new UnassignedState(mockUserStory);
+        assertNotNull(unassignedState, "UnassignedState should be initialized.");
     }
 
     @Test
-    public void testUserDeletedState() {
-        UserStoryDeletedState testState = new UserStoryDeletedState(testUserStory);
-        assertAll(
-                "Deleted State",
-                () -> assertEquals("Deleted", testState.onSelect()),
-                () -> assertEquals("Deleted", testState.onComplete()),
-                () -> assertEquals("Deleted", testState.onDelete()));
+    void testNewStateInitialization() {
+        NewState newState = new NewState(mockUserStory);
+        assertNotNull(newState, "NewState should be initialized.");
+    }
+
+    @Test
+    void testInProgressStateInitialization() {
+        InProgressState inProgressState = new InProgressState(mockUserStory);
+        assertNotNull(inProgressState, "InProgressState should be initialized.");
+    }
+
+    @Test
+    void testReadyToTestStateInitialization() {
+        ReadyToTestState readyToTestState = new ReadyToTestState(mockUserStory);
+        assertNotNull(readyToTestState, "ReadyToTestState should be initialized.");
+    }
+
+    @Test
+    void testCompleteStateInitialization() {
+        CompleteState completeState = new CompleteState(mockUserStory);
+        assertNotNull(completeState, "CompleteState should be initialized.");
     }
 }

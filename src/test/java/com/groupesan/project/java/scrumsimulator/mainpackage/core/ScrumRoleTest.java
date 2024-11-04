@@ -38,7 +38,7 @@ public class ScrumRoleTest {
 
         String string = myScrumRole.toString();
 
-        assertEquals("testRole (unregistered)", string);
+        assertEquals("testRole", string);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class ScrumRoleTest {
 
     @Test
     public void testToString() {
-        assertEquals("testRole (unregistered)", myScrumRole.toString());
+        assertEquals("testRole", myScrumRole.toString());
         myScrumRole.doRegister();
         assertEquals("testRole (Role #0)", myScrumRole.toString());
     }

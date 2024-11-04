@@ -10,6 +10,8 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.core.Teacher;
 
 public class ScrumRoleFactoryTest {
     private ScrumRole defaultRole;
+    private String simulationId="test";
+    private String sprintId = "sdadsad";
 
     private static final ScrumRoleFactory factory = ScrumRoleFactory.getInstance();
 
@@ -27,7 +29,7 @@ public class ScrumRoleFactoryTest {
     @Test
     public void testCreateNewScrumMaster() {
         Player player = new Player("Player", defaultRole);
-        Sprint sprint = new Sprint(null, null, 0, 0);
+        Sprint sprint = new Sprint(null, null, 0, sprintId);
         assertTrue(
                 factory.createNewScrumMaster(player, "Scrum Master", sprint)
                         instanceof ScrumMaster);

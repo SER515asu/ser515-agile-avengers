@@ -5,17 +5,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.groupesan.project.java.scrumsimulator.mainpackage.core.ScrumIdentifier;
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class UserStoryTest {
     private UserStory myUserStory;
+    private UserStory registeredUserStory;
 
     @BeforeEach
     public void setup() {
-        myUserStory =
-                UserStoryFactory.getInstance()
-                        .createNewUserStory("predefinedUS1", "description1", 1.0, 1.0);
+        myUserStory = new UserStory("predefinedUS1", 1.0);
+        registeredUserStory = UserStoryFactory.getInstance().createNewUserStory("predefinedUS2", "description2", 1.0, 1.0);
     }
 
     @Test
@@ -56,7 +57,7 @@ public class UserStoryTest {
 
     @Test
     public void testUserStoryBusinessValue() {
-        double bv = myUserStory.getBusinessValue();
+        double bv = registeredUserStory.getBusinessValue();
 
         assertEquals(1.0, bv);
     }

@@ -5,7 +5,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import javax.swing.JOptionPane;
+
+import com.groupesan.project.java.scrumsimulator.mainpackage.impl.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -16,18 +21,13 @@ import org.json.JSONTokener;
  */
 public class SimulationStateManager {
     private boolean running;
-    private static final String JSON_FILE_PATH = "src/main/resources/simulation.JSON";
+    private static final String JSON_FILE_PATH = "src/main/resources/simulation.json";
 
     /** Simulation State manager. Not running by default. */
     public SimulationStateManager() {
         this.running = false;
     }
 
-    /**
-     * Returns the current state of the simulation.
-     *
-     * @return boolean running
-     */
     public boolean isRunning() {
         return running;
     }
@@ -36,28 +36,15 @@ public class SimulationStateManager {
         this.running = running;
     }
 
-    /** Method to set the simulation state to running. */
     public void startSimulation() {
         setRunning(true);
-        // Add other logic for starting the simulation
     }
 
-    /** Method to set the simulation state to not running. */
     public void stopSimulation() {
         setRunning(false);
-        // Add other logic for stopping the simulation
     }
 
-    /**
-     * Saves the details of a new simulation to a JSON file.
-     *
-     * @param simId The ID of the simulation.
-     * @param simName The name of the simulation.
-     * @param numberOfSprints The number of sprints in the simulation.
-     * @param lengthOfSprint  The length of each sprint
-     */
-    public static void saveNewSimulationDetails(
-            String simId, String simName, String numberOfSprints, String lengthOfSprint) {
+    public static void saveNewSimulationDetails(String simId, String simName, String numberOfSprints, String lengthOfSprint) {
         JSONObject simulationData = getSimulationData();
         if (simulationData == null) {
             simulationData = new JSONObject();
@@ -72,6 +59,7 @@ public class SimulationStateManager {
         newSimulation.put("Sprints", new JSONArray());
         newSimulation.put("Events", new JSONArray());
         newSimulation.put("Users", new JSONArray());
+        newSimulation.put("UserStories", new JSONArray());
 
         JSONArray simulations = simulationData.optJSONArray("Simulations");
         if (simulations == null) {
@@ -101,23 +89,525 @@ public class SimulationStateManager {
         updateSimulationData(simulationData);
     }
 
+    /**
+     * Adds a Sprint to a specific simulation based on the provided simulation ID.
+     */
+    public static void addSprintToSimulation(String simulationID, Sprint sprint) {
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.getJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray sprints = simulation.optJSONArray("Sprints");
+                if (sprints == null) {
+                    sprints = new JSONArray();
+                    simulation.put("Sprints", sprints);
+                }
+
+                // Create JSON representation of Sprint
+                JSONObject newSprint = new JSONObject();
+                newSprint.put("Name", sprint.getName());
+                newSprint.put("Description", sprint.getDescription());
+                newSprint.put("Length", sprint.getLength());
+                newSprint.put("RemainingDays", sprint.getDaysRemaining());
+                newSprint.put("ID", sprint.getId());
+
+                JSONArray userStories = new JSONArray();
+                for(UserStory userStory: sprint.getUserStories()){
+                    JSONObject newUserStory = new JSONObject();
+                    newUserStory.put("Name", userStory.getName());
+                    newUserStory.put("Description", userStory.getDescription());
+                    newUserStory.put("PointValue", userStory.getPointValue());
+                    newUserStory.put("BusinessValue", userStory.getBusinessValue());
+                    newUserStory.put("Id", userStory.getId());
+                    newUserStory.put("State", userStory.getState());
+
+                    userStories.put(newUserStory);
+                }
+                newSprint.put("UserStories", userStories);
+
+                sprints.put(newSprint);  // Add sprint to the array
+
+                updateSimulationData(simulationData);
+                JOptionPane.showMessageDialog(null, "Sprint added to simulation with ID: " + simulationID);
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Simulation with ID " + simulationID + " not found.");
+    }
+
+    public static List<Sprint> getSprintsForSimulation(String simulationID) {
+        JSONObject simulationData = getSimulationData();
+        List<Sprint> sprintsList = new ArrayList<>();
+
+        if (simulationData == null) return sprintsList;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray sprints = simulation.optJSONArray("Sprints");
+
+                for (int j = 0; j < sprints.length(); j++) {
+                    JSONObject sprintJson = sprints.getJSONObject(j);
+                    String id = sprintJson.getString("ID");
+                    String name = sprintJson.optString("Name");
+                    String description = sprintJson.optString("Description", "No description");
+                    int length = Integer.parseInt(simulation.optString("LengthOfSprint", "1"));
+                    JSONArray userStoriesJson = sprintJson.optJSONArray("UserStories");
+
+                    List<UserStory> userStories = new ArrayList<>();
+                    if(userStoriesJson != null) {
+                        for (int k = 0; k < userStoriesJson.length(); k++) {
+                            JSONObject usObj = userStoriesJson.getJSONObject(k);
+                            UserStory userStory = new UserStory(
+                                    usObj.getString("Name"),
+                                    usObj.getString("Description"),
+                                    usObj.getDouble("PointValue"),
+                                    usObj.getDouble("BusinessValue"),
+                                    new UserStoryIdentifier(Integer.parseInt(usObj.getString("Id").substring(4)))
+                            );
+                            userStory.setStateFromString(usObj.getString("State"));
+                            userStories.add(userStory);
+                        }
+                    }
+
+                    Sprint sprint = new Sprint(name, description, length, id);
+                    sprint.setUserStories(new ArrayList<>(userStories));
+                    sprintsList.add(sprint);
+                }
+                break;
+            }
+        }
+
+        return sprintsList;
+    }
+
+    public static void removeSprintFromSimulation(String simulationID, String sprintID) {
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+        System.out.println("Hitting");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray sprints = simulation.optJSONArray("Sprints");
+
+                for (int j = 0; j < sprints.length(); j++) {
+                    JSONObject sprint = sprints.getJSONObject(j);
+                    if (sprint.getString("ID").equals(sprintID)) {
+                        sprints.remove(j);  // Remove the sprint from JSON array
+                        updateSimulationData(simulationData);  // Save the updated JSON data
+                        JOptionPane.showMessageDialog(null, "Sprint removed from simulation with ID: " + simulationID);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
     private static JSONObject getSimulationData() {
         try (FileInputStream fis = new FileInputStream(JSON_FILE_PATH)) {
             JSONTokener tokener = new JSONTokener(fis);
             return new JSONObject(tokener);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading from simulation.JSON");
+            JOptionPane.showMessageDialog(null, "Error reading from simulation.json");
             return null;
         }
     }
 
     private static void updateSimulationData(JSONObject updatedData) {
         try (OutputStreamWriter writer =
-                new OutputStreamWriter(
-                        new FileOutputStream(JSON_FILE_PATH), StandardCharsets.UTF_8)) {
+                     new OutputStreamWriter(
+                             new FileOutputStream(JSON_FILE_PATH), StandardCharsets.UTF_8)) {
             writer.write(updatedData.toString(4));
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error writing to simulation.JSON");
+            JOptionPane.showMessageDialog(null, "Error writing to simulation.json");
+        }
+    }
+
+    public static void addUserStoryToSimulation(String simulationID, UserStory userStory) {
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray userStories = simulation.optJSONArray("UserStories");
+                if (userStories == null) {
+                    userStories = new JSONArray();
+                    simulation.put("UserStories", userStories);
+                }
+
+                JSONObject newUserStory = new JSONObject();
+                newUserStory.put("Name", userStory.getName());
+                newUserStory.put("Description", userStory.getDescription());
+                newUserStory.put("PointValue", userStory.getPointValue());
+                newUserStory.put("BusinessValue", userStory.getBusinessValue());
+                newUserStory.put("Id", userStory.getId());
+                newUserStory.put("State", userStory.getState());
+
+                userStories.put(newUserStory);  // Add user story to JSON array
+                updateSimulationData(simulationData);
+                return;
+            }
+        }
+    }
+
+    public static void removeUserStoryFromSimulation(String simulationID, String userStoryName) {
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray userStories = simulation.optJSONArray("UserStories");
+
+                for (int j = 0; j < userStories.length(); j++) {
+                    JSONObject userStory = userStories.getJSONObject(j);
+                    if (userStory.getString("Name").equals(userStoryName)) {
+                        userStories.remove(j);  // Remove the user story
+                        updateSimulationData(simulationData);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    public static List<UserStory> getUserStoriesForSimulation(String simulationID, boolean isProductBacklog) {
+        JSONObject simulationData = getSimulationData();
+        List<UserStory> userStoryList = new ArrayList<>();
+
+        if (simulationData == null) return userStoryList;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray userStories = simulation.optJSONArray(isProductBacklog?"UserStories":"UserStories");
+
+                for (int j = 0; j < userStories.length(); j++) {
+                    JSONObject userStoryJson = userStories.getJSONObject(j);
+                    String name = userStoryJson.getString("Name");
+                    String description = userStoryJson.optString("Description", "No description");
+                    double pointValue = userStoryJson.optDouble("PointValue", 0.0);
+                    double businessValue = userStoryJson.optDouble("BusinessValue", 0.0);
+                    UserStoryIdentifier id = new UserStoryIdentifier(Integer.parseInt(userStoryJson.optString("Id","US #0").split("#")[1]));
+
+                    UserStory userStory = new UserStory(name, description, pointValue, businessValue, id);
+
+                    // read state data from json
+                    String state = userStoryJson.optString("State", "Unassigned");
+                    switch (state) {
+                        case "New":
+                            userStory.setState(new NewState(userStory));
+                            break;
+                        case "InProgress":
+                            userStory.setState(new InProgressState(userStory));
+                            break;
+                        case "ReadyToTest":
+                            userStory.setState(new ReadyToTestState(userStory));
+                            break;
+                        case "Complete":
+                            userStory.setState(new CompleteState(userStory));
+                            break;
+                        case "Blocked":
+                            userStory.setState(new BlockedState(userStory));
+                            break;
+                        default:
+                            userStory.setState(new UnassignedState(userStory));
+                            break;
+                    }
+                    userStoryList.add(userStory);
+                }
+                break;
+            }
+        }
+
+        return userStoryList;
+    }
+
+    public static void changeUserStoryState(String simulationID, String userStoryName, String newState) {
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationID)) {
+                JSONArray userStories = simulation.optJSONArray("UserStories");
+
+                for (int j = 0; j < userStories.length(); j++) {
+                    JSONObject userStoryJson = userStories.getJSONObject(j);
+                    if (userStoryJson.getString("Name").equals(userStoryName)) {
+                        // update the state in JSON
+                        userStoryJson.put("State", newState);
+
+                        updateSimulationData(simulationData);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    public static List<Blocker> getBlockersForSimulation(String simulationId){
+        List<Blocker> blockers = new ArrayList<>();
+
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return blockers;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i<simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray blockersInSimulation = simulation.optJSONArray("Blockers");
+                if(blockersInSimulation == null){
+                    return blockers;
+                }
+                for(int j=0;j<blockersInSimulation.length(); j++){
+                    JSONObject blockerObj = blockersInSimulation.getJSONObject(j);
+                    Blocker blocker = new Blocker(UUID.fromString(blockerObj.getString("ID")), blockerObj.getString("Name"), blockerObj.getString("Description"));
+                    blockers.add(blocker);
+                }
+                break;
+            }
+        }
+        return blockers;
+    }
+
+    public static void storeBlockerInSimulation(String simulationId, Blocker blocker){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i<simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray blockersInSimulation = simulation.optJSONArray("Blockers");
+
+                JSONObject newBlockerObj = new JSONObject();
+                newBlockerObj.put("ID", blocker.getId());
+                newBlockerObj.put("Name", blocker.getName());
+                newBlockerObj.put("Description", blocker.getDescription());
+
+                if(blockersInSimulation == null){
+                    blockersInSimulation = new JSONArray();
+                    simulation.put("Blockers", blockersInSimulation);
+                }
+
+                blockersInSimulation.put(newBlockerObj);
+                updateSimulationData(simulationData);
+                return;
+            }
+        }
+    }
+
+    public static void updateBlockersProbabilityInSimulation(String simulationId, List<Blocker> updatedBlockers){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i< simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray blockers = simulation.optJSONArray("Blockers");
+                for(Blocker updatedBlocker: updatedBlockers){
+                    for(int j=0; j<blockers.length(); j++){
+                        JSONObject blocker = blockers.getJSONObject(j);
+                        if(blocker.getString("ID").equals(updatedBlocker.getId().toString())){
+                            blocker.put("ProbabilityRangeStart", updatedBlocker.getProbabilityRangeStart());
+                            blocker.put("ProbabilityRangeEnd", updatedBlocker.getProbabilityRangeEnd());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        updateSimulationData(simulationData);
+    }
+
+    public static List<Solution> getSolutionsForSimulation(String simulationId){
+        List<Solution> solutions = new ArrayList<>();
+
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return solutions;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i<simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray solutionsInSimulation = simulation.optJSONArray("Solutions");
+                if(solutionsInSimulation == null){
+                    return solutions;
+                }
+                for(int j=0;j<solutionsInSimulation.length(); j++){
+                    JSONObject solutionObj = solutionsInSimulation.getJSONObject(j);
+                    Solution solution = new Solution(solutionObj.getString("Name"), solutionObj.getString("Description"), solutionObj.getInt("ID"));
+                    solutions.add(solution);
+                    if(j == solutionsInSimulation.length()-1){
+                        SolutionFactory.getSolutionFactory().setNumSolutions(solution.getId());
+                    }
+                }
+                break;
+            }
+        }
+        return solutions;
+    }
+
+    public static void storeSolutionInSimulation(String simulationId, Solution solution){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i<simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray solutionsInSimulation = simulation.optJSONArray("Solutions");
+
+                JSONObject newSolutionObj = new JSONObject();
+                newSolutionObj.put("ID", solution.getId());
+                newSolutionObj.put("Name", solution.getTitle());
+                newSolutionObj.put("Description", solution.getDescription());
+
+                if(solutionsInSimulation == null){
+                    solutionsInSimulation = new JSONArray();
+                    simulation.put("Solutions", solutionsInSimulation);
+                }
+
+                solutionsInSimulation.put(newSolutionObj);
+                updateSimulationData(simulationData);
+                return;
+            }
+        }
+    }
+
+    public static void updateSolutionsProbabilityInSimulation(String simulationId, List<Solution> updatedSolutions){
+        JSONObject simulationData = getSimulationData();
+        if(simulationData == null){
+            return;
+        }
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for(int i=0; i< simulations.length(); i++){
+            JSONObject simulation = simulations.getJSONObject(i);
+            if(simulation.getString("ID").equals(simulationId)){
+                JSONArray solutions = simulation.optJSONArray("Solutions");
+                for(Solution updatedSolution: updatedSolutions){
+                    for(int j=0; j<solutions.length(); j++){
+                        JSONObject solution = solutions.getJSONObject(j);
+                        if(solution.getInt("ID") == updatedSolution.getId()){
+                            solution.put("ProbabilityRangeMinimum", updatedSolution.getProbabilityRangeMinimum());
+                            solution.put("ProbabilityRangeMaximum", updatedSolution.getProbabilityRangeMaximum());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        updateSimulationData(simulationData);
+    }
+
+    public static void addUserStoryToSprintBacklog(String simulationId, String sprintId, UserStory userStory){
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationId)) {
+
+                JSONArray sprints = simulation.optJSONArray("Sprints");
+                if(sprints == null) return;
+
+                for(int j=0; j<sprints.length(); j++){
+                    JSONObject sprintObj = sprints.getJSONObject(j);
+                    if(sprintObj.getString("ID").equals(sprintId)){
+                        JSONArray userStories = sprintObj.optJSONArray("UserStories");
+                        if (userStories == null) {
+                            userStories = new JSONArray();
+                            sprintObj.put("UserStories", userStories);
+                        }
+
+                        JSONObject newUserStory = new JSONObject();
+                        newUserStory.put("Name", userStory.getName());
+                        newUserStory.put("Description", userStory.getDescription());
+                        newUserStory.put("PointValue", userStory.getPointValue());
+                        newUserStory.put("BusinessValue", userStory.getBusinessValue());
+                        newUserStory.put("Id", userStory.getId());
+                        newUserStory.put("State", userStory.getState());
+
+                        userStories.put(newUserStory);  // Add user story to JSON array
+                        updateSimulationData(simulationData);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    public static void removeUserStoryFromSprintBacklog(String simulationId, String sprintId, UserStory userStory){
+        JSONObject simulationData = getSimulationData();
+        if (simulationData == null) return;
+
+        JSONArray simulations = simulationData.optJSONArray("Simulations");
+
+        for (int i = 0; i < simulations.length(); i++) {
+            JSONObject simulation = simulations.getJSONObject(i);
+            if (simulation.getString("ID").equals(simulationId)) {
+
+                JSONArray sprints = simulation.optJSONArray("Sprints");
+                if(sprints == null) return;
+
+                for(int j=0; j<sprints.length(); j++){
+                    JSONObject sprintObj = sprints.getJSONObject(j);
+                    if(sprintObj.getString("ID").equals(sprintId)){
+
+                        JSONArray userStories = sprintObj.optJSONArray("UserStories");
+
+                        for(int k=0; k<userStories.length(); k++){
+                            JSONObject usObj = userStories.getJSONObject(k);
+                            if(usObj.getString("Id").equals(userStory.getId().toString())){
+                                userStories.remove(k);
+                                updateSimulationData(simulationData);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
