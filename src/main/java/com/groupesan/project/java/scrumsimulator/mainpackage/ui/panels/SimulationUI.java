@@ -65,7 +65,7 @@ public class SimulationUI extends JFrame implements BaseComponent {
             String selectedSimulation =
                     (String)
                             JOptionPane.showInputDialog(
-                                    null,
+                                    this,
                                     "Select a Simulation:",
                                     "Simulation Selection",
                                     JOptionPane.QUESTION_MESSAGE,
@@ -76,11 +76,9 @@ public class SimulationUI extends JFrame implements BaseComponent {
             // Store the selected simulation ID (extract from selectedSimulation)
             if (selectedSimulation != null) {
                 this.selectedSimulationId = selectedSimulation.split(" - ")[1];
-                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 selectUserRole();
             }
             else{
-                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 dispose();
             }
         }
@@ -199,6 +197,14 @@ public class SimulationUI extends JFrame implements BaseComponent {
         blockersButton.setPreferredSize(buttonSize);
         blockersButton.addActionListener(e -> new BlockersListPane(player, selectedSimulationId).setVisible(true));
         buttonPanel.add(blockersButton);
+
+        JButton spikeButton = new JButton("List of Spikes");
+        spikeButton.setPreferredSize(buttonSize);
+        spikeButton.addActionListener(e -> new SpikeListPanel(player,selectedSimulationId).setVisible(true));
+//        if (player.getRole().getName().equals(Roles.DEVELOPER.getDisplayName())) { // activate later
+//            blockersButton.setVisible(false);
+//        }
+        buttonPanel.add(spikeButton);
 
         // Add the "List of Solutions" button with access only for Developer
         JButton solutionsButton = new JButton("List of Solutions");

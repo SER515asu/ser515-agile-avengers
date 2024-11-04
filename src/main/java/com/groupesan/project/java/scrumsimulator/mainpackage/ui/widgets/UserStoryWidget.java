@@ -1,5 +1,19 @@
 package com.groupesan.project.java.scrumsimulator.mainpackage.ui.widgets;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Player;
+import com.groupesan.project.java.scrumsimulator.mainpackage.core.Roles;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.Blocker;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.BlockerStore;
 import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStory;
@@ -7,16 +21,8 @@ import com.groupesan.project.java.scrumsimulator.mainpackage.impl.UserStoryStore
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.StoryForm;
 import com.groupesan.project.java.scrumsimulator.mainpackage.ui.panels.UserStoryListPane;
 import com.groupesan.project.java.scrumsimulator.mainpackage.utils.CustomConstraints;
-import lombok.Getter;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.Getter;
 
 public class UserStoryWidget extends JPanel implements BaseComponent {
 
@@ -31,6 +37,7 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
 
     // Flag to ensure the headers are only added once
     private static boolean headersAdded = false;
+    private Player player;
 
     @Getter
     private UserStory userStory;
@@ -41,25 +48,31 @@ public class UserStoryWidget extends JPanel implements BaseComponent {
             new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    StoryForm form = new StoryForm(userStory);
-                    form.setVisible(true);
+                    // Check if the role is not Product Owner
+                    if (!player.getRole().getName().equals(Roles.PRODUCT_OWNER.getDisplayName())) {
+                        StoryForm form = new StoryForm(userStory);
+                        form.setVisible(true);
 
-                    form.addWindowListener(
-                            new java.awt.event.WindowAdapter() {
-                                public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                                    init();
-                                }
-                            });
+                        form.addWindowListener(
+                                new java.awt.event.WindowAdapter() {
+                                    public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+                                        init();
+                                    }
+                                });
+                    } else {
+                        JOptionPane.showMessageDialog(
+                                UserStoryWidget.this,
+                                "Product Owner cannot edit user stories.",
+                                "Access Denied",
+                                JOptionPane.WARNING_MESSAGE
+                        );
+                    }
                 }
             };
 
-    public UserStoryWidget(UserStory userStory) {
+    public UserStoryWidget(UserStory userStory, Player player, UserStoryListPane parentPane) {
         this.userStory = userStory;
-        this.init();
-    }
-
-    public UserStoryWidget(UserStory userStory, UserStoryListPane parentPane) {
-        this.userStory = userStory;
+        this.player = player;
         this.parentPane = parentPane;
         this.init();
     }

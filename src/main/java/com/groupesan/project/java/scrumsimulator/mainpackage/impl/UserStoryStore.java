@@ -79,10 +79,15 @@ public class UserStoryStore {
 
     public List<UserStory> getAllUserStories(){
         List<UserStory> userStories = new ArrayList<>(backlogStories);
+        userStories.addAll(getUserStoriesFromAllSprints());
+        return userStories;
+    }
+
+    public List<UserStory> getUserStoriesFromAllSprints(){
+        List<UserStory> userStories = new ArrayList<>();
         for(Sprint sprint: SprintStore.getInstance(simulationID).getSprints()){
             userStories.addAll(sprint.getUserStories());
         }
         return userStories;
     }
-
 }

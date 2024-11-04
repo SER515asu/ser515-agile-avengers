@@ -50,7 +50,7 @@ public class UpdateUserStoryPanel extends JFrame {
         panel.add(userStoryLabel);
 
         // Fetch user stories from the backlog in UserStoryStore
-        List<UserStory> userStories = UserStoryStore.getInstance(simulationID).getAllUserStories();
+        List<UserStory> userStories = UserStoryStore.getInstance(simulationID).getUserStoriesFromAllSprints();
         userStoryComboBox = new JComboBox<>();
         statusComboBox = new JComboBox<>(UserStoryState.getStatusOptions());
         for (UserStory userStory : userStories) {

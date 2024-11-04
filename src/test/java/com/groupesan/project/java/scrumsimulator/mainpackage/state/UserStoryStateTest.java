@@ -15,7 +15,7 @@ class UserStoryStateTest {
 
     @Test
     void testGetStatusOptions() {
-        String[] expectedStatuses = {"Unassigned", "New", "InProgress", "ReadyToTest", "Complete"};
+        String[] expectedStatuses = {"Unassigned", "New", "InProgress", "ReadyToTest", "Complete", "Blocked"};
         assertArrayEquals(expectedStatuses, UserStoryState.getStatusOptions(), "Status options should match expected array.");
     }
 
