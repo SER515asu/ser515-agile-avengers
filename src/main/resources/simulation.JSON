@@ -395,7 +395,7 @@
                 "Description": "Gather raw data from identified sources and store it securely.",
                 "BusinessValue": 8,
                 "PointValue": 2,
-                "State": "Unassigned",
+                "State": "Blocked",
                 "Id": "US #3",
                 "Name": "Collect Raw Data"
             },
@@ -513,15 +513,8 @@
                 "Name": "Data Collection Delays"
             },
             {
-                "ProbabilityRangeStart": 0,
-                "Description": "Insufficient computing resources for model training, leading to delays.",
-                "ProbabilityRangeEnd": 0.1,
-                "ID": "068da283-a7a9-478e-9300-6f9a0df5ccc9",
-                "Name": "Training Infrastructure Issue"
-            },
-            {
                 "Description": "Compatibility issues with the production environment prevent successful deployment.",
-                "ID": "91ef8726-6bd3-4888-a3db-f150c4fc41ed",
+                "ID": "5dff85da-6798-4a79-8e72-f03775756e21",
                 "Name": "Deployment Environment Issue"
             }
         ],
@@ -541,27 +534,17 @@
                 "Name": "Use Alternative Sources"
             },
             {
-                "Description": "Leverage cloud-based GPUs or TPUs for scalable model training.",
-                "ID": 3,
-                "Name": "Use Cloud Resources"
-            },
-            {
-                "Description": "Reduce the batch size to accommodate limited resources and train efficiently.",
-                "ID": 4,
-                "Name": "Optimize Data Batch Size"
-            },
-            {
                 "Description": "Modify configurations to ensure compatibility with the production environment.",
                 "ProbabilityRangeMinimum": 0,
                 "ProbabilityRangeMaximum": 0.8,
-                "ID": 6,
+                "ID": 3,
                 "Name": "Adjust Deployment Configuration"
             },
             {
                 "Description": "Engage with DevOps team to troubleshoot and resolve deployment issues.",
                 "ProbabilityRangeMinimum": 0,
                 "ProbabilityRangeMaximum": 0.8,
-                "ID": 7,
+                "ID": 4,
                 "Name": "Consult with DevOps Team"
             }
         ],
