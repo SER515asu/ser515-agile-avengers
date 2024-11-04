@@ -55,8 +55,7 @@ public class AddUserStoryToSprintForm extends JFrame {
                     public void actionPerformed(ActionEvent e) {
                         UserStory selectedUserStory = (UserStory) userStoryComboBox.getSelectedItem();
                         if (selectedUserStory != null) {
-                            sprint.addUserStory(selectedUserStory);
-                            UserStoryStore.getInstance(simulationID).addUserStoryToSprint(selectedUserStory); // Move to sprint
+                            sprint.addUserStory(simulationID, selectedUserStory);
                             JOptionPane.showMessageDialog(AddUserStoryToSprintForm.this,
                                     "User story added successfully.",
                                     "Success",

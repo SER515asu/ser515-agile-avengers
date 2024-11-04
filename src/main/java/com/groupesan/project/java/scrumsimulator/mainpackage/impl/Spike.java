@@ -23,6 +23,10 @@ public class Spike {
     @Setter
     private boolean failed;
 
+    @Getter
+    @Setter
+    private List<UserStory> linkedUserStories = new ArrayList<>();
+
     public Spike(UUID spikeId, String name, String description) {
         this.id = spikeId;
         this.name = name;
@@ -30,8 +34,6 @@ public class Spike {
         this.resolved = false;
         this.failed = false;
     }
-
-    private List<UserStory> linkedUserStories = new ArrayList<>();
 
     public void addLinkedUserStory(UserStory userStory) {
         if (!linkedUserStories.contains(userStory)) {

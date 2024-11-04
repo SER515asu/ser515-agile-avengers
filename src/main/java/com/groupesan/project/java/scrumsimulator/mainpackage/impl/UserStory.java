@@ -193,4 +193,22 @@ public class UserStory extends ScrumObject {
         this.state = new BlockedState(this);
         SimulationStateManager.changeUserStoryState(simulationId, this.getName(), "Blocked");
     }
+
+    public void setStateFromString(String newState) {
+        if (newState.equals("Unassigned")) {
+            setState(new UnassignedState(this));
+        }
+        if (newState.equals("InProgress")) {
+            setState(new InProgressState(this));
+        }
+        if (newState.equals("New")) {
+            setState(new NewState(this));
+        }
+        if (newState.equals("Complete")) {
+            setState(new CompleteState(this));
+        }
+        if (newState.equals("ReadyToTest")) {
+            setState(new ReadyToTestState(this));
+        }
+    }
 }

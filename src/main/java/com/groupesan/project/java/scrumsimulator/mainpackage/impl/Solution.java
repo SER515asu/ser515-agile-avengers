@@ -21,4 +21,9 @@ public class Solution {
         this.title = title;
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return title; // Only show the title in the dropdown
+    }
 }
